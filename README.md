@@ -18,9 +18,10 @@ La partie est terminée lorsqu'il ne reste plus qu'un joueur à la table. Jusque
 # Détail des classes principales
 TODO
 
-* TicTacToeHost classe exécutable représentant le maitre du jeu
-* TicTacToeGuest classe exécutable représentant l'adversaire du maitre du jeu
-* TicTacToeStandAlone jeu local.
+   * LocalTexasHoldEm la version du jeu supportant le jeu en local
+   * TexasHoldEmEngine le moteur du jeu
+   * TexasHoldEmPlayer le joueur distant en cas de partie réseau
+   * TexasHoldEmNetWworkEngine la version du jeu supportant le réseau
 
 # Protocole réseau
 
