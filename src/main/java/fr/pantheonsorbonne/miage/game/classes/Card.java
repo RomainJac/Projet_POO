@@ -38,7 +38,7 @@ public class Card {
 
     @Override
     public String toString() {
-        return "Card{" + "cardRank=" + cardRank + ", cardColor=" + cardColor + '}';
+        return cardRank + " de "+ cardColor;
     }
 
     public boolean aLaMemeValeurQue(Card  Card) {

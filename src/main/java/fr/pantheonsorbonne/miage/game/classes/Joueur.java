@@ -11,7 +11,7 @@ public class Joueur implements Comparable<Joueur> {
     private MainDuJoueur mainDuJoueur;
     private boolean enJeu;
     private boolean nAPasSuivi = true;
-    private boolean nAPasPassé = true;
+    private boolean suit = true;
     private boolean estEnTrainDeRelancer;
 
     public Joueur(String nom) {
@@ -123,18 +123,17 @@ public class Joueur implements Comparable<Joueur> {
         this.miser(combien);
     }
 
-    
     public void relancer(int miseLaPlusHaute, int montantRelance) {
-    int montantTotal = miseLaPlusHaute + montantRelance;
-    if (this.getPileDeJetons() >= montantTotal) {
-        this.miser(montantTotal); 
-        System.out.println(this.getNom() + " a relancé de " + montantRelance + " pour un total de " + montantTotal + ".");
-    } else {
-        System.out.println(this.getNom() + " n'a pas assez de jetons et va tapis.");
-        this.miser(this.getPileDeJetons());
+        int montantTotal = miseLaPlusHaute + montantRelance;
+        if (this.getPileDeJetons() >= montantTotal) {
+            this.miser(montantTotal);
+            System.out.println(
+                    this.getNom() + " a relancé de " + montantRelance + " pour un total de " + montantTotal + ".");
+        } else {
+            System.out.println(this.getNom() + " n'a pas assez de jetons et va tapis.");
+            this.miser(this.getPileDeJetons());
+        }
     }
-}
-
 
     public void seCoucher() {
         this.nAPasSuivi = false;
@@ -158,11 +157,11 @@ public class Joueur implements Comparable<Joueur> {
         return nAPasSuivi;
     }
 
-    public boolean nAPasPassé() {
-        return nAPasPassé;
+    public boolean suit() {
+        return suit;
     }
 
-    public void setNAPasSuivi(boolean nAPasSuivi) {
+    public void fold(boolean nAPasSuivi) {
         this.nAPasSuivi = nAPasSuivi;
     }
 
