@@ -31,10 +31,10 @@ public class ConditionDeVictoire {
     private static CombinaisonGagnante trouverQuinteFlush(List<Card> main) {
         Map<cardColor, List<Card>> cartesParCouleur = new HashMap<>();
         for (Card carte : main) {
-            if (!cartesParCouleur.containsKey(carte.getcardColor())) {
-                cartesParCouleur.put(carte.getcardColor(), new ArrayList<>());
+            if (!cartesParCouleur.containsKey(carte.getCardColor())) {
+                cartesParCouleur.put(carte.getCardColor(), new ArrayList<>());
             }
-            cartesParCouleur.get(carte.getcardColor()).add(carte);
+            cartesParCouleur.get(carte.getCardColor()).add(carte);
         }
 
         for (List<Card> cartes : cartesParCouleur.values()) {
@@ -50,11 +50,11 @@ public class ConditionDeVictoire {
     }
 
     private static CombinaisonGagnante trouverQuinteFlushParCouleur(List<Card> cartes) {
-        cartes.sort((c1, c2) -> c2.getcardRank().compareTo(c1.getcardRank()));
+        cartes.sort((c1, c2) -> c2.getCardRank().compareTo(c1.getCardRank()));
 
         for (int i = 0; i <= cartes.size() - 5; i++) {
             if (sontConsecutives(cartes.subList(i, i + 5))) {
-                cardRank rangLePlusHaut = cartes.get(i).getcardRank();
+                cardRank rangLePlusHaut = cartes.get(i).getCardRank();
                 return new CombinaisonGagnante(CombinaisonGagnante.ConditionDeVictoire.QUINTE_FLUSH, rangLePlusHaut);
             }
         }
@@ -63,7 +63,7 @@ public class ConditionDeVictoire {
 
     private static boolean sontConsecutives(List<Card> cartes) {
         for (int i = 0; i < cartes.size() - 1; i++) {
-            if (cartes.get(i).getcardRank().ordinal() - cartes.get(i + 1).getcardRank().ordinal() != 1) {
+            if (cartes.get(i).getCardRank().ordinal() - cartes.get(i + 1).getCardRank().ordinal() != 1) {
                 return false;
             }
         }
@@ -73,7 +73,7 @@ public class ConditionDeVictoire {
     private static CombinaisonGagnante trouverCombinaisonsMultiples(List<Card> main) {
         Map<cardRank, Integer> compteParRang = new HashMap<>();
         for (Card carte : main) {
-            compteParRang.put(carte.getcardRank(), compteParRang.getOrDefault(carte.getcardRank(), 0) + 1);
+            compteParRang.put(carte.getCardRank(), compteParRang.getOrDefault(carte.getCardRank(), 0) + 1);
         }
 
         cardRank rangCarre = null, rangBrelan = null, rangPaire = null;
@@ -106,8 +106,8 @@ public class ConditionDeVictoire {
     private static cardRank trouverCarteLaPlusHaute(List<Card> main) {
         cardRank carteLaPlusHaute = cardRank.DEUX;
         for (Card carte : main) {
-            if (carte.getcardRank().compareTo(carteLaPlusHaute) > 0) {
-                carteLaPlusHaute = carte.getcardRank();
+            if (carte.getCardRank().compareTo(carteLaPlusHaute) > 0) {
+                carteLaPlusHaute = carte.getCardRank();
             }
         }
         return carteLaPlusHaute;

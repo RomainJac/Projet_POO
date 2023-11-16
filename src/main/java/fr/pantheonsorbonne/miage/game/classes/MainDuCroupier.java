@@ -5,34 +5,35 @@ import java.util.List;
 
 public class MainDuCroupier {
     private List<Card> mainDuCroupier;
-    private Deck Deck;
+    private Deck deck;
 
-    public MainDuCroupier(Deck Deck) {
+    public MainDuCroupier(Deck deck) {
+        this.deck = deck;
         this.mainDuCroupier = new ArrayList<>();
-        this.Deck = Deck;
     }
 
     public void flop() {
-        this.ajouterALaMainDuCroupier(Deck.tirer());
-        this.ajouterALaMainDuCroupier(Deck.tirer());
-        this.ajouterALaMainDuCroupier(Deck.tirer());
+        if (deck == null) {
+            System.out.println("Erreur : le deck n'est pas correctement initialisé.");
+            return;
+        }
+    
+        for (int i = 0; i < 3; i++) {
+            ajouterALaMainDuCroupier(deck.tirer());
+        }
     }
 
     public void turn() {
-        this.ajouterALaMainDuCroupier(Deck.tirer());
+        ajouterALaMainDuCroupier(deck.tirer());
     }
 
     public void river() {
-        this.ajouterALaMainDuCroupier(Deck.tirer());
+        ajouterALaMainDuCroupier(deck.tirer());
     }
 
-    public void ajouterALaMainDuCroupier(Card Card) {
-        this.mainDuCroupier.add(Card);
-    }
-
-    public void ajouterALaMainDuCroupier(List<Card> Cards) {
-        for (Card Card : Cards) {
-            ajouterALaMainDuCroupier(Card);
+    private void ajouterALaMainDuCroupier(Card card) {
+        if (mainDuCroupier.size() < 5) {
+            mainDuCroupier.add(card);
         }
     }
 
@@ -41,9 +42,8 @@ public class MainDuCroupier {
     }
 
     public void afficherMain() {
-        System.out.println("Le croupier a la main suivante :");
-        for (Card Card : this.mainDuCroupier) {
-            System.out.println(Card);
+        for (Card card : this.mainDuCroupier) {
+            System.out.println(card);
         }
     }
 
@@ -51,7 +51,7 @@ public class MainDuCroupier {
         this.mainDuCroupier.clear();
     }
 
-    public void definirMain(List<Card> Cards) {
-        this.mainDuCroupier = Cards;
+    public void definirMain(List<Card> cards) {
+        this.mainDuCroupier = new ArrayList<>(cards);
     }
 }

@@ -1,6 +1,8 @@
 package fr.pantheonsorbonne.miage.game.classes;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Joueur implements Comparable<Joueur> {
 
@@ -57,10 +59,6 @@ public class Joueur implements Comparable<Joueur> {
         this.combinaison = combinaison;
     }
 
-    public MainDuJoueur getMainDuJoueur() {
-        return mainDuJoueur;
-    }
-
     public void setMainDuJoueur(MainDuJoueur mainDuJoueur) {
         this.mainDuJoueur = mainDuJoueur;
     }
@@ -89,7 +87,7 @@ public class Joueur implements Comparable<Joueur> {
 
     public void afficherMain() {
         System.out.println(this.nom + " a la main suivante :");
-        for (Card Card : this.mainDuJoueur.getMainDuJoueur()) {
+        for (Card Card : mainDuJoueur.getMainDuJoueur()) {
             System.out.println(Card);
         }
     }
@@ -144,9 +142,8 @@ public class Joueur implements Comparable<Joueur> {
         this.mise = 0;
     }
 
-    public void aGagné(int gains) {
-        this.pileDeJetons += gains;
-        this.mise = 0;
+    public void aGagné(int gain) {
+        this.pileDeJetons += gain;
     }
 
     public void ajouterAStackDeJetons(int n) {
@@ -197,4 +194,23 @@ public class Joueur implements Comparable<Joueur> {
     public void retirerCarteAleatoire() {
         this.mainDuJoueur.retirerCarteAleatoire();
     }
+
+    public void relancer(int montant) {
+        if (montant >= 0) {
+            this.miser(this.getMise() + montant);
+        } else {
+            System.out.println("Montant de relance invalide.");
+        }
+    }
+
+    public List<String> getCardNames() {
+    if (this.getMainDuJoueur() != null) {
+        return this.getMainDuJoueur().getCardNames();
+    }
+    return Collections.emptyList();
+}
+
+public MainDuJoueur getMainDuJoueur() {
+    return this.mainDuJoueur;
+}
 }

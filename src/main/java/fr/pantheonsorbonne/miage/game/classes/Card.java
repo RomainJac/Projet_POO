@@ -8,7 +8,6 @@ public class Card {
 
     public enum cardRank {
         DEUX, TROIS, QUATRE, CINQ, SIX, SEPT, HUIT, NEUF, DIX, VALET, DAME, ROI, AS;
-
     }
 
     private cardRank cardRank;
@@ -18,38 +17,41 @@ public class Card {
         this.cardRank = rank;
         this.cardColor = suit;
     }
-    
 
-    public cardRank getcardRank() {
+    public cardRank getCardRank() {
         return cardRank;
     }
 
-    public void setcardRank(cardRank rank) {
+    public void setCardRank(cardRank rank) {
         this.cardRank = rank;
     }
 
-    public cardColor getcardColor() {
+    public cardColor getCardColor() {
         return cardColor;
     }
 
-    public void setcardColor(cardColor suit) {
+    public void setCardColor(cardColor suit) {
         this.cardColor = suit;
     }
 
     @Override
     public String toString() {
-        return cardRank + " de "+ cardColor;
+        return cardRank + " de " + cardColor;
     }
 
-    public boolean aLaMemeValeurQue(Card  Card) {
-        return this.getcardRank() == Card.getcardRank();
+    public boolean hasSameValueAs(Card card) {
+        return this.getCardRank() == card.getCardRank();
     }
 
-    public boolean estSuperieurA(Card  Card) {
-        return this.getcardRank().compareTo(Card.getcardRank()) > 0;
+    public boolean isGreaterThan(Card card) {
+        return this.getCardRank().compareTo(card.getCardRank()) > 0;
     }
 
-    public int comparerValeurs(Card Card1, Card Card2) {
-        return Card1.getcardRank().compareTo(Card2.getcardRank());
+    public int compareValues(Card card1, Card card2) {
+        return card1.getCardRank().compareTo(card2.getCardRank());
+    }
+
+    public String getCardName() {
+        return this.toString();
     }
 }

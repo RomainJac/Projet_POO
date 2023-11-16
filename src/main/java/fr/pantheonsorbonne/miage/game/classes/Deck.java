@@ -12,7 +12,7 @@ public class Deck {
         initialiserDeck();
     }
 
-    private void initialiserDeck() {
+    public void initialiserDeck() {
         Cards = new ArrayList<>(52);
         int k = 0;
         for (int i = 0; i < 13; i++) {
@@ -51,16 +51,13 @@ public class Deck {
         return CardTiree;
     }
 
-    public List<Card> nouvelleMainAleatoire() {
-        return CardsAleatoires(5);
-    }
-
     public void retourAuDeck(List<Card> CardsRetournees) {
         Cards.addAll(CardsRetournees);
     }
 
-    public void reinitialiserDeck() {
-        initialiserDeck();
+    public static void reinitialiserDeck() {
+        Deck deck = new Deck();
+        deck.initialiserDeck();
     }
 
     public void defausser() {

@@ -9,46 +9,198 @@ public class TableDePoker {
 	private List<Joueur> joueurs;
 	public List<Joueur> joueursActifs;
 	private MainDuCroupier croupier;
-	private Deck Deck;
+	private Deck deck;
 	private int misesTotales;
 	private int miseMaximale;
 	private int nombreDeTours;
 	private Blind grosseBlind;
 	private Blind petiteBlind;
 	private Blind dealerBlind;
-	private final int petiteBlindParDefaut = 20;
-	private final int toursPourAugmentationBlind = 3;
-	private Scanner scanner = new Scanner(System.in);
-
+	private final int petiteBlindParDefaut = 0;
+	private final int toursPourAugmentationBlind = 0;
 	private List<Pot> pots = new ArrayList<>();
+	private Scanner scanner = new Scanner(System.in);
 
 	public TableDePoker() {
 		this.joueurs = new ArrayList<>();
 		this.joueursActifs = new ArrayList<>();
-		this.Deck = new Deck();
-		this.croupier = new MainDuCroupier(Deck);
+		this.deck = new Deck();
+		this.croupier = new MainDuCroupier(deck);
 		misesTotales = 0;
 		this.miseMaximale = 0;
 	}
 
 	public TableDePoker(Joueur joueur) {
 		this();
-		this.joueurs.add(joueur);
-		this.joueursActifs.add(joueur);
+		this.ajouterJoueur(joueur);
 	}
 
 	public TableDePoker(List<Joueur> joueurs) {
-		this.joueurs = joueurs;
-		this.Deck = new Deck();
-		this.croupier = new MainDuCroupier(Deck);
-		this.joueursActifs = new ArrayList<>();
-		for (Joueur joueur : this.joueurs) {
-			if (joueur.estEnJeu()) {
-				this.joueursActifs.add(joueur);
-			}
-		}
+		this.joueurs = new ArrayList<>(joueurs);
+		this.deck = new Deck();
+		this.croupier = new MainDuCroupier(deck);
+		this.joueursActifs = new ArrayList<>(joueurs);
+		this.joueursActifs.removeIf(joueur -> !joueur.estEnJeu());
 	}
 
+	public void jouerTour() {
+		deck.initialiserDeck();
+		this.distribuerCartes();
+		this.initialiserBlinds();
+		this.demanderPaiementBlinds();
+		this.trouverMiseMaximale();
+	
+		for (int etape = 0; etape < 4; etape++) {
+			switch (etape) {
+				case 0:
+					System.out.println("Les Cartes du croupier ne sont pas encore tirées ");
+					break;
+				case 1:
+					System.out.println("Cartes du croupier après le flop : ");
+					croupier.flop();
+					break;
+				case 2:
+					System.out.println("Cartes du croupier après le turn : ");
+					croupier.turn();
+					break;
+				case 3:
+					System.out.println("Cartes du croupier après la river : ");
+					croupier.river();
+					break;
+			}
+	
+			for (Joueur joueur : this.joueursActifs) {
+				afficherInfosJoueur(joueur);
+			}
+	
+			if (etape > 0) {
+				croupier.afficherMain();
+			}
+	
+			this.demanderMise();
+		}
+	
+		this.réinitialiserTable();
+	}
+	
+
+	public void demanderMise() {
+		boolean toutLeMondeACallé = false;
+		int relanceActuelle = 0;
+	
+		while (!toutLeMondeACallé) {
+			toutLeMondeACallé = true;
+	
+			for (Joueur joueur : this.joueursActifs) {
+				if (joueur.estEnJeu()) {
+					afficherInfosJoueur(joueur);
+	
+					if (joueursActifs.size() > 1 && joueur.suit() && !joueur.estTapis()
+							&& !joueur.estEnTrainDeRelancer()) {
+						relanceActuelle = gererRelance(joueur, relanceActuelle);
+	
+						if (joueur.getMise() < this.miseMaximale) {
+							toutLeMondeACallé = false;
+						}
+					}
+				}
+			}
+	
+			fairePotAllInSiNécessaire(joueursActifs.size());
+	
+			if (toutLeMondeACallé) {
+				break;
+			}
+		}
+	
+		réinitialiserMisesJoueurs();
+	}
+
+	private void afficherInfosJoueur(Joueur joueur) {
+		effacerTerminal();
+
+		String message = String.format(
+				"%s : Pour suivre, vous devez avoir misé %d, votre mise est actuellement de %d",
+				joueur.getNom(), miseMaximale, joueur.getMise());
+
+		System.out.println(message);
+
+		List<String> cardNames = joueur.getCardNames();
+		System.out.print("Vos cartes : ");
+		for (String cardName : cardNames) {
+			System.out.print(cardName + " ");
+		}
+		System.out.println();
+
+	}
+
+	private int gererRelance(Joueur joueur, int relanceActuelle) {
+		System.out.print(joueur.getNom() + ", Choisissez une option : \n");
+		System.out.println("1. Suivre");
+		System.out.println("2. Se Coucher");
+		System.out.println("3. Relancer");
+	
+		int choix = scanner.nextInt();
+	
+		switch (choix) {
+			case 1:
+				joueur.suivre(this.miseMaximale - joueur.getMise());
+				joueur.setEstEnTrainDeRelancer(false);
+				break;
+			case 2:
+				joueur.setEnJeu(false);
+				joueur.setEstEnTrainDeRelancer(false);
+				break;
+			case 3:
+				joueur.setEstEnTrainDeRelancer(true);
+	
+				while (true) {
+					System.out.print("Voulez-vous relancer ? (Oui/Non) : ");
+					String reponse = scanner.next().toLowerCase();
+	
+					if (reponse.equals("oui")) {
+						System.out.print("Combien voulez-vous relancer ? : ");
+						int x = scanner.nextInt();
+						if (x > 0) {
+							joueur.miser(this.miseMaximale - joueur.getMise() + x);
+							relanceActuelle = x;
+							break;
+						} else {
+							joueur.suivre(this.miseMaximale - joueur.getMise());
+							joueur.setEstEnTrainDeRelancer(false);
+							relanceActuelle = 0;
+							break;
+						}
+					} else if (reponse.equals("non")) {
+						joueur.suivre(this.miseMaximale - joueur.getMise());
+						joueur.setEstEnTrainDeRelancer(false);
+						relanceActuelle = 0;
+						break;
+					} else {
+						System.out.println("Réponse invalide. Veuillez répondre par 'Oui' ou 'Non'.");
+					}
+				}
+				break;
+			default:
+				System.out.println("Option invalide. Veuillez choisir à nouveau.");
+				relanceActuelle = gererRelance(joueur, relanceActuelle);
+		}
+	
+		afficherInfosJoueur(joueur);
+		return relanceActuelle;
+	}	
+
+
+	private void trouverMiseMaximale() {
+		for (Joueur joueur : this.joueursActifs) {
+			System.out.println("Mise du joueur " + joueur.getNom() + ": " + joueur.getMise());
+			if (joueur.getMise() > this.miseMaximale) {
+				this.miseMaximale = joueur.getMise();
+			}
+		}
+		System.out.println("Mise maximale mise à jour : " + this.miseMaximale);
+	}
+	
 	public int getNombreJoueursActifs() {
 		return this.joueursActifs.size();
 	}
@@ -98,84 +250,14 @@ public class TableDePoker {
 	}
 
 	public void distribuerCartes() {
-		this.joueursActifs.forEach(joueur -> joueur.setMain(new MainDuJoueur(this.Deck.CardsAleatoires(2))));
-	}
-
-	public int demanderMises(int joueursActifs) {
-		boolean tousOntSuivi = false;
-		List<Boolean> joueursOntSuivi = new ArrayList<>();
-
-		while (!tousOntSuivi) {
-			joueursOntSuivi.clear();
-
-			for (Joueur joueur : this.joueursActifs) {
-				if (joueursActifs > 1 && joueur.suit() && !joueur.estTapis()
-						&& !joueur.estEnTrainDeRelancer()) {
-					System.out.println("Pour suivre vous devez payer " + this.miseMaximale);
-					System.out.println(joueur.getNom() + " votre mise est actuellement de " + joueur.getMise());
-					joueur.afficherMain();
-					System.out.println("Appuyez sur S pour suivre, C pour vous coucher, R pour relancer");
-					String reponse = scanner.nextLine();
-
-					while (reponse != "S" && reponse != "C" && reponse != "R") {
-						System.out.println("Il ne s'agit pas d'une commande valide ");
-						reponse = scanner.nextLine();
-					}
-
-					switch (reponse) {
-						case "S":
-							joueur.suivre(this.miseMaximale - joueur.getMise());
-							joueur.setEstEnTrainDeRelancer(false);
-							break;
-						case "C":
-							joueur.seCoucher();
-							joueur.setEstEnTrainDeRelancer(false);
-							joueursActifs--;
-							break;
-						case "R":
-							System.out.println("De combien voulez-vous relancer ? (négatif pour suivre !)");
-							int x = scanner.nextInt();
-
-							if (x > 0) {
-								joueur.miser(miseMaximale - joueur.getMise() + x);
-
-								if (joueur.estTapis()) {
-									this.créerPotPourJoueurAllIn(joueur);
-								}
-
-								for (Joueur unJoueur : this.joueursActifs) {
-									unJoueur.setEstEnTrainDeRelancer(false);
-								}
-
-								joueur.setEstEnTrainDeRelancer(true);
-								joueursOntSuivi.add(false);
-							} else {
-								joueur.suivre(this.miseMaximale - joueur.getMise());
-								joueur.setEstEnTrainDeRelancer(false);
-								joueursOntSuivi.add(true);
-							}
-							break;
-					}
-				}
-
-				if (joueur.estTapis()) {
-					joueursActifs--;
-				}
-
-				this.trouvermiseMaximale();
-			}
-
-			tousOntSuivi = true;
-
-			for (Boolean joueurOntSuivi : joueursOntSuivi) {
-				if (!joueurOntSuivi) {
-					tousOntSuivi = false;
-				}
-			}
+		if (deck == null) {
+			System.out.println("Erreur : le deck n'est pas correctement initialisé.");
+			return;
 		}
 
-		this.réinitialiserMisesJoueurs();
-		return joueursActifs;
+		for (Joueur joueur : this.joueursActifs) {
+			joueur.setMain(new MainDuJoueur(this.deck.CardsAleatoires(2)));
+		}
 	}
 
 	public List<Joueur> determinerGagnant(List<Joueur> joueurs) {
@@ -222,25 +304,28 @@ public class TableDePoker {
 	}
 
 	public void terminerTour(List<Joueur> joueursGagnants) {
-		int gainDivise = joueursGagnants.size();
 		this.calculerPotTotal();
-		
+
+		int gainTotal = this.misesTotales;
+		int gainPartagé = joueursGagnants.size();
+		int gainIndividuel = gainTotal / gainPartagé;
+
 		for (Joueur joueur : joueursGagnants) {
-			joueur.aGagné(this.misesTotales / gainDivise);
-			System.out.println(joueur.getNom() + " a gagné " + this.misesTotales / gainDivise + " avec la main "
-					+ joueur.getCombinaison());
+			joueur.aGagné(gainIndividuel);
+			System.out.println(
+					joueur.getNom() + " a gagné " + gainIndividuel + " avec la main " + joueur.getCombinaison());
 		}
-		
+
 		for (Joueur joueur : this.joueursActifs) {
 			if (!joueursGagnants.contains(joueur)) {
 				System.out.println(joueur.getNom() + " a perdu " + joueur.getMise() + " avec la main "
 						+ joueur.getCombinaison());
 				joueur.aPerdu();
 			}
-			
+
 			joueur.setEnJeu(true);
 		}
-		
+
 		enleverJoueurSansJeton();
 		Deck.reinitialiserDeck();
 		croupier.vider();
@@ -248,20 +333,20 @@ public class TableDePoker {
 		this.nombreDeTours++;
 		this.misesTotales = 0;
 		this.miseMaximale = 0;
-		
+
 		if (this.nombreDeTours % this.toursPourAugmentationBlind == 0) {
 			augmenterBlinds();
 		}
-		
+
 		viderPots();
 	}
-	
+
 	public void réinitialiserMisesJoueurs() {
 		for (Joueur joueur : this.joueursActifs) {
 			joueur.setEstEnTrainDeRelancer(false);
 		}
 	}
-	
+
 	public void réinitialiserJoueurs() {
 		for (Joueur joueur : this.joueursActifs) {
 			joueur.setEstEnTrainDeRelancer(false);
@@ -270,55 +355,47 @@ public class TableDePoker {
 			joueur.setMainDuJoueur(null);
 		}
 	}
-	
+
 	public void demanderPaiementBlinds() {
 		this.grosseBlind.getJoueur().miser(this.grosseBlind.getValeur());
 		this.petiteBlind.getJoueur().miser(this.petiteBlind.getValeur());
-		this.trouvermiseMaximale();
+		this.trouverMiseMaximale();
 	}
-	
-	public void trouvermiseMaximale() {
-		for (Joueur joueur : this.joueursActifs) {
-			if (joueur.getMise() > this.miseMaximale) {
-				this.miseMaximale = joueur.getMise();
-			}
-		}
-	}
-	
+
 	public void augmenterBlinds() {
 		this.grosseBlind.augmenter(petiteBlindParDefaut);
 		this.petiteBlind.augmenter(petiteBlindParDefaut / 2);
 	}
-	
+
 	public boolean vérifierSiQuelquUnPeutEncoreMiser() {
 		int nombreJoueursPouvantEncoreMiser = this.joueursActifs.size();
 		boolean drapeau = false;
 		int mise = this.joueursActifs.get(0).getMise();
-		
+
 		for (Joueur joueur : this.joueursActifs) {
 			if (joueur.estTapis() || !joueur.suit()) {
 				nombreJoueursPouvantEncoreMiser--;
 			}
-			
+
 			if (joueur.getMise() != mise) {
 				drapeau = true;
 			}
 		}
-		
+
 		return nombreJoueursPouvantEncoreMiser >= 2 || drapeau;
 	}
-	
+
 	public void créerPot() {
 		this.pots.add(new Pot());
 	}
-	
+
 	public void ajouterAuPot(Joueur joueur, Pot pot) {
 		pot.ajouterJoueur(joueur);
 	}
-	
+
 	public void mettreÀJourValeurPot(Pot pot) {
 		pot.setValeur(0);
-		
+
 		for (Joueur joueur : this.joueursActifs) {
 			pot.ajouterMise(joueur.getMise());
 		}
@@ -328,7 +405,7 @@ public class TableDePoker {
 		this.pots.add(new PotTapis(joueur.getMise(), joueur));
 		PotTapis pot = (PotTapis) this.pots.get(this.pots.size() - 1);
 		int miseJoueur = pot.getMiseAllIn();
-		
+
 		for (Joueur autreJoueur : this.joueursActifs) {
 			if (autreJoueur.getMise() > 0) {
 				pot.ajouterMise(Math.min(autreJoueur.getMise(), miseJoueur));
@@ -336,19 +413,19 @@ public class TableDePoker {
 			}
 		}
 	}
-	
+
 	public void mettreÀJourPotTapis(PotTapis pot) {
 		pot.setValeur(0);
-		
+
 		for (Joueur joueur : this.joueursActifs) {
 			pot.ajouterMise(Math.min(pot.getMiseAllIn(), joueur.getMise()));
 		}
 	}
-	
+
 	public void viderPots() {
 		this.pots.clear();
 	}
-	
+
 	public void mettreÀJourValeursTousLesPots() {
 		for (Pot pot : this.pots) {
 			if (pot instanceof PotTapis) {
@@ -359,72 +436,20 @@ public class TableDePoker {
 		}
 	}
 
-	public int demanderMisesAvecPots(int joueursActifs) {
-		boolean toutLeMondeACallé = false;
-		while (!toutLeMondeACallé) {
-			for (Joueur joueur : this.joueursActifs) {
-				if (joueursActifs > 1 && joueur.suit() && !joueur.estTapis() && !joueur.estEnTrainDeRelancer()) {
-					System.out.println("Mise actuelle la plus élevée est de " + this.miseMaximale);
-					System.out.println(joueur.getNom() + ", vous misez actuellement " + joueur.getMise());
-					joueur.afficherMain();
-					String réponse;
-					do {
-						System.out.println("Appuyez sur S pour suivre, C pour se coucher, R pour relancer");
-						réponse = scanner.nextLine();
-					} while (!réponse.equals("S") && !réponse.equals("C") && !réponse.equals("R"));
-	
-					switch (réponse) {
-						case "S":
-							joueur.suivre(this.miseMaximale - joueur.getMise());
-							joueur.setEstEnTrainDeRelancer(false);
-							break;
-						case "C":
-							joueur.seCoucher();
-							joueur.setEstEnTrainDeRelancer(false);
-							joueursActifs--;
-							break;
-						case "R":
-							System.out.println("Combien voulez-vous relancer ? (négatif pour suivre !)");
-							int x = scanner.nextInt();
-							if (x > 0) {
-								for (Joueur autreJoueur : this.joueursActifs) {
-									autreJoueur.setEstEnTrainDeRelancer(false);
-								}
-								joueur.setEstEnTrainDeRelancer((true));
-								joueur.miser(this.miseMaximale - joueur.getMise() + x);
-							} else {
-								joueur.suivre(this.miseMaximale - joueur.getMise());
-								joueur.setEstEnTrainDeRelancer(false);
-							}
-							break;
-					}
-				}
-				this.trouvermiseMaximale();
-			}
-			toutLeMondeACallé = true;
-			for (Joueur joueur : this.joueursActifs) {
-				if (joueur.getMise() != this.miseMaximale) {
-					toutLeMondeACallé = false;
-					break;
-				}
-			}
-			fairePotAllInSiNécessaire(joueursActifs);
-		}
-		this.réinitialiserMisesJoueurs();
-		return joueursActifs;
-	}
-	
 	public int fairePotAllInSiNécessaire(int joueursActifs) {
 		for (Joueur joueur : this.joueursActifs) {
 			if (joueur.suit() && joueur.estTapis()) {
-				joueursActifs--;
-				if (this.vérifierSiQuelquUnPeutEncoreMiser())
+				boolean joueurDansPot = this.pots.stream().anyMatch(pot -> pot.getJoueurs().contains(joueur));
+
+				if (!joueurDansPot) {
 					this.créerPotPourJoueurAllIn(joueur);
+					joueursActifs--;
+				}
 			}
 		}
 		return joueursActifs;
 	}
-	
+
 	public void ajouterJoueursEnCompétitionAuPotDeBase() {
 		for (Joueur joueur : this.joueursActifs) {
 			if (joueur.suit() && joueur.getMise() >= this.pots.get(0).getMiseSeuil()) {
@@ -432,26 +457,26 @@ public class TableDePoker {
 			}
 		}
 	}
-	
+
 	public void définirSeuilPourPotDeBase() {
 		this.pots.get(0).setMiseSeuil(this.miseMaximale);
 	}
-	
+
 	public void réinitialiserTable() {
-		enleverJoueurSansJeton();
 		Deck.reinitialiserDeck();
 		croupier.vider();
-		this.changerBlinds();
 		this.nombreDeTours++;
-		this.misesTotales = 0;
-		this.miseMaximale = 0;
+		enleverJoueurSansJeton();
 		if (this.nombreDeTours % this.toursPourAugmentationBlind == 0) {
 			augmenterBlinds();
 		}
-		viderPots();
+		this.changerBlinds();
+		this.misesTotales = 0;
+		this.miseMaximale = 0;
 		réinitialiserJoueurs();
+		viderPots();
 	}
-	
+
 	public void distribuerPot(Pot pot) {
 		int valeur = pot.getValeur();
 		if (valeur <= 0) {
@@ -465,12 +490,12 @@ public class TableDePoker {
 		for (Joueur joueur : gagnants) {
 			joueur.aGagné(valeur / gainPartagé);
 		}
-	
+
 		for (Pot unPot : this.pots) {
 			unPot.setValeur(unPot.getValeur() - valeur);
 		}
 	}
-	
+
 	public void afficherToutesLesMains() {
 		for (Joueur joueur : this.joueursActifs) {
 			if (joueur.suit()) {
@@ -479,51 +504,33 @@ public class TableDePoker {
 			}
 		}
 	}
-	
-	public void deroulerDuJeu() {
-		this.distribuerCartes();
-		this.initialiserBlinds();
-		this.demanderPaiementBlinds();
-		this.trouvermiseMaximale();
-		int joueursActifsCount = joueursActifs.size();
-		joueursActifsCount = this.demanderMisesAvecPots(joueursActifsCount);
-		croupier.flop();
-		croupier.afficherMain();
-		joueursActifsCount = this.demanderMisesAvecPots(joueursActifsCount);
-		croupier.turn();
-		croupier.afficherMain();
-		joueursActifsCount = this.demanderMisesAvecPots(joueursActifsCount);
-		croupier.river();
-		croupier.afficherMain();
-		this.demanderMisesAvecPots(joueursActifsCount);
+
+	public void payerJoueurs() {
+		for (Joueur joueur : this.joueursActifs) {
+			int miseJoueur = joueur.getMise();
+			joueur.miser(-miseJoueur);
+			this.ajouterMise(miseJoueur);
+		}
 	}
-	
+
 	public void gestionPot() {
 		créerPot();
 		fairePotAllInSiNécessaire(0);
 		this.mettreÀJourValeursTousLesPots();
-		this.trouvermiseMaximale();
+		this.trouverMiseMaximale();
 		this.définirSeuilPourPotDeBase();
 		this.ajouterJoueursEnCompétitionAuPotDeBase();
 		this.pots.sort(null);
-		for (int i = 0; i < this.pots.size(); i++) {
-			distribuerPot(this.pots.get(i));
+		for (Pot pot : this.pots) {
+			distribuerPot(pot);
 		}
 	}
-	
-	public void commencerTourAvecPots() {
-		deroulerDuJeu();
-		gestionPot();
-		this.afficherToutesLesMains();
-		this.getcroupier().afficherMain();
-		this.réinitialiserTable();
-	}
-	
-	public MainDuCroupier getcroupier() {
-		return this.croupier;
-	}
 
-	
-	
-	
+	private void effacerTerminal() {
+		try {
+			new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
