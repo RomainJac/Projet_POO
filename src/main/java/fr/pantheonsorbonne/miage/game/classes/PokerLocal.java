@@ -15,10 +15,15 @@ public class PokerLocal {
         listeJoueurs.add(j2);
         TableDePoker table = new TableDePoker(listeJoueurs);
         while (table.joueursActifs.size() > 1) {
-            table.jouerTour();
             System.out.println(j1.getNom() + ": " + j1.getPileDeJetons());
             System.out.println(j2.getNom() + ": " + j2.getPileDeJetons());
-
+            table.jouerTour();
+            System.out.println("Fin du tour");
+            table.afficherToutesLesMains();
+            table.determinerGagnant(listeJoueurs);
+            table.réinitialiserTable();
         }
+        System.out.println("Plus de joueurs actifs. Last man standing : " + table.determinerGagnant(listeJoueurs).get(0));
+
     }
 }

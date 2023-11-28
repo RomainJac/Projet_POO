@@ -23,6 +23,7 @@ public class MainDuCroupier {
         }
     }
 
+    //need to delete duplicate code
     public void turn() {
         ajouterALaMainDuCroupier(deck.tirer());
     }
@@ -43,15 +44,11 @@ public class MainDuCroupier {
 
     public void afficherMain() {
         for (Card card : this.mainDuCroupier) {
-            System.out.println(card);
+            System.out.println(card.toString());
         }
     }
 
     public void vider() {
         this.mainDuCroupier.clear();
-    }
-
-    public void definirMain(List<Card> cards) {
-        this.mainDuCroupier = new ArrayList<>(cards);
     }
 }

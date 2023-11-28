@@ -10,21 +10,6 @@ public class MainDuJoueur {
         this.cartes = new ArrayList<>(cartes);
     }
 
-    public void ajouter(Card carte) {
-        this.cartes.add(carte);
-    }
-
-    public void retirer(Card carte) {
-        this.cartes.remove(carte);
-    }
-
-    public void retirerCarteAleatoire() {
-        if (!cartes.isEmpty()) {
-            int indexAleatoire = (int) (Math.random() * cartes.size());
-            cartes.remove(indexAleatoire);
-        }
-    }
-
     public List<String> getCardNames() {
         List<String> cardNames = new ArrayList<>();
         for (Card carte : this.cartes) {

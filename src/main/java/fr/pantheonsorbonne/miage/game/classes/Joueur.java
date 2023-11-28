@@ -11,10 +11,10 @@ public class Joueur implements Comparable<Joueur> {
     private int mise;
     private CombinaisonGagnante combinaison;
     private MainDuJoueur mainDuJoueur;
-    private boolean enJeu;
-    private boolean nAPasSuivi = true;
-    private boolean suit = true;
-    private boolean estEnTrainDeRelancer;
+
+    protected boolean estTapis;
+
+
 
     public Joueur(String nom) {
         this(nom, 0);
@@ -23,17 +23,12 @@ public class Joueur implements Comparable<Joueur> {
     public Joueur(String nom, int jetons) {
         this.nom = nom;
         this.pileDeJetons = jetons;
-        this.enJeu = (jetons > 0);
-        this.nAPasSuivi = true;
     }
 
     public String getNom() {
         return nom;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
 
     public int getPileDeJetons() {
         return pileDeJetons;
@@ -63,13 +58,6 @@ public class Joueur implements Comparable<Joueur> {
         this.mainDuJoueur = mainDuJoueur;
     }
 
-    public boolean estEnJeu() {
-        return enJeu;
-    }
-
-    public void setEnJeu(boolean enJeu) {
-        this.enJeu = enJeu;
-    }
 
     public void setMain(MainDuJoueur Cards) {
         this.mainDuJoueur = Cards;
@@ -79,12 +67,6 @@ public class Joueur implements Comparable<Joueur> {
         this.combinaison = conditionVictoire;
     }
 
-    public void ajouterCard(ArrayList<Card> Cards) {
-        for (Card Card : Cards) {
-            this.mainDuJoueur.ajouter(Card);
-        }
-    }
-
     public void afficherMain() {
         System.out.println(this.nom + " a la main suivante :");
         for (Card Card : mainDuJoueur.getMainDuJoueur()) {
@@ -92,115 +74,44 @@ public class Joueur implements Comparable<Joueur> {
         }
     }
 
-    public int tapis() {
-        if (!this.enJeu) {
-            return 0;
-        }
+    public void tapis() {
         this.mise += this.pileDeJetons;
         this.pileDeJetons = 0;
-        return this.mise;
+        this.estTapis = true;
     }
 
     public int miser(int combien) {
-        if (!this.enJeu) {
-            return 0;
-        }
-        if (combien < 0) {
-            return 0;
+        if (combien == 0) {
+            System.out.print("Check");
         }
         if (this.pileDeJetons - combien < 0) {
-            return tapis();
-        }
-        this.pileDeJetons -= combien;
-        this.nAPasSuivi = true;
-        this.mise += combien;
-        return this.mise;
-    }
-
-    public void suivre(int combien) {
-        this.miser(combien);
-    }
-
-    public void relancer(int miseLaPlusHaute, int montantRelance) {
-        int montantTotal = miseLaPlusHaute + montantRelance;
-        if (this.getPileDeJetons() >= montantTotal) {
-            this.miser(montantTotal);
-            System.out.println(
-                    this.getNom() + " a relancé de " + montantRelance + " pour un total de " + montantTotal + ".");
-        } else {
             System.out.println(this.getNom() + " n'a pas assez de jetons et va tapis.");
-            this.miser(this.getPileDeJetons());
+            tapis();
+            return getPileDeJetons();
         }
-    }
+        else {
+            this.mise += combien;
+            System.out.println(
+                    this.getNom() + " a relancé de " + combien + " pour une mise total de " + mise + ".");
+            this.pileDeJetons -= combien;
+            return pileDeJetons-combien;
+        }
 
-    public void seCoucher() {
-        this.nAPasSuivi = false;
-    }
-
-    public void aPerdu() {
-        this.nAPasSuivi = false;
-        this.mise = 0;
     }
 
     public void aGagné(int gain) {
         this.pileDeJetons += gain;
     }
 
-    public void ajouterAStackDeJetons(int n) {
-        this.pileDeJetons += n;
-    }
-
-    public boolean nAPasSuivi() {
-        return nAPasSuivi;
-    }
-
-    public boolean suit() {
-        return suit;
-    }
-
-    public void fold(boolean nAPasSuivi) {
-        this.nAPasSuivi = nAPasSuivi;
-    }
 
     @Override
     public int compareTo(Joueur joueur) {
         return (this.getCombinaison().compareTo(joueur.getCombinaison()));
     }
 
-    public boolean estEnTrainDeRelancer() {
-        return estEnTrainDeRelancer;
-    }
-
-    public void setEstEnTrainDeRelancer(boolean estEnTrainDeRelancer) {
-        this.estEnTrainDeRelancer = estEnTrainDeRelancer;
-    }
-
-    public boolean estTapis() {
-        return this.pileDeJetons == 0;
-    }
-
-    public int getMontantDeMise() {
-        return this.getPileDeJetons();
-    }
 
     public String toString() {
         return this.nom + " jetons actuels : " + this.pileDeJetons;
-    }
-
-    public void ajouterCard(Card Card) {
-        this.mainDuJoueur.ajouter(Card);
-    }
-
-    public void retirerCarteAleatoire() {
-        this.mainDuJoueur.retirerCarteAleatoire();
-    }
-
-    public void relancer(int montant) {
-        if (montant >= 0) {
-            this.miser(this.getMise() + montant);
-        } else {
-            System.out.println("Montant de relance invalide.");
-        }
     }
 
     public List<String> getCardNames() {

@@ -51,16 +51,9 @@ public class Deck {
         return CardTiree;
     }
 
-    public void retourAuDeck(List<Card> CardsRetournees) {
-        Cards.addAll(CardsRetournees);
-    }
-
     public static void reinitialiserDeck() {
         Deck deck = new Deck();
         deck.initialiserDeck();
     }
 
-    public void defausser() {
-        Cards.remove(aleatoire.nextInt(Cards.size()));
-    }
 }
