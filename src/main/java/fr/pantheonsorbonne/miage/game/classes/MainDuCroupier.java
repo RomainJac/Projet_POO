@@ -8,9 +8,10 @@ public class MainDuCroupier {
     private Deck deck;
 
     public MainDuCroupier(Deck deck) {
-        this.deck = deck;
+        this.deck = (Deck) deck;
         this.mainDuCroupier = new ArrayList<>();
     }
+
 
     public void tirerCarte(int i) {
         switch (i) {
