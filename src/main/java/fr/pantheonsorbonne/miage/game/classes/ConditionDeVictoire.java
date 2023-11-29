@@ -14,48 +14,36 @@ public class ConditionDeVictoire {
         List<Card> mainConsideree = new ArrayList<>();
         mainConsideree.addAll(mainDuCroupier.getMainDuCroupier());
         mainConsideree.addAll(mainDuJoueur.getMainDuJoueur());
+        CombinaisonGagnante combinaisonMultiple = trouverCombinaisonsMultiples(mainConsideree);
+        CombinaisonGagnante quinteFlush = trouverQuinte(mainConsideree);
 
-        CombinaisonGagnante quinteFlush = trouverQuinteFlush(mainConsideree);
         if (quinteFlush != null) {
             return quinteFlush;
         }
 
-        CombinaisonGagnante combinaisonMultiple = trouverCombinaisonsMultiples(mainConsideree);
-        if (combinaisonMultiple != null) {
+        else if (combinaisonMultiple != null) {
             return combinaisonMultiple;
         }
 
-        return new CombinaisonGagnante(CombinaisonGagnante.ConditionDeVictoire.CARTE_HAUTE, trouverCarteLaPlusHaute(mainConsideree));
+        return new CombinaisonGagnante(CombinaisonGagnante.Victoire.CARTE_HAUTE, trouverCarteLaPlusHaute(mainConsideree));
     }
-
-    private static CombinaisonGagnante trouverQuinteFlush(List<Card> main) {
-        Map<cardColor, List<Card>> cartesParCouleur = new HashMap<>();
-        for (Card carte : main) {
-            if (!cartesParCouleur.containsKey(carte.getCardColor())) {
-                cartesParCouleur.put(carte.getCardColor(), new ArrayList<>());
-            }
-            cartesParCouleur.get(carte.getCardColor()).add(carte);
-        }
-
-        for (List<Card> cartes : cartesParCouleur.values()) {
-            if (cartes.size() >= 5) {
-                CombinaisonGagnante quinteFlushParCouleur = trouverQuinteFlushParCouleur(cartes);
-                if (quinteFlushParCouleur != null) {
-                    return quinteFlushParCouleur;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    private static CombinaisonGagnante trouverQuinteFlushParCouleur(List<Card> cartes) {
+    private static CombinaisonGagnante trouverQuinte(List<Card> cartes) {
         cartes.sort((c1, c2) -> c2.getCardRank().compareTo(c1.getCardRank()));
-
-        for (int i = 0; i <= cartes.size() - 5; i++) {
-            if (sontConsecutives(cartes.subList(i, i + 5))) {
-                cardRank rangLePlusHaut = cartes.get(i).getCardRank();
-                return new CombinaisonGagnante(CombinaisonGagnante.ConditionDeVictoire.QUINTE_FLUSH, rangLePlusHaut);
+        if (sontConsecutives(cartes)){
+            Map<cardColor, List<Card>> cartesParCouleur = new HashMap<>();
+            for (Card carte : cartes) {
+                if (!cartesParCouleur.containsKey(carte.getCardColor())) {
+                    cartesParCouleur.put(carte.getCardColor(), new ArrayList<>());
+                }
+                cartesParCouleur.get(carte.getCardColor()).add(carte);
+            }
+            for (List<Card> parCouleur : cartesParCouleur.values()) {
+                if (parCouleur.size() >= 5) {
+                    return new CombinaisonGagnante(CombinaisonGagnante.Victoire.QUINTE_FLUSH);
+                }
+                else {
+                    return new CombinaisonGagnante(CombinaisonGagnante.Victoire.QUINTE);
+                }
             }
         }
         return null;
@@ -88,16 +76,16 @@ public class ConditionDeVictoire {
         }
 
         if (rangCarre != null) {
-            return new CombinaisonGagnante(CombinaisonGagnante.ConditionDeVictoire.CARRE, rangCarre);
+            return new CombinaisonGagnante(CombinaisonGagnante.Victoire.CARRE);
         }
         if (rangBrelan != null && rangPaire != null) {
-            return new CombinaisonGagnante(CombinaisonGagnante.ConditionDeVictoire.FULL, rangBrelan);
+            return new CombinaisonGagnante(CombinaisonGagnante.Victoire.FULL);
         }
         if (rangBrelan != null) {
-            return new CombinaisonGagnante(CombinaisonGagnante.ConditionDeVictoire.BRELAN, rangBrelan);
+            return new CombinaisonGagnante(CombinaisonGagnante.Victoire.BRELAN);
         }
         if (rangPaire != null) {
-            return new CombinaisonGagnante(CombinaisonGagnante.ConditionDeVictoire.PAIRE, rangPaire);
+            return new CombinaisonGagnante(CombinaisonGagnante.Victoire.PAIRE);
         }
 
         return null;
@@ -112,4 +100,5 @@ public class ConditionDeVictoire {
         }
         return carteLaPlusHaute;
     }
+
 }

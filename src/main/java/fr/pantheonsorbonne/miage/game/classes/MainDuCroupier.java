@@ -12,24 +12,18 @@ public class MainDuCroupier {
         this.mainDuCroupier = new ArrayList<>();
     }
 
-    public void flop() {
-        if (deck == null) {
-            System.out.println("Erreur : le deck n'est pas correctement initialisé.");
-            return;
+    public void tirerCarte(int i) {
+        switch (i) {
+            case 1 :
+                for (int x = 0; x < 2; x++) {
+                    ajouterALaMainDuCroupier(deck.tirer());
+                };
+            case 2 :
+                ajouterALaMainDuCroupier(deck.tirer());
+            case 3 :
+                ajouterALaMainDuCroupier(deck.tirer());
         }
-    
-        for (int i = 0; i < 3; i++) {
-            ajouterALaMainDuCroupier(deck.tirer());
-        }
-    }
 
-    //need to delete duplicate code
-    public void turn() {
-        ajouterALaMainDuCroupier(deck.tirer());
-    }
-
-    public void river() {
-        ajouterALaMainDuCroupier(deck.tirer());
     }
 
     private void ajouterALaMainDuCroupier(Card card) {
