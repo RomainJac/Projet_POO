@@ -26,7 +26,7 @@ public class MainDuCroupier {
 
     }
 
-    private void ajouterALaMainDuCroupier(Card card) {
+    public void ajouterALaMainDuCroupier(Card card) {
         if (mainDuCroupier.size() < 5) {
             mainDuCroupier.add(card);
         }

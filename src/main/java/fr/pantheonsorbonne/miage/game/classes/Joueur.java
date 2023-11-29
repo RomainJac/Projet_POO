@@ -50,6 +50,9 @@ public class Joueur implements Comparable<Joueur> {
         this.mainDuJoueur = mainDuJoueur;
     }
 
+    public boolean isTapis() {
+        return estTapis;
+    }
 
     public void setMain(MainDuJoueur Cards) {
         this.mainDuJoueur = Cards;
