@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 package fr.pantheonsorbonne.miage;
 
 import org.junit.jupiter.api.Test;
@@ -17,7 +15,6 @@ public class DeckTest {
         Deck deck = new Deck();
         deck.initialiserDeck();
         assertEquals(52, deck.getCards().size());
-        // Ajoutez d'autres assertions pour vérifier que toutes les cartes sont présentes
     }
 
     @Test
@@ -47,4 +44,3 @@ public class DeckTest {
     
 }
 
->>>>>>> 1709d9d273db48b1eb16593f18ff95f83d62ceef
