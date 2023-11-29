@@ -6,6 +6,15 @@ import java.util.Random;
 
 public class Deck {
     private List<Card> Cards;
+    
+    public List<Card> getCards() {
+        return Cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        Cards = cards;
+    }
+
     private Random aleatoire = new Random();
 
     public Deck() {
