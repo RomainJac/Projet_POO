@@ -5,17 +5,17 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TableDePoker implements Runnable {
-	private List<Joueur> joueurs;
+	public List<Joueur> joueurs;
 	public List<Joueur> joueursActifs;
-	private MainDuCroupier croupier;
-	private Deck deck;
-	private int misesTotales;
-	private int miseMaximale;
-	private int nombreDeTours;
-	private Blind grosseBlind;
-	private Blind petiteBlind;
-	private Blind dealerBlind;
-	private final int petiteBlindParDefaut = 2;
+	public MainDuCroupier croupier;
+	public Deck deck;
+	public int misesTotales;
+	public int miseMaximale;
+	public int nombreDeTours;
+	public Blind grosseBlind;
+	public Blind petiteBlind;
+	public Blind dealerBlind;
+	public int petiteBlindParDefaut = 2;
 
 	public TableDePoker(List<Joueur> joueurs) {
 		this.joueurs = new CopyOnWriteArrayList<>(joueurs);
