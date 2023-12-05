@@ -2,6 +2,7 @@ package fr.pantheonsorbonne.miage.game.classes;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class Joueur implements Comparable<Joueur> {
 
@@ -80,17 +81,15 @@ public class Joueur implements Comparable<Joueur> {
             System.out.println(this.getNom() + " n'a pas assez de jetons et va tapis.");
             tapis();
             return getPileDeJetons();
-        }
-        else if (combien >= 0) {
+        } else if (combien >= 0) {
             this.mise += combien;
             System.out.println(
                     this.getNom() + " a relancé de " + combien + " pour une mise total de " + mise + ".");
             this.pileDeJetons -= combien;
-            return pileDeJetons-combien;
-        }
-        else
+            return pileDeJetons - combien;
+        } else
             System.out.println(this.getNom() + " a suivi");
-            return 0;
+        return 0;
 
     }
 
@@ -98,42 +97,58 @@ public class Joueur implements Comparable<Joueur> {
         this.pileDeJetons += gain;
     }
 
+    public void ajouterCarte(Card carte) {
+        this.mainDuJoueur.tirerCarte(carte);
+    }
+
+    public void enleverCarte() {
+        this.mainDuJoueur.supprimerCarte();
+    }
+
+    public void rendreCarteVisible() {
+        if (this.mainDuJoueur != null && !this.mainDuJoueur.getMainDuJoueur().isEmpty()) {
+            Random random = new Random();
+            int index = random.nextInt(this.mainDuJoueur.getMainDuJoueur().size());
+            Card carte = this.mainDuJoueur.getMainDuJoueur().get(index);
+            carte.montre();
+        }
+    }
 
     @Override
     public int compareTo(Joueur joueur) {
         return (this.getCombinaison().compareTo(joueur.getCombinaison()));
     }
 
-
     public String toString() {
         return this.nom + " jetons actuels : " + this.pileDeJetons;
     }
 
     public List<String> getCardNames() {
-    if (this.getMainDuJoueur() != null) {
-        return this.getMainDuJoueur().getCardNames();
+        if (this.getMainDuJoueur() != null) {
+            return this.getMainDuJoueur().getCardNames();
+        }
+        return Collections.emptyList();
     }
-    return Collections.emptyList();
-}
 
-public MainDuJoueur getMainDuJoueur() {
-    return this.mainDuJoueur;
-}
+    public MainDuJoueur getMainDuJoueur() {
+        return this.mainDuJoueur;
+    }
 
-public int faireChoix(MainDuCroupier croupier, int miseMaximale, int tour) {
+    public int faireChoix(MainDuCroupier croupier, int miseMaximale, int tour) {
         int probabiliteDeGagner = probabiliteDeGagner(croupier);
         if (probabiliteDeGagner > 20 && probabiliteDeGagner <= 50 && tour > 1)
             return 1;
-        else if (probabiliteDeGagner > 50 && getPileDeJetons() > miseMaximale || probabiliteDeGagner > 20 && probabiliteDeGagner <= 50 && tour == 1)
+        else if (probabiliteDeGagner > 50 && getPileDeJetons() > miseMaximale
+                || probabiliteDeGagner > 20 && probabiliteDeGagner <= 50 && tour == 1)
             return 3;
         return 2;
-}
+    }
 
-public int probabiliteDeGagner(MainDuCroupier croupier){
+    public int probabiliteDeGagner(MainDuCroupier croupier) {
         Card.cardRank firstCardRank = mainDuJoueur.getMainDuJoueur().get(0).getCardRank();
         Card.cardRank secondCardRank = mainDuJoueur.getMainDuJoueur().get(1).getCardRank();
         if (firstCardRank.equals(secondCardRank)) {
-            if(firstCardRank == Card.cardRank.AS)
+            if (firstCardRank == Card.cardRank.AS)
                 return 85;
             else if (firstCardRank == Card.cardRank.ROI)
                 return 80;
@@ -161,30 +176,39 @@ public int probabiliteDeGagner(MainDuCroupier croupier){
                 return 20;
         }
 
-        else if (firstCardRank == Card.cardRank.AS && secondCardRank == Card.cardRank.ROI || firstCardRank == Card.cardRank.ROI && secondCardRank == Card.cardRank.AS)
+        else if (firstCardRank == Card.cardRank.AS && secondCardRank == Card.cardRank.ROI
+                || firstCardRank == Card.cardRank.ROI && secondCardRank == Card.cardRank.AS)
             return 60;
-        else if (firstCardRank == Card.cardRank.AS && secondCardRank == Card.cardRank.DAME || firstCardRank == Card.cardRank.DAME && secondCardRank == Card.cardRank.AS)
+        else if (firstCardRank == Card.cardRank.AS && secondCardRank == Card.cardRank.DAME
+                || firstCardRank == Card.cardRank.DAME && secondCardRank == Card.cardRank.AS)
             return 55;
-        else if (firstCardRank == Card.cardRank.AS && secondCardRank == Card.cardRank.VALET || firstCardRank == Card.cardRank.VALET && secondCardRank == Card.cardRank.AS)
+        else if (firstCardRank == Card.cardRank.AS && secondCardRank == Card.cardRank.VALET
+                || firstCardRank == Card.cardRank.VALET && secondCardRank == Card.cardRank.AS)
             return 50;
-        else if (firstCardRank == Card.cardRank.DAME && secondCardRank == Card.cardRank.ROI || firstCardRank == Card.cardRank.ROI && secondCardRank == Card.cardRank.DAME)
+        else if (firstCardRank == Card.cardRank.DAME && secondCardRank == Card.cardRank.ROI
+                || firstCardRank == Card.cardRank.ROI && secondCardRank == Card.cardRank.DAME)
             return 50;
 
         if (croupier.getMainDuCroupier().get(0).getCardColor() != croupier.getMainDuCroupier().get(1).getCardColor()
-        && croupier.getMainDuCroupier().get(1).getCardColor() != croupier.getMainDuCroupier().get(2).getCardColor()
-        && croupier.getMainDuCroupier().get(2).getCardColor() != croupier.getMainDuCroupier().get(0).getCardColor())
+                && croupier.getMainDuCroupier().get(1).getCardColor() != croupier.getMainDuCroupier().get(2)
+                        .getCardColor()
+                && croupier.getMainDuCroupier().get(2).getCardColor() != croupier.getMainDuCroupier().get(0)
+                        .getCardColor())
             return 40;
         if (croupier.getMainDuCroupier().get(0).getCardColor() == croupier.getMainDuCroupier().get(1).getCardColor()
-                && croupier.getMainDuCroupier().get(1).getCardColor() == croupier.getMainDuCroupier().get(2).getCardColor()
-                && croupier.getMainDuCroupier().get(2).getCardColor() == croupier.getMainDuCroupier().get(0).getCardColor())
+                && croupier.getMainDuCroupier().get(1).getCardColor() == croupier.getMainDuCroupier().get(2)
+                        .getCardColor()
+                && croupier.getMainDuCroupier().get(2).getCardColor() == croupier.getMainDuCroupier().get(0)
+                        .getCardColor())
             return 35;
         if (croupier.getMainDuCroupier().get(0).getCardColor() == croupier.getMainDuCroupier().get(1).getCardColor()
-                || croupier.getMainDuCroupier().get(1).getCardColor() == croupier.getMainDuCroupier().get(2).getCardColor()
-                || croupier.getMainDuCroupier().get(2).getCardColor() == croupier.getMainDuCroupier().get(0).getCardColor())
+                || croupier.getMainDuCroupier().get(1).getCardColor() == croupier.getMainDuCroupier().get(2)
+                        .getCardColor()
+                || croupier.getMainDuCroupier().get(2).getCardColor() == croupier.getMainDuCroupier().get(0)
+                        .getCardColor())
             return 30;
 
         return 10;
-}
+    }
 
 }
-

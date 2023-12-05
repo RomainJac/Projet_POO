@@ -45,7 +45,7 @@ public class Deck {
         }
     }
 
-    public ArrayList<Card> CardsAleatoires(int tailleDeck) {
+    public ArrayList<Card> CarteAleatoires(int tailleDeck) {
         ArrayList<Card> CardsTirees = new ArrayList<>(tailleDeck);
         for (int i = 0; i < tailleDeck; i++) {
             CardsTirees.add(tirer());

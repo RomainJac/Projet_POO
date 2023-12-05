@@ -12,10 +12,12 @@ public class Card {
 
     private cardRank cardRank;
     private cardColor cardColor;
+    private boolean visible;
 
     public Card(cardRank rank, cardColor suit) {
         this.cardRank = rank;
         this.cardColor = suit;
+        this.visible = false;
     }
 
     public cardRank getCardRank() {
@@ -25,6 +27,14 @@ public class Card {
     public cardColor getCardColor() {
         return cardColor;
     }
+
+    public boolean estVisible() {
+		return visible;
+	}
+
+	public void montre() {
+		this.visible = true;
+	}
 
     @Override
     public String toString() {

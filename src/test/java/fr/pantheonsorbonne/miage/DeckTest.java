@@ -35,7 +35,7 @@ public class DeckTest {
         deck.initialiserDeck();
         int tailleDeck = 5;
 
-        ArrayList<Card> cardsTirees = deck.CardsAleatoires(tailleDeck);
+        ArrayList<Card> cardsTirees = deck.CarteAleatoires(tailleDeck);
 
         assertNotNull(cardsTirees);
         assertEquals(tailleDeck, cardsTirees.size());

@@ -35,8 +35,7 @@ public class CombinaisonGagnante implements Comparable<CombinaisonGagnante> {
     }
 
     public enum Victoire {
-        CARTE_HAUTE, PAIRE, DEUX_PAIRE, BRELAN, SUITE, COULEUR, FULL, CARRE,QUINTE, QUINTE_FLUSH,
+        CARTE_HAUTE, PAIRE, DEUX_PAIRE, BRELAN, SUITE, COULEUR, FULL, CARRE, QUINTE, QUINTE_FLUSH,
         QUINTE_FLUSH_ROYALE;
-
         }
 }

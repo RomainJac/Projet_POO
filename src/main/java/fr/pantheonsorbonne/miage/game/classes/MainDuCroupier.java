@@ -8,28 +8,31 @@ public class MainDuCroupier {
     private Deck deck;
 
     public MainDuCroupier(Deck deck) {
-        this.deck = (Deck) deck;
+        this.deck = deck;
         this.mainDuCroupier = new ArrayList<>();
     }
 
-
     public void tirerCarte(int i) {
         switch (i) {
-            case 1 :
-                for (int x = 0; x < 2; x++) {
-                    ajouterALaMainDuCroupier(deck.tirer());
-                };
-            case 2 :
-                ajouterALaMainDuCroupier(deck.tirer());
-            case 3 :
-                ajouterALaMainDuCroupier(deck.tirer());
+            case 1:
+                ajouterALaMainDuCroupier(3);
+            case 2:
+                ajouterALaMainDuCroupier();
+            case 3:
+                ajouterALaMainDuCroupier();
         }
 
     }
 
-    public void ajouterALaMainDuCroupier(Card card) {
+    public void ajouterALaMainDuCroupier() {
         if (mainDuCroupier.size() < 5) {
-            mainDuCroupier.add(card);
+            mainDuCroupier.add(this.deck.tirer());
+        }
+    }
+
+    public void ajouterALaMainDuCroupier(int nombreDeCarte) {
+        for (int i = 0; i < nombreDeCarte; i++) {
+            ajouterALaMainDuCroupier();
         }
     }
 

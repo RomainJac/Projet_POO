@@ -3,19 +3,13 @@ package fr.pantheonsorbonne.miage;
 import org.junit.jupiter.api.Test;
 import fr.pantheonsorbonne.miage.game.classes.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TableDePokerTest {
 
     @Test
     void testChangementBlinds() {
-        List<Joueur> joueurs = new ArrayList<>();
-        joueurs.add(new Joueur("Joueur1", 100));
-        joueurs.add(new Joueur("Joueur2", 100));
-        TableDePoker table = new TableDePoker(joueurs);
+        TableDePoker table = new TableDePoker(new Joueur("Joueur1", 100),new Joueur("Joueur2", 100));
         table.initialiserBlinds();
 
         Joueur grosseBlindActuelle = table.grosseBlind.getJoueur();
@@ -31,10 +25,7 @@ public class TableDePokerTest {
 
     @Test
     void testAugmenterBlinds() {
-        List<Joueur> joueurs = new ArrayList<>();
-        joueurs.add(new Joueur("Joueur1", 100));
-        joueurs.add(new Joueur("Joueur2", 100));
-        TableDePoker table = new TableDePoker(joueurs);
+        TableDePoker table = new TableDePoker(new Joueur("Joueur1", 100), new Joueur("Joueur2", 100) );
         table.initialiserBlinds();
 
         table.augmenterBlinds();

@@ -11,11 +11,11 @@ import fr.pantheonsorbonne.miage.game.classes.Card.cardRank;
 public class ConditionDeVictoire {
 
     public static CombinaisonGagnante trouverMeilleureCombinaison(MainDuCroupier mainDuCroupier, MainDuJoueur mainDuJoueur) {
-        List<Card> mainConsideree = new ArrayList<>();
-        mainConsideree.addAll(mainDuCroupier.getMainDuCroupier());
-        mainConsideree.addAll(mainDuJoueur.getMainDuJoueur());
-        CombinaisonGagnante combinaisonMultiple = trouverCombinaisonsMultiples(mainConsideree);
-        CombinaisonGagnante quinteFlush = trouverQuinte(mainConsideree);
+        List<Card> mainGlobale = new ArrayList<>();
+        mainGlobale.addAll(mainDuCroupier.getMainDuCroupier());
+        mainGlobale.addAll(mainDuJoueur.getMainDuJoueur());
+        CombinaisonGagnante combinaisonMultiple = trouverCombinaisonsMultiples(mainGlobale);
+        CombinaisonGagnante quinteFlush = trouverQuinte(mainGlobale);
 
         if (quinteFlush != null) {
             return quinteFlush;
@@ -25,7 +25,7 @@ public class ConditionDeVictoire {
             return combinaisonMultiple;
         }
 
-        return new CombinaisonGagnante(CombinaisonGagnante.Victoire.CARTE_HAUTE, trouverCarteLaPlusHaute(mainConsideree));
+        return new CombinaisonGagnante(CombinaisonGagnante.Victoire.CARTE_HAUTE, trouverCarteLaPlusHaute(mainGlobale));
     }
     private static CombinaisonGagnante trouverQuinte(List<Card> cartes) {
         cartes.sort((c1, c2) -> c2.getCardRank().compareTo(c1.getCardRank()));

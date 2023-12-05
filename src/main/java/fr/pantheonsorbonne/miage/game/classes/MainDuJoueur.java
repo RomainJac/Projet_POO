@@ -2,6 +2,7 @@ package fr.pantheonsorbonne.miage.game.classes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MainDuJoueur {
     private List<Card> cartes;
@@ -16,6 +17,26 @@ public class MainDuJoueur {
             cardNames.add(carte.getCardName());
         }
         return cardNames;
+    }
+
+    public void supprimerCarte() {
+        if (!this.cartes.isEmpty()) {
+            Random random = new Random();
+            int index = random.nextInt(this.cartes.size());
+            this.cartes.remove(index);
+        }
+    }
+       
+    public void tirerCarte(Card carte) {
+        if (carte != null) {
+            this.cartes.add(carte);
+        }
+    }
+    
+    public void devoilerCarte(int index) {
+        if (index >= 0 && index < this.cartes.size()) {
+            this.cartes.get(index).montre();
+        }
     }
 
     public List<Card> getMainDuJoueur() {

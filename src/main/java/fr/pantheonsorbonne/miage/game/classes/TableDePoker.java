@@ -17,7 +17,7 @@ public class TableDePoker implements Runnable {
 	public Blind dealerBlind;
 	public int petiteBlindParDefaut = 2;
 
-	public TableDePoker(List<Joueur> joueurs) {
+	public TableDePoker(Joueur ... joueurs) {
 		this.joueurs = new CopyOnWriteArrayList<>(joueurs);
 		this.deck = new Deck();
 		this.croupier = new MainDuCroupier(deck);
@@ -56,11 +56,6 @@ public class TableDePoker implements Runnable {
 	}
 
 	private void gererChoix(Joueur joueur, int choix, int miseMaximale) {
-
-		System.out.print(joueur.getNom() + ", Choisissez une option : \n");
-		System.out.println("1. Suivre");
-		System.out.println("2. Se Coucher");
-		System.out.println("3. Relancer");
 
 		switch (choix) {
 			case 1:
@@ -101,12 +96,14 @@ public class TableDePoker implements Runnable {
 				}
 			}
 
-		}
-		for (Joueur joueur : joueurs) {
-			if (!joueursGagnants.contains(joueur)) {
-				System.out.println(joueur.getNom() + " a perdu : " + joueur.getMise());
+			for (Joueur joueur : joueurs) {
+				if (!joueursGagnants.contains(joueur)) {
+					System.out.println(joueur.getNom() + " a perdu : " + joueur.getMise());
+				}
+				joueursActifs.add(joueur);
+
 			}
-			joueursActifs.add(joueur);
+
 		}
 	}
 
@@ -143,6 +140,7 @@ public class TableDePoker implements Runnable {
 		distribuerCartes();
 		initialiserBlinds();
 		demanderPaiementBlinds();
+
 	}
 
 	private int trouverMiseMaximale() {
@@ -193,7 +191,7 @@ public class TableDePoker implements Runnable {
 
 	public void distribuerCartes() {
 		for (Joueur joueur : this.joueursActifs) {
-			joueur.setMain(new MainDuJoueur(this.deck.CardsAleatoires(2)));
+			joueur.setMain(new MainDuJoueur(this.deck.CarteAleatoires(2)));
 		}
 	}
 

@@ -3,7 +3,6 @@ package fr.pantheonsorbonne.miage;
 import org.junit.jupiter.api.Test;
 import fr.pantheonsorbonne.miage.game.classes.MainDuCroupier;
 import fr.pantheonsorbonne.miage.game.classes.Deck;
-import fr.pantheonsorbonne.miage.game.classes.Card;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,11 +13,21 @@ public class MainDuCroupierTest {
         Deck deck = new Deck();
         MainDuCroupier mainDuCroupier = new MainDuCroupier(deck);
 
-        mainDuCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.AS, Card.cardColor.COEUR));
+        mainDuCroupier.ajouterALaMainDuCroupier();
         assertEquals(1, mainDuCroupier.getMainDuCroupier().size());
 
-        mainDuCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.ROI, Card.cardColor.PIQUE));
-        assertEquals(2, mainDuCroupier.getMainDuCroupier().size());
+        mainDuCroupier.ajouterALaMainDuCroupier(2);
+        assertEquals(3, mainDuCroupier.getMainDuCroupier().size());
+
+        mainDuCroupier.ajouterALaMainDuCroupier(3);
+        assertEquals(5, mainDuCroupier.getMainDuCroupier().size());
+        mainDuCroupier.vider();
+
+        mainDuCroupier.ajouterALaMainDuCroupier(4);
+        assertEquals(4, mainDuCroupier.getMainDuCroupier().size());
+
+        mainDuCroupier.ajouterALaMainDuCroupier(5);
+        assertEquals(5, mainDuCroupier.getMainDuCroupier().size());
     }
 
     @Test
