@@ -27,38 +27,38 @@ public class ConditionDeVictoire {
 
         return new CombinaisonGagnante(CombinaisonGagnante.Victoire.CARTE_HAUTE, trouverCarteLaPlusHaute(mainConsideree));
     }
-    private static CombinaisonGagnante trouverQuinte(List<Card> cartes) {
+    public static CombinaisonGagnante trouverQuinte(List<Card> cartes) {
         cartes.sort((c1, c2) -> c2.getCardRank().compareTo(c1.getCardRank()));
-        if (sontConsecutives(cartes)){
-            Map<cardColor, List<Card>> cartesParCouleur = new HashMap<>();
-            for (Card carte : cartes) {
-                if (!cartesParCouleur.containsKey(carte.getCardColor())) {
-                    cartesParCouleur.put(carte.getCardColor(), new ArrayList<>());
-                }
-                cartesParCouleur.get(carte.getCardColor()).add(carte);
+        
+        Map<cardColor, List<Card>> cartesParCouleur = new HashMap<>();
+        for (Card carte : cartes) {
+            if (!cartesParCouleur.containsKey(carte.getCardColor())) {
+                cartesParCouleur.put(carte.getCardColor(), new ArrayList<>());
             }
-            for (List<Card> parCouleur : cartesParCouleur.values()) {
-                if (parCouleur.size() >= 5) {
-                    return new CombinaisonGagnante(CombinaisonGagnante.Victoire.QUINTE_FLUSH);
-                }
-                else {
-                    return new CombinaisonGagnante(CombinaisonGagnante.Victoire.QUINTE);
-                }
+            cartesParCouleur.get(carte.getCardColor()).add(carte);
+        }
+    
+        for (List<Card> parCouleur : cartesParCouleur.values()) {
+            if (parCouleur.size() >= 5 && sontConsecutives(parCouleur)) {
+                return new CombinaisonGagnante(CombinaisonGagnante.Victoire.QUINTE_FLUSH, parCouleur.get(0).getCardRank());
             }
         }
-        return null;
-    }
+        
+        // Si aucune quinte flush n'est trouvée, renvoyer une quinte simple
+        return new CombinaisonGagnante(CombinaisonGagnante.Victoire.QUINTE);
+    }    
+    
 
-    private static boolean sontConsecutives(List<Card> cartes) {
+    public static boolean sontConsecutives(List<Card> cartes) {
         for (int i = 0; i < cartes.size() - 1; i++) {
-            if (cartes.get(i).getCardRank().ordinal() - cartes.get(i + 1).getCardRank().ordinal() != 1) {
+            if (Math.abs(cartes.get(i).getCardRank().ordinal() - cartes.get(i + 1).getCardRank().ordinal()) != 1 ) {
                 return false;
             }
         }
         return true;
     }
 
-    private static CombinaisonGagnante trouverCombinaisonsMultiples(List<Card> main) {
+    public static CombinaisonGagnante trouverCombinaisonsMultiples(List<Card> main) {
         Map<cardRank, Integer> compteParRang = new HashMap<>();
         for (Card carte : main) {
             compteParRang.put(carte.getCardRank(), compteParRang.getOrDefault(carte.getCardRank(), 0) + 1);
@@ -91,7 +91,7 @@ public class ConditionDeVictoire {
         return null;
     }
 
-    private static cardRank trouverCarteLaPlusHaute(List<Card> main) {
+    public static cardRank trouverCarteLaPlusHaute(List<Card> main) {
         cardRank carteLaPlusHaute = cardRank.DEUX;
         for (Card carte : main) {
             if (carte.getCardRank().compareTo(carteLaPlusHaute) > 0) {

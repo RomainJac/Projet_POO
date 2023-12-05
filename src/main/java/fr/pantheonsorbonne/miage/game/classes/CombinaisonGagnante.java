@@ -2,6 +2,7 @@ package fr.pantheonsorbonne.miage.game.classes;
 
 public class CombinaisonGagnante implements Comparable<CombinaisonGagnante> {
     private Victoire victoire;
+
     private Card.cardRank cardRank;
 
     public CombinaisonGagnante(Victoire victoire, Card.cardRank cardRank) {
