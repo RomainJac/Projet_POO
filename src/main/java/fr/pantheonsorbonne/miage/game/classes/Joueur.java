@@ -70,26 +70,18 @@ public class Joueur implements Comparable<Joueur> {
         }
     }
 
-    public void tapis() {
-        this.mise += this.pileDeJetons;
-        this.pileDeJetons = 0;
-        this.estTapis = true;
-    }
-
     public int miser(int combien) {
-        if (this.pileDeJetons - combien < 0) {
-            System.out.println(this.getNom() + " n'a pas assez de jetons et va tapis.");
-            tapis();
+        if (this.pileDeJetons < combien) {
+            this.mise += this.pileDeJetons;
+            this.pileDeJetons = 0;
+            this.estTapis = true;
             return getPileDeJetons();
         } else if (combien >= 0) {
             this.mise += combien;
-            System.out.println(
-                    this.getNom() + " a relancé de " + combien + " pour une mise total de " + mise + ".");
             this.pileDeJetons -= combien;
-            return pileDeJetons - combien;
-        } else
-            System.out.println(this.getNom() + " a suivi");
-        return 0;
+            return pileDeJetons;
+        }
+        return getPileDeJetons();
 
     }
 

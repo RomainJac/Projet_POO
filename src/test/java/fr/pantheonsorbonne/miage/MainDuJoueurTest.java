@@ -44,4 +44,45 @@ public class MainDuJoueurTest {
 
         assertTrue(mainDuJoueur.getMainDuJoueur().isEmpty());
     }
+
+    @Test
+    void testTirerCarte() {
+        List<Card> cartes = new ArrayList<>();
+        MainDuJoueur mainDuJoueur = new MainDuJoueur(cartes);
+        Card carte1 = new Card(Card.cardRank.AS, Card.cardColor.PIQUE);
+
+        // Tirer une carte
+        mainDuJoueur.tirerCarte(carte1);
+
+        // Vérifier que la carte est ajoutée correctement
+        assertEquals(1, mainDuJoueur.getCardNames().size());
+        assertTrue(mainDuJoueur.getCardNames().contains(carte1.toString()));
+
+        // Tirer une autre carte (null)
+        mainDuJoueur.tirerCarte(null);
+
+        // Vérifier que la taille de la liste ne change pas
+        assertEquals(1, mainDuJoueur.getCardNames().size());
+    }
+
+    @Test
+    void testDevoilerCarte() {
+        List<Card> cartes = new ArrayList<>();
+        Card carte1 = new Card(Card.cardRank.AS, Card.cardColor.PIQUE);
+        MainDuJoueur mainDuJoueur = new MainDuJoueur(cartes);
+
+        // Tirer une carte
+        mainDuJoueur.tirerCarte(carte1);
+
+        // Devoiler la carte à l'index 0
+        mainDuJoueur.devoilerCarte(0);
+
+        // Vérifier que la méthode montre() est appelée sur la carte
+        // Vous devrez peut-être utiliser des mocks pour vérifier cela
+
+        // Devoiler une carte à un index invalide
+        mainDuJoueur.devoilerCarte(1);
+
+        // Vérifier que rien ne se passe (pas d'erreur)
+    }
 }

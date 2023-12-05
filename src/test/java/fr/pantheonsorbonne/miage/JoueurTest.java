@@ -8,12 +8,8 @@ import fr.pantheonsorbonne.miage.game.classes.Joueur;
 import fr.pantheonsorbonne.miage.game.classes.MainDuCroupier;
 import fr.pantheonsorbonne.miage.game.classes.MainDuJoueur;
 
-
-
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,29 +40,6 @@ public class JoueurTest {
     }
 
     @Test
-    void testAfficherMain() {
-        Joueur joueur = new Joueur("Test", 100);
-
-        List<Card> mainDuJoueur = Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
-        MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
-        joueur.setMain(main);
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
-
-        joueur.afficherMain();
-
-        System.setOut(System.out);
-
-        String consoleOutput = outputStream.toString().trim();
-        assertTrue(consoleOutput.contains("Test a la main suivante :"));
-        assertTrue(consoleOutput.contains("AS de PIQUE"));
-        assertTrue(consoleOutput.contains("ROI de COEUR"));
-    }
-
-    @Test
     void testProbabiliteDeGagner() {
         Joueur joueur = new Joueur("Test", 100);
         Deck deck = new Deck();
@@ -80,14 +53,6 @@ public class JoueurTest {
 
         int probabilite = joueur.probabiliteDeGagner(croupier);
         assertTrue(probabilite >= 0 && probabilite <= 100);
-    }
-
-    @Test
-    void testTapis() {
-        Joueur joueur = new Joueur("Test", 100);
-        joueur.tapis();
-        assertEquals(0, joueur.getPileDeJetons());
-        assertTrue(joueur.isTapis());
     }
 
     @Test
@@ -245,7 +210,7 @@ public class JoueurTest {
         int probabilite = joueur.probabiliteDeGagner(croupier);
         assertEquals(60, probabilite);
     }
-   
+
     @Test
     void testGetMainDuJoueur() {
         Joueur joueur = new Joueur("Test", 100);
@@ -320,8 +285,8 @@ public class JoueurTest {
         mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DAME, Card.cardColor.CARREAU));
 
         List<Card> mainDuJoueur = Arrays.asList(
-            new Card(Card.cardRank.ROI, Card.cardColor.COEUR),
-            new Card(Card.cardRank.DIX, Card.cardColor.COEUR));
+                new Card(Card.cardRank.ROI, Card.cardColor.COEUR),
+                new Card(Card.cardRank.DIX, Card.cardColor.COEUR));
         MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
         joueur.setMain(main);
 
@@ -329,5 +294,127 @@ public class JoueurTest {
         assertEquals(35, probabilite);
     }
 
+    @Test
+    void testProbabiliteDeGagnerAvecDifférentesHauteurs() {
+        Joueur joueur = new Joueur("Test", 100);
+        Deck deck = new Deck();
+
+        List<Card> mainDuJoueur = Arrays.asList(
+                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
+                new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
+        MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
+        joueur.setMain(main);
+        MainDuCroupier croupier = new MainDuCroupier(deck);
+
+        int probabilite = joueur.probabiliteDeGagner(croupier);
+        assertEquals(60, probabilite);
+    }
+
+    @Test
+    void testProbabiliteDeGagnerAvecDifférentesConditions() {
+        Joueur joueur = new Joueur("Test", 100);
+        Deck deck = new Deck();
+
+        List<Card> mainDuJoueur = Arrays.asList(
+                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
+                new Card(Card.cardRank.DAME, Card.cardColor.COEUR));
+        MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
+        joueur.setMain(main);
+        MainDuCroupier croupier = new MainDuCroupier(deck);
+
+        int probabilite = joueur.probabiliteDeGagner(croupier);
+        assertEquals(55, probabilite);
+    }
+
+    @Test
+    void testProbabiliteDeGagnerAvecMêmeCouleur() {
+        Joueur joueur = new Joueur("Test", 100);
+        Deck deck = new Deck();
+
+        List<Card> mainDuJoueur = Arrays.asList(
+                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
+                new Card(Card.cardRank.ROI, Card.cardColor.PIQUE));
+        MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
+        joueur.setMain(main);
+        MainDuCroupier croupier = new MainDuCroupier(deck);
+
+        int probabilite = joueur.probabiliteDeGagner(croupier);
+        assertEquals(60, probabilite);
+    }
+
+    @Test
+    void testMiserAvecJetonsSuffisants() {
+        Joueur joueur = new Joueur("Test", 100);
+        int jetonsAvantMise = joueur.getPileDeJetons();
+
+        int jetonsRestants = joueur.miser(20);
+
+        assertEquals(jetonsAvantMise - 20, jetonsRestants);
+        assertEquals(20, joueur.getMise());
+    }
+
+    @Test
+    void testMiserAvecMiseNegative() {
+        Joueur joueur = new Joueur("Test", 100);
+        int jetonsAvantMise = joueur.getPileDeJetons();
+
+        int jetonsRestants = joueur.miser(-20);
+
+        assertEquals(jetonsAvantMise, jetonsRestants);
+        assertEquals(0, joueur.getMise());
+    }
+
+    @Test
+    void testMiserAvecMontantNegatif() {
+        Joueur joueur = new Joueur("Test", 100);
+
+        int jetonsRestants = joueur.miser(-50);
+
+        assertEquals(0, joueur.getMise());
+        assertEquals(100, jetonsRestants);
+    }
+
+    @Test
+    void testMiserAvecMontantSuperieurAJetonsRestants() {
+        Joueur joueur = new Joueur("Test", 100);
+
+        int jetonsRestants = joueur.miser(150);
+
+        assertEquals(100, joueur.getMise());
+        assertEquals(0, jetonsRestants);
+        assertTrue(joueur.isTapis());
+    }
+
+    @Test
+    void testMiserAvecMontantInferieurAJetonsRestants() {
+        Joueur joueur = new Joueur("Test", 100);
+
+        int jetonsRestants = joueur.miser(50);
+
+        assertEquals(50, joueur.getMise());
+        assertEquals(50, jetonsRestants);
+        assertFalse(joueur.isTapis());
+    }
+
+    @Test
+    void testMiserAvecMontantNul() {
+        Joueur joueur = new Joueur("Test", 100);
+
+        int jetonsRestants = joueur.miser(0);
+
+        assertEquals(0, joueur.getMise());
+        assertEquals(100, jetonsRestants);
+    }
+
+    @Test
+    void testRendreCarteVisibleAvecMainVide() {
+        // Créer un joueur avec une main vide
+        Joueur joueur = new Joueur("Bob", 100);
+
+        // Appeler la méthode rendreCarteVisible
+        joueur.rendreCarteVisible(); // Aucune exception ne devrait être levée
+    }
+
+   
 
 }

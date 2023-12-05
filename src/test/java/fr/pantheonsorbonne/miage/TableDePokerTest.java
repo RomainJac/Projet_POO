@@ -9,7 +9,7 @@ public class TableDePokerTest {
 
     @Test
     void testChangementBlinds() {
-        TableDePoker table = new TableDePoker(new Joueur("Joueur1", 100),new Joueur("Joueur2", 100));
+        TableDePoker table = new TableDePoker(new Joueur("Joueur1", 100), new Joueur("Joueur2", 100));
         table.initialiserBlinds();
 
         Joueur grosseBlindActuelle = table.grosseBlind.getJoueur();
@@ -25,14 +25,13 @@ public class TableDePokerTest {
 
     @Test
     void testAugmenterBlinds() {
-        TableDePoker table = new TableDePoker(new Joueur("Joueur1", 100), new Joueur("Joueur2", 100) );
+        TableDePoker table = new TableDePoker(new Joueur("Joueur1", 100), new Joueur("Joueur2", 100));
         table.initialiserBlinds();
 
         table.augmenterBlinds();
 
         assertEquals(4, table.grosseBlind.getValeur());
-        assertEquals(2, table.petiteBlind.getValeur()); 
+        assertEquals(2, table.petiteBlind.getValeur());
     }
-
 
 }
