@@ -36,6 +36,12 @@ public class MainDuCroupier {
         }
     }
 
+    public void ajouterALaMainDuCroupierCarte(Card card) {
+        if (mainDuCroupier.size() < 5) {
+            mainDuCroupier.add(card);
+        }
+    }
+
     public List<Card> getMainDuCroupier() {
         return this.mainDuCroupier;
     }
