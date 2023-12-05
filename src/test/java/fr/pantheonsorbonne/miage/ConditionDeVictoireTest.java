@@ -24,11 +24,11 @@ class ConditionDeVictoireTest {
             new Card(Card.cardRank.TROIS, Card.cardColor.CARREAU)
         ));
 
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.DIX, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.VALET, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.DAME, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.AS, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DIX, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.VALET, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DAME, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.AS, Card.cardColor.COEUR));
 
         CombinaisonGagnante combinaison = ConditionDeVictoire.trouverMeilleureCombinaison(mainCroupier, mainJoueur);
         assertEquals(new CombinaisonGagnante(CombinaisonGagnante.Victoire.QUINTE_FLUSH, Card.cardRank.AS), combinaison);
@@ -39,11 +39,11 @@ class ConditionDeVictoireTest {
         // Créez une liste de cartes pour le test
         MainDuCroupier mainCroupier = new MainDuCroupier(null);
 
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.DIX, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.VALET, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.DAME, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.AS, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DIX, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.VALET, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DAME, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.AS, Card.cardColor.COEUR));
 
         CombinaisonGagnante quinte = ConditionDeVictoire.trouverQuinte(mainCroupier.getMainDuCroupier());
         assertNotNull(quinte);
@@ -55,11 +55,11 @@ class ConditionDeVictoireTest {
         // Créez une liste de cartes pour le test
         MainDuCroupier mainCroupier = new MainDuCroupier(null);
 
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.DEUX, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.TROIS, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.QUATRE, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.CINQ, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.SIX, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DEUX, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.TROIS, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.QUATRE, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.CINQ, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.SIX, Card.cardColor.COEUR));
 
         boolean consecutives = ConditionDeVictoire.sontConsecutives(mainCroupier.getMainDuCroupier());
         assertTrue(consecutives);
@@ -69,11 +69,11 @@ class ConditionDeVictoireTest {
     void testTrouverCarteLaPlusHaute() {
         MainDuCroupier mainCroupier = new MainDuCroupier(null);
         
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.DIX, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.VALET, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.DAME, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupier(new Card(Card.cardRank.AS, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DIX, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.VALET, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DAME, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.AS, Card.cardColor.COEUR));
 
         Card.cardRank carteLaPlusHaute = ConditionDeVictoire.trouverCarteLaPlusHaute(mainCroupier.getMainDuCroupier());
         assertEquals(Card.cardRank.AS, carteLaPlusHaute);
