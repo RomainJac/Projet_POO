@@ -51,7 +51,12 @@ public class ConditionDeVictoire {
 
     public static boolean sontConsecutives(List<Card> cartes) {
         for (int i = 0; i < cartes.size() - 1; i++) {
-            if (Math.abs(cartes.get(i).getCardRank().ordinal() - cartes.get(i + 1).getCardRank().ordinal()) != 1 ) {
+            if (cartes.get(0).getCardRank().ordinal() - cartes.get(1).getCardRank().ordinal() == 1 ) {
+                if (cartes.get(i).getCardRank().ordinal() - cartes.get(i + 1).getCardRank().ordinal() != 1 )
+                return false;
+            }
+            if (cartes.get(0).getCardRank().ordinal() - cartes.get(1).getCardRank().ordinal() == -1 ) {
+                if (cartes.get(i).getCardRank().ordinal() - cartes.get(i + 1).getCardRank().ordinal() != -1 )
                 return false;
             }
         }
@@ -63,7 +68,7 @@ public class ConditionDeVictoire {
         for (Card carte : main) {
             compteParRang.put(carte.getCardRank(), compteParRang.getOrDefault(carte.getCardRank(), 0) + 1);
         }
-
+    
         cardRank rangCarre = null, rangBrelan = null, rangPaire = null;
         for (Map.Entry<cardRank, Integer> entry : compteParRang.entrySet()) {
             if (entry.getValue() == 4) {
@@ -74,22 +79,23 @@ public class ConditionDeVictoire {
                 rangPaire = (rangPaire == null) ? entry.getKey() : rangPaire;
             }
         }
-
+    
         if (rangCarre != null) {
-            return new CombinaisonGagnante(CombinaisonGagnante.Victoire.CARRE);
+            return new CombinaisonGagnante(CombinaisonGagnante.Victoire.CARRE, rangCarre);
         }
         if (rangBrelan != null && rangPaire != null) {
-            return new CombinaisonGagnante(CombinaisonGagnante.Victoire.FULL);
+            return new CombinaisonGagnante(CombinaisonGagnante.Victoire.FULL, rangBrelan);
         }
         if (rangBrelan != null) {
-            return new CombinaisonGagnante(CombinaisonGagnante.Victoire.BRELAN);
+            return new CombinaisonGagnante(CombinaisonGagnante.Victoire.BRELAN, rangBrelan);
         }
         if (rangPaire != null) {
-            return new CombinaisonGagnante(CombinaisonGagnante.Victoire.PAIRE);
+            return new CombinaisonGagnante(CombinaisonGagnante.Victoire.PAIRE, rangPaire);
         }
-
+    
         return null;
     }
+    
 
     public static cardRank trouverCarteLaPlusHaute(List<Card> main) {
         cardRank carteLaPlusHaute = cardRank.DEUX;

@@ -3,6 +3,7 @@ package fr.pantheonsorbonne.miage;
 import fr.pantheonsorbonne.miage.game.classes.Card;
 import fr.pantheonsorbonne.miage.game.classes.CombinaisonGagnante;
 import fr.pantheonsorbonne.miage.game.classes.ConditionDeVictoire;
+import fr.pantheonsorbonne.miage.game.classes.Deck;
 import fr.pantheonsorbonne.miage.game.classes.MainDuCroupier;
 import fr.pantheonsorbonne.miage.game.classes.MainDuJoueur;
 import org.junit.jupiter.api.Test;
@@ -49,6 +50,56 @@ class ConditionDeVictoireTest {
         assertNotNull(quinte);
         assertEquals(new CombinaisonGagnante(CombinaisonGagnante.Victoire.QUINTE_FLUSH, Card.cardRank.AS), quinte);
     }
+
+    
+    @Test
+    void testTrouverCombinaisonsMultiplesPaire() {
+        // Créer une main avec une paire
+        MainDuCroupier mainCroupier = new MainDuCroupier(new Deck());
+
+        // Ajouter une paire à la main du croupier
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DIX, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DIX, Card.cardColor.PIQUE));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.CINQ, Card.cardColor.TREFLE));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.SEPT, Card.cardColor.CARREAU));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.AS, Card.cardColor.COEUR));
+
+        CombinaisonGagnante combinaison = ConditionDeVictoire.trouverCombinaisonsMultiples(mainCroupier.getMainDuCroupier());
+        assertEquals(new CombinaisonGagnante(CombinaisonGagnante.Victoire.PAIRE, Card.cardRank.DIX), combinaison);
+    }
+
+    @Test
+    void testTrouverCombinaisonsMultiplesBrelan() {
+        // Créer une main avec un brelan
+        MainDuCroupier mainCroupier = new MainDuCroupier(new Deck());
+
+        // Ajouter un brelan à la main du croupier
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DIX, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DIX, Card.cardColor.PIQUE));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DIX, Card.cardColor.TREFLE));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.SEPT, Card.cardColor.CARREAU));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.AS, Card.cardColor.COEUR));
+
+        CombinaisonGagnante combinaison = ConditionDeVictoire.trouverCombinaisonsMultiples(mainCroupier.getMainDuCroupier());
+        assertEquals(new CombinaisonGagnante(CombinaisonGagnante.Victoire.BRELAN, Card.cardRank.DIX), combinaison);
+    }
+
+    @Test
+    void testTrouverCombinaisonsMultiplesCarre() {
+        // Créer une main avec un carré
+        MainDuCroupier mainCroupier = new MainDuCroupier(new Deck());
+
+        // Ajouter un carré à la main du croupier
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DIX, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DIX, Card.cardColor.PIQUE));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DIX, Card.cardColor.TREFLE));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DIX, Card.cardColor.CARREAU));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.AS, Card.cardColor.COEUR));
+
+        CombinaisonGagnante combinaison = ConditionDeVictoire.trouverCombinaisonsMultiples(mainCroupier.getMainDuCroupier());
+        // Assurez-vous d'adapter le test en fonction des cartes ajoutées à la main du croupier
+        assertEquals(new CombinaisonGagnante(CombinaisonGagnante.Victoire.CARRE, Card.cardRank.DIX), combinaison);
+    }
     
     @Test
     void testSontConsecutives() {
@@ -57,8 +108,8 @@ class ConditionDeVictoireTest {
 
         mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DEUX, Card.cardColor.COEUR));
         mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.TROIS, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.QUATRE, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.CINQ, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.QUATRE, Card.cardColor.TREFLE));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.CINQ, Card.cardColor.COEUR));        
         mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.SIX, Card.cardColor.COEUR));
 
         boolean consecutives = ConditionDeVictoire.sontConsecutives(mainCroupier.getMainDuCroupier());
@@ -81,5 +132,5 @@ class ConditionDeVictoireTest {
 
     
 
-    // Ajoutez d'autres tests pour les autres méthodes de la classe ConditionDeVictoire
+    
 }
