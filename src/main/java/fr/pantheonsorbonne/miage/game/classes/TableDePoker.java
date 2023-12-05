@@ -55,7 +55,7 @@ public class TableDePoker implements Runnable {
 		}
 	}
 
-	private void gererChoix(Joueur joueur, int choix, int miseMaximale) {
+	public void gererChoix(Joueur joueur, int choix, int miseMaximale) {
 
 		switch (choix) {
 			case 1:
@@ -248,5 +248,13 @@ public class TableDePoker implements Runnable {
 			joueur.afficherMain();
 		}
 	}
+
+	public int getMisesTotales() {
+		return misesTotales;
+	}
+
+	public List<Joueur> getJoueursActifs() {
+        return joueursActifs;
+    }
 
 }
