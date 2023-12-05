@@ -1,10 +1,8 @@
 package fr.pantheonsorbonne.miage;
 
-import org.junit.jupiter.api.Test;
-
 import fr.pantheonsorbonne.miage.game.classes.CombinaisonGagnante;
 import fr.pantheonsorbonne.miage.game.classes.Card;
-
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CombinaisonGagnanteTest {
@@ -28,5 +26,25 @@ public class CombinaisonGagnanteTest {
 
         assertEquals("null CARTE_HAUTE", carteHaute.toString());
         assertEquals("ROI FULL", full.toString());
+    }
+
+    @Test
+    void testCompareTo() {
+        CombinaisonGagnante carteHaute = new CombinaisonGagnante(CombinaisonGagnante.Victoire.CARTE_HAUTE);
+        CombinaisonGagnante paire = new CombinaisonGagnante(CombinaisonGagnante.Victoire.PAIRE);
+        CombinaisonGagnante paireAvecHauteCarte = new CombinaisonGagnante(CombinaisonGagnante.Victoire.PAIRE, Card.cardRank.DAME);
+        CombinaisonGagnante paireAvecBasseCarte = new CombinaisonGagnante(CombinaisonGagnante.Victoire.PAIRE, Card.cardRank.CINQ);
+
+        
+        assertTrue(carteHaute.compareTo(paire) < 0);
+
+        // Test compareTo avec des combinaisons de victoire identiques, mais des rangs de carte différents
+        assertTrue(paireAvecHauteCarte.compareTo(paireAvecBasseCarte) > 0);
+        assertTrue(paireAvecBasseCarte.compareTo(paireAvecHauteCarte) < 0);
+        
+
+        // Test compareTo avec des combinaisons identiques
+        CombinaisonGagnante autrePaireAvecCarte = new CombinaisonGagnante(CombinaisonGagnante.Victoire.PAIRE, Card.cardRank.DAME);
+        assertEquals(0, paireAvecHauteCarte.compareTo(autrePaireAvecCarte));
     }
 }

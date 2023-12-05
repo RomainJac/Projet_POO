@@ -1,10 +1,8 @@
 package fr.pantheonsorbonne.miage;
 
-import org.junit.jupiter.api.Test;
-
 import fr.pantheonsorbonne.miage.game.classes.Card;
 import fr.pantheonsorbonne.miage.game.classes.MainDuJoueur;
-
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -37,12 +35,15 @@ public class MainDuJoueurTest {
     }
 
     @Test
-    void testEmptyMainDuJoueur() {
-        MainDuJoueur mainDuJoueur = new MainDuJoueur(new ArrayList<>());
+    void testSupprimerCarte() {
+        List<Card> cartes = new ArrayList<>();
+        cartes.add(new Card(Card.cardRank.AS, Card.cardColor.PIQUE));
+        cartes.add(new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
 
-        assertTrue(mainDuJoueur.getCardNames().isEmpty());
-
-        assertTrue(mainDuJoueur.getMainDuJoueur().isEmpty());
+        MainDuJoueur mainDuJoueur = new MainDuJoueur(cartes);
+        int tailleInitiale = mainDuJoueur.getMainDuJoueur().size();
+        mainDuJoueur.supprimerCarte();
+        assertEquals(tailleInitiale - 1, mainDuJoueur.getMainDuJoueur().size());
     }
 
     @Test
@@ -51,19 +52,18 @@ public class MainDuJoueurTest {
         MainDuJoueur mainDuJoueur = new MainDuJoueur(cartes);
         Card carte1 = new Card(Card.cardRank.AS, Card.cardColor.PIQUE);
 
-        // Tirer une carte
         mainDuJoueur.tirerCarte(carte1);
 
         // Vérifier que la carte est ajoutée correctement
         assertEquals(1, mainDuJoueur.getCardNames().size());
         assertTrue(mainDuJoueur.getCardNames().contains(carte1.toString()));
 
-        // Tirer une autre carte (null)
         mainDuJoueur.tirerCarte(null);
 
         // Vérifier que la taille de la liste ne change pas
         assertEquals(1, mainDuJoueur.getCardNames().size());
     }
+
 
     @Test
     void testDevoilerCarte() {
@@ -71,18 +71,16 @@ public class MainDuJoueurTest {
         Card carte1 = new Card(Card.cardRank.AS, Card.cardColor.PIQUE);
         MainDuJoueur mainDuJoueur = new MainDuJoueur(cartes);
 
-        // Tirer une carte
         mainDuJoueur.tirerCarte(carte1);
 
-        // Devoiler la carte à l'index 0
+        // Enregistrez l'état initial de la visibilité de la carte
+        boolean etatInitial = carte1.estVisible();
         mainDuJoueur.devoilerCarte(0);
 
-        // Vérifier que la méthode montre() est appelée sur la carte
-        // Vous devrez peut-être utiliser des mocks pour vérifier cela
-
-        // Devoiler une carte à un index invalide
-        mainDuJoueur.devoilerCarte(1);
-
-        // Vérifier que rien ne se passe (pas d'erreur)
+        // Vérifier que l'état de la visibilité de la carte a changé
+        assertTrue(carte1.estVisible() != etatInitial);
     }
 }
+
+    
+
