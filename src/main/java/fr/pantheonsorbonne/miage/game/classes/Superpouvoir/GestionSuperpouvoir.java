@@ -9,8 +9,7 @@ public class GestionSuperpouvoir extends Superpouvoir {
 
     @Override
     public void tirerCarteVisible(Joueur joueur, Deck deck) {
-        int prix = 50;
-        verification(joueur, prix);
+        verification(joueur, 50);
         enleverSuperpouvoir();
         Card card = deck.tirer();
         joueur.ajouterCarte(card);
@@ -19,8 +18,7 @@ public class GestionSuperpouvoir extends Superpouvoir {
 
     @Override
     public void tirerCarteInvisible(Joueur joueur, Deck deck) {
-        int prix = 100;
-        verification(joueur, prix);
+        verification(joueur, 100);
         enleverSuperpouvoir();
         Card card = deck.tirer();
         joueur.ajouterCarte(card);
@@ -28,31 +26,16 @@ public class GestionSuperpouvoir extends Superpouvoir {
 
     @Override
     public void devoilerCarte(Joueur joueur, Joueur ennemis) {
-        int prix = 50;
-        verification(joueur, prix);
+        verification(joueur, 50);
         enleverSuperpouvoir();
         ennemis.rendreCarteVisible();
     }
 
     @Override
     public void enleverCarte(Joueur joueur, Joueur ennemis) {
-        int prix = 100;
-        verification(joueur, prix);
+        verification(joueur, 100);
         enleverSuperpouvoir();
         ennemis.enleverCarte();
-    }
-
-    @Override
-    public int getPrix() {
-        return 0;
-    }
-
-    @Override
-    protected void Utiliser(Joueur joueur, Deck deck) {
-    }
-
-    @Override
-    protected void Utiliser(Joueur joueur, Joueur adversaire) {
     }
 
 }

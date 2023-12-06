@@ -4,7 +4,7 @@ import fr.pantheonsorbonne.miage.game.classes.*;
 
 import java.util.HashSet;
 
-abstract class Superpouvoir implements SuperpouvoirConstante {
+abstract class Superpouvoir {
     private int prix;
     private HashSet<Joueur> joueursSansPouvoir;
     private int nbUtilisation;
@@ -50,7 +50,4 @@ abstract class Superpouvoir implements SuperpouvoirConstante {
 
     public abstract void devoilerCarte(Joueur joueur, Joueur adversaire);
 
-    protected abstract void Utiliser(Joueur joueur, Deck deck);
-
-    protected abstract void Utiliser(Joueur joueur, Joueur adversaire);
 }
