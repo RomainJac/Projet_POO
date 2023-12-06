@@ -415,6 +415,6 @@ public class JoueurTest {
         joueur.rendreCarteVisible(); // Aucune exception ne devrait être levée
     }
 
-   
+    
 
 }
