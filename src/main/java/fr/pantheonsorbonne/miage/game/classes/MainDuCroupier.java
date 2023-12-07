@@ -15,11 +15,14 @@ public class MainDuCroupier {
     public void tirerCarte(int i) {
         switch (i) {
             case 1:
-                ajouterALaMainDuCroupier(3);
+                initialiserMainDuCroupier(3);
+                break;
             case 2:
                 ajouterALaMainDuCroupier();
+                break;
             case 3:
                 ajouterALaMainDuCroupier();
+                break;
         }
 
     }
@@ -30,7 +33,7 @@ public class MainDuCroupier {
         }
     }
 
-    public void ajouterALaMainDuCroupier(int nombreDeCarte) {
+    public void initialiserMainDuCroupier(int nombreDeCarte) {
         for (int i = 0; i < nombreDeCarte; i++) {
             ajouterALaMainDuCroupier();
         }

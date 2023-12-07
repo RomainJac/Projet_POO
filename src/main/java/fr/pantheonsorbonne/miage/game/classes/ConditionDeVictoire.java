@@ -1,9 +1,6 @@
 package fr.pantheonsorbonne.miage.game.classes;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import fr.pantheonsorbonne.miage.game.classes.Card.cardColor;
 import fr.pantheonsorbonne.miage.game.classes.Card.cardRank;
@@ -28,8 +25,7 @@ public class ConditionDeVictoire {
         return new CombinaisonGagnante(CombinaisonGagnante.Victoire.CARTE_HAUTE, trouverCarteLaPlusHaute(mainGlobale));
     }
     public static CombinaisonGagnante trouverQuinte(List<Card> cartes) {
-        cartes.sort((c1, c2) -> c2.getCardRank().compareTo(c1.getCardRank()));
-        
+        Collections.sort(cartes, Comparator.comparing(Card::getCardRank));
         Map<cardColor, List<Card>> cartesParCouleur = new HashMap<>();
         for (Card carte : cartes) {
             if (!cartesParCouleur.containsKey(carte.getCardColor())) {
@@ -40,23 +36,23 @@ public class ConditionDeVictoire {
     
         for (List<Card> parCouleur : cartesParCouleur.values()) {
             if (parCouleur.size() >= 5 && sontConsecutives(parCouleur)) {
-                return new CombinaisonGagnante(CombinaisonGagnante.Victoire.QUINTE_FLUSH, parCouleur.get(0).getCardRank());
+                return new CombinaisonGagnante(CombinaisonGagnante.Victoire.QUINTE_FLUSH);
             }
+        }
+
+        if (sontConsecutives(cartes)) {
+            return new CombinaisonGagnante(CombinaisonGagnante.Victoire.QUINTE);
         }
         
         // Si aucune quinte flush n'est trouvée, renvoyer une quinte simple
-        return new CombinaisonGagnante(CombinaisonGagnante.Victoire.QUINTE);
+        // change pas le code stp
+        return null;
     }    
     
 
     public static boolean sontConsecutives(List<Card> cartes) {
         for (int i = 0; i < cartes.size() - 1; i++) {
-            if (cartes.get(0).getCardRank().ordinal() - cartes.get(1).getCardRank().ordinal() == 1 ) {
-                if (cartes.get(i).getCardRank().ordinal() - cartes.get(i + 1).getCardRank().ordinal() != 1 )
-                return false;
-            }
-            if (cartes.get(0).getCardRank().ordinal() - cartes.get(1).getCardRank().ordinal() == -1 ) {
-                if (cartes.get(i).getCardRank().ordinal() - cartes.get(i + 1).getCardRank().ordinal() != -1 )
+            if (Math.abs(cartes.get(i).getCardRank().ordinal() - cartes.get(i + 1).getCardRank().ordinal()) != 1 ) {
                 return false;
             }
         }

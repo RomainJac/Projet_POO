@@ -1,5 +1,6 @@
 package fr.pantheonsorbonne.miage.game.classes;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -17,11 +18,11 @@ public class TableDePoker implements Runnable {
 	public Blind dealerBlind;
 	public int petiteBlindParDefaut = 2;
 
-	public TableDePoker(Joueur ... joueurs) {
+	public TableDePoker(Joueur... joueurs) {
 		this.joueurs = new CopyOnWriteArrayList<>(joueurs);
 		this.deck = new Deck();
 		this.croupier = new MainDuCroupier(deck);
-		this.joueursActifs = new CopyOnWriteArrayList<>(joueurs);
+		this.joueursActifs = new ArrayList<>(List.of(joueurs));
 		this.misesTotales = 0;
 		this.miseMaximale = 0;
 	}
@@ -32,16 +33,16 @@ public class TableDePoker implements Runnable {
 	}
 
 	public void jouer() {
-		while (!joueursActifs.isEmpty()) {
+		while (joueursActifs.size() > 1) {
+			initialiserTour();
 			for (int i = 1; i < 4; i++) {
-				initialiserTour();
+				System.out.println(misesTotales);
 				croupier.tirerCarte(i);
 				System.out.println("Croupier :");
 				for (Card card : croupier.getMainDuCroupier()) {
 					System.out.println(card.getCardName());
 				}
 				for (Joueur joueur : joueursActifs) {
-					miseMaximale = trouverMiseMaximale();
 					int choixJoueur = joueur.faireChoix(croupier, miseMaximale, i);
 					afficherInfosJoueur(joueur);
 					gererChoix(joueur, choixJoueur, miseMaximale);
@@ -55,23 +56,26 @@ public class TableDePoker implements Runnable {
 		}
 	}
 
-	public void gererChoix(Joueur joueur, int choix, int miseMaximale) {
-
+	public int gererChoix(Joueur joueur, int choix, int miseMaximale) {
 		switch (choix) {
-			case 1:
+			case 1 -> {
 				if (miseMaximale - joueur.getMise() >= 0 && miseMaximale > 0) {
 					misesTotales += joueur.miser(miseMaximale - joueur.getMise());
 				} else
 					misesTotales += joueur.miser(joueur.getMise() - miseMaximale);
-				break;
-			case 2:
-				System.out.println("Vous vous êtes couchés");
+				System.out.println(joueur.getNom() + " a suivi");
+			}
+			case 2 -> {
+				System.out.println(joueur.getNom() + " s'est couché");
 				joueursActifs.remove(joueur);
-				break;
-			case 3:
+			}
+			case 3 -> {
 				misesTotales += faireRelance(joueur, 40);
-				break;
+				System.out.println(joueur.getNom() + " a relancé de 40");
+			}
 		}
+
+		return misesTotales;
 
 	}
 
@@ -89,7 +93,14 @@ public class TableDePoker implements Runnable {
 			for (Joueur joueur : joueursGagnants) {
 				if (joueur.estTapis) {
 					System.out.println(joueur.getNom() + ", avec tapis a gagné,  " + joueur.getMise() * 2);
-					joueur.aGagné(joueur.getMise() * 2);
+					if (misesTotales > joueur.getMise() * 2) {
+						joueur.aGagné(joueur.getMise() * 2);
+						misesTotales -= joueur.getMise() * 2;
+						joueursGagnants.remove(joueur);
+						break;
+					}
+					joueur.aGagné(misesTotales / joueursGagnants.size());
+					break;
 				} else {
 					System.out.println(joueur.getNom() + " a gagné " + misesTotales / joueursGagnants.size());
 					joueur.aGagné(misesTotales / joueursGagnants.size());
@@ -100,23 +111,20 @@ public class TableDePoker implements Runnable {
 				if (!joueursGagnants.contains(joueur)) {
 					System.out.println(joueur.getNom() + " a perdu : " + joueur.getMise());
 				}
-				joueursActifs.add(joueur);
-
 			}
-
 		}
+
 	}
 
 	public void réinitialiserTable() {
+		réinitialiserJoueurs();
 		if (!joueursActifs.isEmpty()) {
 			Deck.reinitialiserDeck();
 			croupier.vider();
 			nombreDeTours++;
-			réinitialiserJoueurs();
 			if (nombreDeTours % 5 == 0) {
 				augmenterBlinds();
 			}
-			changerBlinds();
 			misesTotales = 0;
 			miseMaximale = 0;
 		}
@@ -138,35 +146,19 @@ public class TableDePoker implements Runnable {
 	private void initialiserTour() {
 		deck.initialiserDeck();
 		distribuerCartes();
-		initialiserBlinds();
+		changerBlinds();
 		demanderPaiementBlinds();
 
 	}
 
-	private int trouverMiseMaximale() {
-		for (Joueur joueur : this.joueursActifs) {
-			if (joueur.getMise() > this.miseMaximale) {
-				return joueur.getMise();
-			}
-		}
-		return miseMaximale;
-	}
-
-	public void initialiserBlinds() {
-		int n = this.joueurs.size();
-		if (n <= 1) {
-			return;
-		}
+	public void changerBlinds() {
+		int n = this.joueursActifs.size();
 		if (this.grosseBlind == null) {
 			this.grosseBlind = new Blind(this.petiteBlindParDefaut, this.joueurs.get(n - 1));
 			this.petiteBlind = new Blind(this.petiteBlindParDefaut / 2, this.joueurs.get(n - 2));
 			this.dealerBlind = new Blind(0, this.joueurs.get(Math.max(0, n - 3)));
 		}
-		misesTotales = grosseBlind.getValeur() + petiteBlind.getValeur() + dealerBlind.getValeur();
-	}
 
-	public void changerBlinds() {
-		int n = this.joueursActifs.size();
 		int indexGrosseBlind = 0, indexPetiteBlind = 0, indexcroupier = 0;
 		for (int i = 0; i < n; i++) {
 			if (this.joueursActifs.get(i) == this.grosseBlind.getJoueur()) {
@@ -204,7 +196,6 @@ public class TableDePoker implements Runnable {
 		}
 
 		Collections.sort(joueurs);
-		System.out.println();
 		joueursGagnants.add(joueurs.get(joueurs.size() - 1));
 
 		for (Joueur joueur : joueurs) {
@@ -219,23 +210,25 @@ public class TableDePoker implements Runnable {
 		return joueursGagnants;
 	}
 
-	public void réinitialiserJoueurs() {
+	public List<Joueur> réinitialiserJoueurs() {
 		for (Joueur joueur : joueurs) {
 			joueur.setMise(0);
 			joueur.setMainDuJoueur(null);
 			this.joueursActifs = joueurs;
 			enleverJoueurSansJeton();
 		}
+		return joueursActifs;
 
 	}
 
-	public void demanderPaiementBlinds() {
+	public int demanderPaiementBlinds() {
 		this.grosseBlind.getJoueur()
 				.setPileDeJetons(this.grosseBlind.getJoueur().getPileDeJetons() - this.grosseBlind.getValeur());
 		this.grosseBlind.getJoueur().setMise(this.grosseBlind.getValeur());
 		this.petiteBlind.getJoueur()
-				.setPileDeJetons(this.grosseBlind.getJoueur().getPileDeJetons() - this.petiteBlind.getValeur());
+				.setPileDeJetons(this.petiteBlind.getJoueur().getPileDeJetons() - this.petiteBlind.getValeur());
 		this.petiteBlind.getJoueur().setMise(this.petiteBlind.getValeur());
+		return misesTotales = misesTotales + grosseBlind.getValeur() + petiteBlind.getValeur();
 	}
 
 	public void augmenterBlinds() {
@@ -254,7 +247,7 @@ public class TableDePoker implements Runnable {
 	}
 
 	public List<Joueur> getJoueursActifs() {
-        return joueursActifs;
-    }
+		return joueursActifs;
+	}
 
 }

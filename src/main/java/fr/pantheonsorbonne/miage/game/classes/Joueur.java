@@ -1,11 +1,8 @@
 package fr.pantheonsorbonne.miage.game.classes;
 
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-
-import fr.pantheonsorbonne.miage.game.classes.Superpouvoir.GestionSuperpouvoir;
 
 public class Joueur implements Comparable<Joueur> {
 
@@ -14,8 +11,6 @@ public class Joueur implements Comparable<Joueur> {
     protected int mise;
     private CombinaisonGagnante combinaison;
     private MainDuJoueur mainDuJoueur;
-    public GestionSuperpouvoir superpouvoir;
-
 
     protected boolean estTapis;
 
@@ -80,18 +75,20 @@ public class Joueur implements Comparable<Joueur> {
             this.mise += this.pileDeJetons;
             this.pileDeJetons = 0;
             this.estTapis = true;
-            return getPileDeJetons();
         } else if (combien >= 0) {
             this.mise += combien;
             this.pileDeJetons -= combien;
-            return pileDeJetons;
         }
-        return getPileDeJetons();
+        return combien;
 
     }
 
-    public void aGagné(int gain) {
-        this.pileDeJetons += gain;
+    public int aGagné(int gain) {
+        return this.pileDeJetons += gain;
+    }
+
+    public int aPerdu(int perte) {
+        return this.pileDeJetons -= perte;
     }
 
     public void ajouterCarte(Card carte) {
@@ -100,10 +97,6 @@ public class Joueur implements Comparable<Joueur> {
 
     public void enleverCarte() {
         this.mainDuJoueur.supprimerCarte();
-    }
-
-    public GestionSuperpouvoir getSuperpouvoir() {
-        return superpouvoir;
     }
 
     public void rendreCarteVisible() {

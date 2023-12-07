@@ -50,4 +50,7 @@ abstract class Superpouvoir {
 
     public abstract void devoilerCarte(Joueur joueur, Joueur adversaire);
 
+    protected abstract void Utiliser(Joueur joueur, Deck deck);
+
+    protected abstract void Utiliser(Joueur joueur, Joueur adversaire);
 }
