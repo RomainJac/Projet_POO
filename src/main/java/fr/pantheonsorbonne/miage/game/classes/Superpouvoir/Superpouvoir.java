@@ -1,23 +1,24 @@
 package fr.pantheonsorbonne.miage.game.classes.Superpouvoir;
 
 import fr.pantheonsorbonne.miage.game.classes.*;
+import java.lang.IllegalArgumentException;
 
 import java.util.HashSet;
 
-abstract class Superpouvoir {
+public abstract class Superpouvoir {
     private int prix;
     private HashSet<Joueur> joueursSansPouvoir;
     private int nbUtilisation;
 
-    protected Superpouvoir() {
+    public Superpouvoir() {
         this.joueursSansPouvoir = new HashSet<>();
     }
 
-    protected boolean peutSuperpouvoir(Joueur joueur) {
+    public boolean peutSuperpouvoir(Joueur joueur) {
         return joueur.getPileDeJetons() >= this.prix;
     }
 
-    protected boolean sansPouvoir(Joueur joueur) {
+    public boolean sansPouvoir(Joueur joueur) {
         return this.joueursSansPouvoir.contains(joueur);
     }
 
@@ -25,7 +26,7 @@ abstract class Superpouvoir {
         this.joueursSansPouvoir.clear();
     }
 
-    protected void verification(Joueur joueur, int tarif) {
+    public void verification(Joueur joueur, int tarif) throws IllegalArgumentException {
         if (this.peutSuperpouvoir(joueur)) {
             joueur.setPileDeJetons(joueur.getPileDeJetons() - tarif);
             this.joueursSansPouvoir.add(joueur);
@@ -38,9 +39,9 @@ abstract class Superpouvoir {
         return nbUtilisation;
     }
 
-    protected void enleverSuperpouvoir() {
+    public void enleverSuperpouvoir() {
         this.nbUtilisation++;
-    }
+    }    
 
     public abstract void tirerCarteVisible(Joueur joueur, Deck deck);
 
