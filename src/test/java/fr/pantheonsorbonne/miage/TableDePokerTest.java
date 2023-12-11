@@ -102,36 +102,78 @@ public class TableDePokerTest {
         assertEquals(200, joueur3.getPileDeJetons());
     }
 
-    @Test
-    public void testDistribuerGainsTapisInférieur() {
-        Joueur joueur1 = new Joueur("Joueur1", 100);
-        joueur1.setMise(100);
-        joueur1.isTapis();
+    // @Test
+    // public void testDistribuerGainsTapisInférieur() {
+    //     Joueur joueur1 = new Joueur("Joueur1", 100);
+    //     joueur1.setMise(100);
+    //     joueur1.isTapis();
 
+    //     List<Joueur> joueursGagnants = new ArrayList<>();
+    //     joueursGagnants.add(joueur1);
+    //     table.setMisesTotales(100);
+
+    //     table.distribuerGains(joueursGagnants);
+
+    //     assertEquals(200, joueur1.getPileDeJetons());
+    //     // assertEquals(0, joueursGagnants.size());
+    // }
+
+    // @Test
+    // public void testDistribuerGainsWithTapisSupérieur() {
+    //     Joueur joueur1 = new Joueur("Joueur1", 100);
+    //     joueur1.setMise(100);
+    //     joueur1.isTapis();
+
+    //     List<Joueur> joueursGagnants = new ArrayList<>();
+    //     joueursGagnants.add(joueur1);
+    //     table.setMisesTotales(300);
+
+    //     table.distribuerGains(joueursGagnants);
+
+    //     assertEquals(400, joueur1.getPileDeJetons());
+    // }
+    @Test
+    public void testDistribuerGainsWithTapisMiseSup() {
+        // Arrange
+        Joueur joueur1 = new Joueur("Joueur1", 100);
+        Joueur joueur2 = new Joueur("Joueur2", 100);
+        joueur1.miser(100);
+        joueur1.isTapis();
+        TableDePoker table = new TableDePoker(joueur1,joueur2);        
+        table.setMisesTotales(250);
         List<Joueur> joueursGagnants = new ArrayList<>();
         joueursGagnants.add(joueur1);
-        table.setMisesTotales(100);
+        int initialMisesTotales=table.getMisesTotales();
 
         table.distribuerGains(joueursGagnants);
-
+        int updatedMisesTotales=table.getMisesTotales();
+        // Assert
         assertEquals(200, joueur1.getPileDeJetons());
-        // assertEquals(0, joueursGagnants.size());
+        assertEquals(initialMisesTotales-(joueur1.getMise()*2),updatedMisesTotales);
+        assertEquals(0, joueursGagnants.size());
     }
 
     @Test
-    public void testDistribuerGainsWithTapisSupérieur() {
+    public void testDistribuerGainsWithTapisMiseInf() {
+        // Arrange
         Joueur joueur1 = new Joueur("Joueur1", 100);
-        joueur1.setMise(100);
+        Joueur joueur2 = new Joueur("Joueur2", 100);
+        joueur1.miser(100);
         joueur1.isTapis();
-
+        TableDePoker table = new TableDePoker(joueur1,joueur2);        
+        table.setMisesTotales(100);
         List<Joueur> joueursGagnants = new ArrayList<>();
         joueursGagnants.add(joueur1);
-        table.setMisesTotales(300);
+        int initialMisesTotales=table.getMisesTotales();
 
         table.distribuerGains(joueursGagnants);
-
-        assertEquals(400, joueur1.getPileDeJetons());
+        int updatedMisesTotales=table.getMisesTotales();
+        // Assert
+        assertEquals(100, joueur1.getPileDeJetons());
+        assertFalse(initialMisesTotales-(joueur1.getMise()*2)==updatedMisesTotales);
+        assertFalse(0==joueursGagnants.size());
     }
+
 
     @Test
     public void testRéinitialiserTable() {
@@ -334,5 +376,120 @@ public class TableDePokerTest {
         System.setOut(System.out);
     }
 
+
+
+    @Test
+void testChangerBlindsGrosseBlindNulle() {
+    // Arrange
+    Joueur joueur1 = new Joueur("Player1", 100);
+    Joueur joueur2 = new Joueur("Player2", 100);
+    TableDePoker table = new TableDePoker(joueur1, joueur2);    
+    table.grosseBlindParDefaut = 10;
+
+    // Act
+    table.changerBlinds();
+
+    Blind grosseBlind = table.getGrosseBlind();
+    Blind petiteBlind = table.getPetiteBlind();
+    Blind dealerBlind = table.getDealerBlind();
+
+    assertNotNull(grosseBlind);
+    assertNotNull(petiteBlind);
+    assertNotNull(dealerBlind);
+
+    assertEquals(10, grosseBlind.getValeur());
+    assertEquals(5, petiteBlind.getValeur());
+    assertEquals(joueur2, dealerBlind.getJoueur());
+}
+
+
+@Test
+void testChangerBlindsWhenGrosseBlindIsNotNull() {
+    // Arrange
+    Joueur joueur1 = new Joueur("Player1", 100);
+    Joueur joueur2 = new Joueur("Player2", 100);
+    TableDePoker table = new TableDePoker(joueur1, joueur2);
+    table.grosseBlindParDefaut = 10;
+
+    table.changerBlinds();
+
+    // Save the initial state for later comparison
+    Blind initialGrosseBlind = table.getGrosseBlind();
+    Blind initialPetiteBlind = table.getPetiteBlind();
+    Blind initialDealerBlind = table.getDealerBlind();
+
+    // Act
+    table.changerBlinds();
+
+    Blind updatedGrosseBlind = table.getGrosseBlind();
+    Blind updatedPetiteBlind = table.getPetiteBlind();
+    Blind updatedDealerBlind = table.getDealerBlind();    
+
+    // Verify that the other blinds were not modified
+    assertEquals(initialPetiteBlind, updatedPetiteBlind);
+    assertEquals(initialDealerBlind, updatedDealerBlind);
+
+    // Verify that the indices were updated
+    int expectedIndexGrosseBlind = (initialGrosseBlind.getJoueur().equals(joueur1) ? 1 : 0);
+    assertEquals(expectedIndexGrosseBlind, updatedGrosseBlind.getJoueur().equals(joueur1) ? 1 : 0);
+}
+
+
+@Test
+void testDemanderPaiementBlinds() {
+    // Arrange
+    Joueur joueur1 = new Joueur("Player1", 100);
+    Joueur joueur2 = new Joueur("Player2", 100);
+    TableDePoker table = new TableDePoker(joueur1, joueur2);
+
+    table.changerBlinds();
+
+    // Act
+    int misesTotales = table.demanderPaiementBlinds();
+
+    // Assert
+    assertEquals(15, misesTotales);
+
+    // Verify joueur1's state
+    assertEquals(90, joueur1.getPileDeJetons());  // Initial: 100 - GrosseBlind(10)
+    assertEquals(10, joueur1.getMise());           // GrosseBlind
+
+    // Verify joueur2's state
+    assertEquals(95, joueur2.getPileDeJetons());  // Initial: 100 - PetiteBlind(5)
+    assertEquals(5, joueur2.getMise());            // PetiteBlind
+}
+
+
+@Test
+    void testInitialiserTour() {
+        // Arrange
+        Joueur joueur1 = new Joueur("Player1", 100);
+        Joueur joueur2 = new Joueur("Player2", 100);
+        TableDePoker table = new TableDePoker(joueur1, joueur2);
+
+        // Act
+        table.initialiserTour();
+
+        // Verify that deck is initialized
+        assertNotNull(table.deck);
+
+        // Verify that cards are distributed to players
+        for (Joueur joueur : table.getJoueursActifs()) {
+            assertNotNull(joueur.getMainDuJoueur());
+            assertEquals(2, joueur.getMainDuJoueur().getMainDuJoueur().size());
+        }
+
+        // Verify that blinds are changed
+        Blind grosseBlind = table.getGrosseBlind();
+        Blind petiteBlind = table.getPetiteBlind();
+        Blind dealerBlind = table.getDealerBlind();
+
+        assertNotNull(grosseBlind);
+        assertNotNull(petiteBlind);
+        assertNotNull(dealerBlind);
+
+        assertEquals(10, grosseBlind.getValeur());
+        assertEquals(5, petiteBlind.getValeur());
+    }
 
 }

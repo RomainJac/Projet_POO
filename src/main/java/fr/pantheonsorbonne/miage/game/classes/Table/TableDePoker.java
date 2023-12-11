@@ -163,13 +163,6 @@ public class TableDePoker implements Runnable {
 		distribuerCartes();
 		changerBlinds();
 		demanderPaiementBlinds();
-		if (joueurs.get(0).getPileDeJetons() == 0) {
-			System.out.println(joueurs.get(0).getNom() + " a perdu la partie");
-		}
-		if (joueurs.get(1).getPileDeJetons() == 0) {
-			System.out.println(joueurs.get(1).getNom() + " a perdu la partie");
-		}
-
 	}
 
 	public void gererSuperpouvoir(Joueur joueur, int choix, Deck deck, Joueur ennemis) {
@@ -315,5 +308,17 @@ public class TableDePoker implements Runnable {
 	public void setJoueursActifs(List<Joueur> joueurActifs) {
 		this.joueursActifs = joueurActifs;
 	}
+
+	public Blind getGrosseBlind() {
+		return this.grosseBlind;
+	}
+
+    public Blind getPetiteBlind() {
+        return this.petiteBlind;
+    }
+
+    public Blind getDealerBlind() {
+        return this.dealerBlind;
+    }
 
 }
