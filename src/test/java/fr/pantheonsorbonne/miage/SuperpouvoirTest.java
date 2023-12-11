@@ -33,29 +33,21 @@ public class SuperpouvoirTest {
         Joueur joueur = new Joueur("Alice");
         TestSuperpouvoir superpouvoir = new TestSuperpouvoir();
 
-        // Set up the conditions for the test
         joueur.setPileDeJetons(15);
 
-        // Execute the method being tested
         boolean result = superpouvoir.peutSuperpouvoir(joueur);
 
-        // Make assertions
         assertTrue(result);
     }
-
-    // ... other tests ...
 
     @Test
     public void testEnleverSuperpouvoir() {
         TestSuperpouvoir superpouvoir = new TestSuperpouvoir();
 
-        // Set up the conditions for the test
         int initialUtilisations = superpouvoir.getNbUtilisations();
 
-        // Execute the method being tested
         superpouvoir.enleverSuperpouvoir();
 
-        // Make assertions
         assertEquals(initialUtilisations + 1, superpouvoir.getNbUtilisations());
     }
 
@@ -64,13 +56,10 @@ public class SuperpouvoirTest {
         Joueur joueur = new Joueur("Bob");
         TestSuperpouvoir superpouvoir = new TestSuperpouvoir();
 
-        // Set up the conditions for the test
         superpouvoir.redonneDroit();
 
-        // Execute the method being tested
         boolean result = superpouvoir.sansPouvoir(joueur);
 
-        // Make assertions
         assertFalse(result);
     }
 
@@ -79,13 +68,10 @@ public class SuperpouvoirTest {
         Joueur joueur = new Joueur("Charlie");
         TestSuperpouvoir superpouvoir = new TestSuperpouvoir();
 
-        // Set up the conditions for the test
         joueur.setPileDeJetons(12);
 
-        // Execute the method being tested
         superpouvoir.verification(joueur, 10);
 
-        // Make assertions
         assertTrue(superpouvoir.sansPouvoir(joueur));
         assertEquals(2, joueur.getPileDeJetons());
     }

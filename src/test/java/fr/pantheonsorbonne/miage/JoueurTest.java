@@ -122,26 +122,20 @@ public class JoueurTest {
 
     @Test
     void testAfficherMain() {
-        // Créer un joueur avec une main spécifique
         Joueur joueur = new Joueur("aymeric", 100);
         joueur.setMainDuJoueur(new MainDuJoueur(Arrays.asList(
                 new Card(CardRank.AS, CardColor.PIQUE),
                 new Card(CardRank.ROI, CardColor.COEUR))));
 
-        // Capturer la sortie standard dans un ByteArrayOutputStream
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
 
-        // Appeler la méthode afficherMain()
         joueur.afficherMain();
 
-        // Récupérer le texte imprimé
         String[] outputLines = outputStream.toString().trim().split("\\r?\\n"); // Diviser en lignes
 
-        // Réinitialiser la sortie standard
         System.setOut(System.out);
 
-        // Vérifier que les lignes imprimées correspondent aux attentes
         assertAll(
                 () -> assertEquals("aymeric a la main suivante :", outputLines[0]),
                 () -> assertEquals("AS de PIQUE", outputLines[1]),
@@ -150,7 +144,6 @@ public class JoueurTest {
 
     @Test
     void testFaireChoixWithProbabiliteEntre20et50() {
-        // Arrange
         Joueur joueur = new Joueur("Test", 100);
         Deck deck = new Deck();
         MainDuCroupier croupier = new MainDuCroupier(deck);
@@ -160,16 +153,13 @@ public class JoueurTest {
         MainDuJoueur main = new MainDuJoueur(cards);
         joueur.setMain(main);
 
-        // Act
         int choix = joueur.faireChoix(croupier, 50, 2);
 
-        // Assert
         assertEquals(1, choix);
     }
 
     @Test
     void testFaireChoixAutre() {
-        // Arrange
         Joueur joueur = new Joueur("Test", 100);
         Deck deck = new Deck();
         MainDuCroupier croupier = new MainDuCroupier(deck);
@@ -179,10 +169,8 @@ public class JoueurTest {
         MainDuJoueur main = new MainDuJoueur(cards);
         joueur.setMain(main);
 
-        // Act
         int choix = joueur.faireChoix(croupier, 50, 1);
 
-        // Assert
         assertTrue(choix >= 2 && choix <= 3);
     }
 
@@ -206,6 +194,7 @@ public class JoueurTest {
         assertTrue(cardNames.contains("AS de PIQUE"));
         assertTrue(cardNames.contains("ROI de COEUR"));
     }
+
     @Test
     void testGetCardNamesWithMainVide() {
         Joueur joueur = new Joueur("Test", 100);
@@ -338,6 +327,7 @@ public class JoueurTest {
         int probabilite = joueur.probabiliteDeGagner(mainCroupier);
         assertEquals(80, probabilite);
     }
+
     @Test
     void testProbabiliteDeGagnerAvecDeuxDames() {
         Joueur joueur = new Joueur("Test", 100);
@@ -354,6 +344,7 @@ public class JoueurTest {
         int probabilite = joueur.probabiliteDeGagner(mainCroupier);
         assertEquals(75, probabilite);
     }
+
     @Test
     void testProbabiliteDeGagnerAvecDeuxVALET() {
         Joueur joueur = new Joueur("Test", 100);
@@ -370,6 +361,7 @@ public class JoueurTest {
         int probabilite = joueur.probabiliteDeGagner(mainCroupier);
         assertEquals(70, probabilite);
     }
+
     @Test
     void testProbabiliteDeGagnerAvecDeuxDix() {
         Joueur joueur = new Joueur("Test", 100);
@@ -386,6 +378,7 @@ public class JoueurTest {
         int probabilite = joueur.probabiliteDeGagner(mainCroupier);
         assertEquals(65, probabilite);
     }
+
     @Test
     void testProbabiliteDeGagnerAvecDeuxNEUF() {
         Joueur joueur = new Joueur("Test", 100);
@@ -402,6 +395,7 @@ public class JoueurTest {
         int probabilite = joueur.probabiliteDeGagner(mainCroupier);
         assertEquals(60, probabilite);
     }
+
     @Test
     void testProbabiliteDeGagnerAvecDeuxHUIT() {
         Joueur joueur = new Joueur("Test", 100);
@@ -418,6 +412,7 @@ public class JoueurTest {
         int probabilite = joueur.probabiliteDeGagner(mainCroupier);
         assertEquals(55, probabilite);
     }
+
     @Test
     void testProbabiliteDeGagnerAvecDeuxSEPT() {
         Joueur joueur = new Joueur("Test", 100);
@@ -434,6 +429,7 @@ public class JoueurTest {
         int probabilite = joueur.probabiliteDeGagner(mainCroupier);
         assertEquals(50, probabilite);
     }
+
     @Test
     void testProbabiliteDeGagnerAvecDeuxSIX() {
         Joueur joueur = new Joueur("Test", 100);
@@ -450,6 +446,7 @@ public class JoueurTest {
         int probabilite = joueur.probabiliteDeGagner(mainCroupier);
         assertEquals(45, probabilite);
     }
+
     @Test
     void testProbabiliteDeGagnerAvecDeuxCINQ() {
         Joueur joueur = new Joueur("Test", 100);
@@ -466,6 +463,7 @@ public class JoueurTest {
         int probabilite = joueur.probabiliteDeGagner(mainCroupier);
         assertEquals(40, probabilite);
     }
+
     @Test
     void testProbabiliteDeGagnerAvecDeuxQUATRE() {
         Joueur joueur = new Joueur("Test", 100);
@@ -482,6 +480,7 @@ public class JoueurTest {
         int probabilite = joueur.probabiliteDeGagner(mainCroupier);
         assertEquals(35, probabilite);
     }
+
     @Test
     void testProbabiliteDeGagnerAvecDeuxTROIS() {
         Joueur joueur = new Joueur("Test", 100);
@@ -498,6 +497,7 @@ public class JoueurTest {
         int probabilite = joueur.probabiliteDeGagner(mainCroupier);
         assertEquals(30, probabilite);
     }
+
     @Test
     void testProbabiliteDeGagnerAvecDeuxDEUX() {
         Joueur joueur = new Joueur("Test", 100);
@@ -514,7 +514,6 @@ public class JoueurTest {
         int probabilite = joueur.probabiliteDeGagner(mainCroupier);
         assertEquals(20, probabilite);
     }
-    
 
     @Test
     void testProbabiliteDeGagnerAvecTroisCartesIdentiques() {
@@ -655,16 +654,13 @@ public class JoueurTest {
     void testRendreCarteVisibleAvecMainVide() {
         Joueur joueur = new Joueur("Bob", 100);
 
-        // Utiliser un ByteArrayOutputStream pour capturer la sortie standard
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
 
         joueur.rendreCarteVisible();
 
-        // Récupérer la sortie standard capturée
         String output = outputStream.toString().trim();
 
-        // Rétablir la sortie standard originale
         System.setOut(System.out);
 
         assertEquals("", output);
@@ -677,7 +673,6 @@ public class JoueurTest {
                 new Card(CardRank.AS, CardColor.PIQUE),
                 new Card(CardRank.ROI, CardColor.COEUR))));
 
-        // Utiliser un ByteArrayOutputStream pour capturer la sortie standard
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
 
@@ -765,30 +760,21 @@ public class JoueurTest {
         assertTrue(joueur.getMainDuJoueur().getMainDuJoueur().isEmpty());
     }
 
-
-
     @Test
     public void testFaireChoixSuperPouvoirWithHighJetons() {
-        // Arrange
-        Joueur joueur = new Joueur("Player1", 400);  // Jetons > 300
-        
-        // Act
+        Joueur joueur = new Joueur("Player1", 400);
+
         int choix = joueur.faireChoixSuperPouvoir();
 
-        // Assert
-        assertEquals(4, choix);  // Should choose superpouvoir option 4
+        assertEquals(4, choix);
     }
 
     @Test
     public void testFaireChoixSuperPouvoirWithLowJetons() {
-        // Arrange
-        Joueur joueur = new Joueur("Player1", 200);  // Jetons <= 300
-        
+        Joueur joueur = new Joueur("Player1", 200);
 
-        // Act
         int choix = joueur.faireChoixSuperPouvoir();
 
-        // Assert
-        assertEquals(5, choix);  // Should choose superpouvoir option 5
+        assertEquals(5, choix);
     }
 }

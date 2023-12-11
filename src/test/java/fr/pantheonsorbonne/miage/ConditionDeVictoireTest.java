@@ -22,7 +22,6 @@ class ConditionDeVictoireTest {
 
     @Test
     void testTrouverMeilleureCombinaisonQuinteFlush() {
-        // Créer une main avec une quinte flush
         MainDuCroupier mainCroupier = new MainDuCroupier(null);
         MainDuJoueur mainJoueur = new MainDuJoueur(Arrays.asList(
                 new Card(CardRank.HUIT, CardColor.COEUR),
@@ -40,7 +39,6 @@ class ConditionDeVictoireTest {
 
     @Test
     void testTrouverQuinte() {
-        // Créez une liste de cartes pour le test
         MainDuCroupier mainCroupier = new MainDuCroupier(null);
 
         mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.DIX, CardColor.COEUR));
@@ -55,10 +53,8 @@ class ConditionDeVictoireTest {
 
     @Test
     void testTrouverCombinaisonsMultiplesPaire() {
-        // Créer une main avec une paire
         MainDuCroupier mainCroupier = new MainDuCroupier(new Deck());
 
-        // Ajouter une paire à la main du croupier
         mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.DIX, CardColor.COEUR));
         mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.DIX, CardColor.PIQUE));
         mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.CINQ, CardColor.TREFLE));
@@ -72,10 +68,8 @@ class ConditionDeVictoireTest {
 
     @Test
     void testTrouverCombinaisonsMultiplesBrelan() {
-        // Créer une main avec un brelan
         MainDuCroupier mainCroupier = new MainDuCroupier(new Deck());
 
-        // Ajouter un brelan à la main du croupier
         mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.DIX, CardColor.COEUR));
         mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.DIX, CardColor.PIQUE));
         mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.DIX, CardColor.TREFLE));
@@ -89,10 +83,8 @@ class ConditionDeVictoireTest {
 
     @Test
     void testTrouverCombinaisonsMultiplesCarre() {
-        // Créer une main avec un carré
         MainDuCroupier mainCroupier = new MainDuCroupier(new Deck());
 
-        // Ajouter un carré à la main du croupier
         mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.DIX, CardColor.COEUR));
         mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.DIX, CardColor.PIQUE));
         mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.DIX, CardColor.TREFLE));
@@ -101,14 +93,12 @@ class ConditionDeVictoireTest {
 
         CombinaisonGagnante combinaison = ConditionDeVictoire
                 .trouverCombinaisonsMultiples(mainCroupier.getMainDuCroupier());
-        // Assurez-vous d'adapter le test en fonction des cartes ajoutées à la main du
-        // croupier
+       
         assertEquals(new CombinaisonGagnante(CombinaisonGagnante.Victoire.CARRE, CardRank.DIX), combinaison);
     }
 
     @Test
     void testSontConsecutives() {
-        // Créez une liste de cartes pour le test
         MainDuCroupier mainCroupier = new MainDuCroupier(null);
 
         mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.DEUX, CardColor.COEUR));

@@ -55,13 +55,11 @@ public class MainDuJoueurTest {
 
         mainDuJoueur.tirerCarte(carte1);
 
-        // Vérifier que la carte est ajoutée correctement
         assertEquals(1, mainDuJoueur.getCardNames().size());
         assertTrue(mainDuJoueur.getCardNames().contains(carte1.toString()));
 
         mainDuJoueur.tirerCarte(null);
 
-        // Vérifier que la taille de la liste ne change pas
         assertEquals(1, mainDuJoueur.getCardNames().size());
     }
 
@@ -74,11 +72,9 @@ public class MainDuJoueurTest {
 
         mainDuJoueur.tirerCarte(carte1);
 
-        // Enregistrez l'état initial de la visibilité de la carte
         boolean etatInitial = carte1.estVisible();
         mainDuJoueur.devoilerCarte(0);
 
-        // Vérifier que l'état de la visibilité de la carte a changé
         assertTrue(carte1.estVisible() != etatInitial);
     }
 }
