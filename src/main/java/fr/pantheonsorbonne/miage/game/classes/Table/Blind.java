@@ -32,4 +32,9 @@ public class Blind {
         this.joueur = joueur;
     }
 
+    @Override
+    public String toString() {
+        return this.joueur.getNom() + " doit payer " + this.valeur;
+    }
+
 }

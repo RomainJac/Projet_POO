@@ -4,6 +4,7 @@ import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.MainDuJoueur;
 import fr.pantheonsorbonne.miage.game.classes.Superpouvoir.GestionSuperpouvoir;
 import fr.pantheonsorbonne.miage.game.classes.Table.Card;
+import fr.pantheonsorbonne.miage.game.classes.Table.Deck;
 
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GestionSuperpouvoirTest {
 
-    /* @Test
+    @Test
     public void testTirerCarteVisible() {
         Joueur joueur = new Joueur("aymeric", 100);
         MainDuJoueur mainJoueur = new MainDuJoueur(Arrays.asList(
@@ -21,13 +22,15 @@ public class GestionSuperpouvoirTest {
                 new Card(Card.cardRank.TROIS, Card.cardColor.CARREAU)
         ));
         joueur.setMainDuJoueur(mainJoueur);
+        Deck deck = new Deck();
+        deck.initialiserDeck();                
 
         GestionSuperpouvoir gestionSuperpouvoir = new GestionSuperpouvoir();
-        gestionSuperpouvoir.tirerCarteVisible(joueur, null); 
+        gestionSuperpouvoir.tirerCarteVisible(joueur, deck); 
 
-        // Assertions
         assertEquals(3, joueur.getMainDuJoueur().getMainDuJoueur().size());
-    }
+    } 
+
 
     @Test
     public void testTirerCarteInvisible() {
@@ -37,13 +40,15 @@ public class GestionSuperpouvoirTest {
                 new Card(Card.cardRank.TROIS, Card.cardColor.CARREAU)
         ));
         joueur.setMainDuJoueur(mainJoueur);
+        Deck deck = new Deck();
+        deck.initialiserDeck();
+                
 
         GestionSuperpouvoir gestionSuperpouvoir = new GestionSuperpouvoir();
-        gestionSuperpouvoir.tirerCarteInvisible(joueur, null); 
+        gestionSuperpouvoir.tirerCarteInvisible(joueur, deck); 
 
-        // Assertions
         assertEquals(3, joueur.getMainDuJoueur().getMainDuJoueur().size());
-    }  */
+    } 
 
     @Test
     public void testDevoilerCarte() {

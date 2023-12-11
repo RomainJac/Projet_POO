@@ -79,10 +79,9 @@ public class TableDePokerTest {
 
         int result = table.faireRelance(joueur, 40);
 
-        //assertEquals(initialMiseMaximale + 30, result);
+        // assertEquals(initialMiseMaximale + 30, result);
         assertEquals(30, joueur.getMise());
-}
-
+    }
 
     @Test
     public void testDistribuerGainsWithWinningPlayers() {
@@ -115,7 +114,7 @@ public class TableDePokerTest {
         table.distribuerGains(joueursGagnants);
 
         assertEquals(200, joueur1.getPileDeJetons());
-        //assertEquals(0, joueursGagnants.size());
+        // assertEquals(0, joueursGagnants.size());
     }
 
     @Test
@@ -140,17 +139,15 @@ public class TableDePokerTest {
         Joueur joueur3 = new Joueur("Player3");
         List<Joueur> joueursActifs = new ArrayList<>(Arrays.asList(joueur1, joueur2, joueur3));
         table.setJoueursActifs(joueursActifs);
-        table.setMisesTotales(50); 
-        table.setMiseMaximale(30); 
+        table.setMisesTotales(50);
+        table.setMiseMaximale(30);
 
-        
         table.réinitialiserTable();
 
-        
-        //assertTrue(table.getJoueursActifs().isEmpty()); 
-        assertEquals(0, table.getMisesTotales()); 
+        assertFalse(table.getJoueursActifs().isEmpty());
+        assertEquals(0, table.getMisesTotales());
         assertEquals(0, table.getMiseMaximale());
-        
+
     }
 
     @Test
@@ -172,17 +169,16 @@ public class TableDePokerTest {
 
         String printedOutput = outputStream.toString().trim();
 
-        String expectedOutput = "Cartes de TestPlayer :AS de COEUR ROI de PIQUE";
+        String expectedOutput = "Cartes de TestPlayer : AS de COEUR ROI de PIQUE";
 
         assertEquals(expectedOutput, printedOutput);
     }
 
-
     @Test
     public void testEnleverJoueurSansJeton() {
-        Joueur joueur1 = new Joueur("Player1", 100); 
-        Joueur joueur2 = new Joueur("Player2", 0);  
-        Joueur joueur3 = new Joueur("Player3", 50);  
+        Joueur joueur1 = new Joueur("Player1", 100);
+        Joueur joueur2 = new Joueur("Player2", 0);
+        Joueur joueur3 = new Joueur("Player3", 50);
         TableDePoker table = new TableDePoker(joueur1, joueur2, joueur3);
 
         assertEquals(3, table.getJoueursActifs().size());
@@ -214,31 +210,28 @@ public class TableDePokerTest {
     }
 
     @Test
-public void testDeterminerGagnant() {
-    Joueur joueur1 = new Joueur("Player1", 150);
-    Joueur joueur2 = new Joueur("Player2", 150);
-    TableDePoker table = new TableDePoker(joueur1, joueur2);
-    table.setMisesTotales(300);
+    public void testDeterminerGagnant() {
+        Joueur joueur1 = new Joueur("Player1", 150);
+        Joueur joueur2 = new Joueur("Player2", 150);
+        TableDePoker table = new TableDePoker(joueur1, joueur2);
+        table.setMisesTotales(300);
 
-    MainDuJoueur mainJoueur = new MainDuJoueur(Arrays.asList(
-        new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-        new Card(Card.cardRank.AS, Card.cardColor.CARREAU)
-    ));
-    MainDuJoueur mainJoueur2 = new MainDuJoueur(Arrays.asList(
-        new Card(Card.cardRank.DEUX, Card.cardColor.CARREAU),
-        new Card(Card.cardRank.TROIS, Card.cardColor.TREFLE)
-    ));
+        MainDuJoueur mainJoueur = new MainDuJoueur(Arrays.asList(
+                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
+                new Card(Card.cardRank.AS, Card.cardColor.CARREAU)));
+        MainDuJoueur mainJoueur2 = new MainDuJoueur(Arrays.asList(
+                new Card(Card.cardRank.DEUX, Card.cardColor.CARREAU),
+                new Card(Card.cardRank.TROIS, Card.cardColor.TREFLE)));
 
-    joueur1.setMainDuJoueur(mainJoueur);
-    joueur2.setMainDuJoueur(mainJoueur2);
-    MainDuCroupier mainCroupier = new MainDuCroupier(null);
-    mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.AS, Card.cardColor.COEUR));
-    mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.AS, Card.cardColor.TREFLE));
+        joueur1.setMainDuJoueur(mainJoueur);
+        joueur2.setMainDuJoueur(mainJoueur2);
+        MainDuCroupier mainCroupier = new MainDuCroupier(null);
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.AS, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.AS, Card.cardColor.TREFLE));
 
-    table.determinerGagnant(table.getJoueursActifs());
+        table.determinerGagnant(table.getJoueursActifs());
 
-    //assertEquals(450, joueur1.getPileDeJetons());
-} 
+        assertEquals(450, joueur2.getPileDeJetons());
+    }
 
-    
 }
