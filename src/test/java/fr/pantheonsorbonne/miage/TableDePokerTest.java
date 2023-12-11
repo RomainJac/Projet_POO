@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import fr.pantheonsorbonne.miage.game.classes.Cartes.*;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.MainDuJoueur;
-import fr.pantheonsorbonne.miage.game.classes.Superpouvoir.GestionSuperpouvoir;
 import fr.pantheonsorbonne.miage.game.classes.Table.Blind;
 import fr.pantheonsorbonne.miage.game.classes.Table.Deck;
 import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
