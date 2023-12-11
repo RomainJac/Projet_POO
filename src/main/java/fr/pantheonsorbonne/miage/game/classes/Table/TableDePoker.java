@@ -8,6 +8,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.MainDuJoueur;
 import fr.pantheonsorbonne.miage.game.classes.Logique.ConditionDeVictoire;
+import fr.pantheonsorbonne.miage.game.classes.Superpouvoir.GestionSuperpouvoir;
 
 public class TableDePoker implements Runnable {
 	public List<Joueur> joueurs;
@@ -50,19 +51,22 @@ public class TableDePoker implements Runnable {
 					int choixJoueur = joueur.faireChoix(croupier, miseMaximale, i);
 					afficherInfosJoueur(joueur);
 					gererChoix(joueur, choixJoueur, miseMaximale);
+					int choixSuperpouvoir = joueur.faireChoixSuperPouvoir();
+					gererSuperpouvoir(joueur, choixSuperpouvoir, deck, joueur);
 					System.out.println("Contenu du pot : " + misesTotales);
 				}
 			}
 			System.out.println("Fin du tour");
 			afficherToutesLesMains();
-			determinerGagnant(joueurs);			
-			for (Joueur joueur : joueurs){
+			determinerGagnant(joueurs);
+			enleverJoueurSansJeton();
+			for (Joueur joueur : joueursActifs) {
 				System.out.println(joueur.getNom() + " a désormais : " + joueur.getPileDeJetons() + " jetons");
+
 			}
 			réinitialiserTable();
-			}
 		}
-	
+	}
 
 	public int gererChoix(Joueur joueur, int choix, int miseMaximale) {
 		switch (choix) {
@@ -94,13 +98,12 @@ public class TableDePoker implements Runnable {
 		}
 		return miseMaximale += montant;
 
-	}	
+	}
 
 	public void distribuerGains(List<Joueur> joueursGagnants) {
 		if (joueursGagnants != null) {
 			for (Joueur joueur : joueursGagnants) {
 				if (joueur.estTapis) {
-					System.out.println(joueur.getNom() + ", avec tapis a gagné,  " + joueur.getMise() * 2);
 					if (misesTotales > joueur.getMise() * 2) {
 						joueur.aGagné(joueur.getMise() * 2);
 						misesTotales -= joueur.getMise() * 2;
@@ -110,7 +113,6 @@ public class TableDePoker implements Runnable {
 					joueur.aGagné(misesTotales / joueursGagnants.size());
 					break;
 				} else {
-					System.out.println(joueur.getNom() + " a gagné " + misesTotales / joueursGagnants.size());
 					joueur.aGagné(misesTotales / joueursGagnants.size());
 				}
 			}
@@ -133,7 +135,7 @@ public class TableDePoker implements Runnable {
 			if (nombreDeTours % 5 == 0) {
 				augmenterBlinds();
 			}
-			
+
 		}
 		misesTotales = 0;
 		miseMaximale = 0;
@@ -157,11 +159,34 @@ public class TableDePoker implements Runnable {
 		distribuerCartes();
 		changerBlinds();
 		demanderPaiementBlinds();
-		if(joueurs.get(0).getPileDeJetons()==0){
+		if (joueurs.get(0).getPileDeJetons() == 0) {
 			System.out.println(joueurs.get(0).getNom() + " a perdu la partie");
 		}
-		if(joueurs.get(1).getPileDeJetons()==0){
+		if (joueurs.get(1).getPileDeJetons() == 0) {
 			System.out.println(joueurs.get(1).getNom() + " a perdu la partie");
+		}
+
+	}
+
+	public void gererSuperpouvoir(Joueur joueur, int choix, Deck deck, Joueur ennemis) {
+		GestionSuperpouvoir superpouvoir = new GestionSuperpouvoir();
+		switch (choix) {
+			case 1:
+				superpouvoir.tirerCarteVisible(joueur, deck);
+				break;
+			case 2:
+				superpouvoir.tirerCarteInvisible(joueur, deck);
+				break;
+			case 3:
+				superpouvoir.enleverCarte(joueur, ennemis);
+				break;
+			case 4:
+				superpouvoir.devoilerCarte(joueur, ennemis);
+				break;
+			case 5:
+				break;
+			default:
+				System.out.println("Choix non valide.");
 		}
 
 	}
@@ -193,11 +218,7 @@ public class TableDePoker implements Runnable {
 	}
 
 	public void enleverJoueurSansJeton() {
-		for (Joueur joueur : joueursActifs)
-			System.out.println(joueur);
-		this.joueursActifs.removeIf(joueur -> joueur.getPileDeJetons() == 0);
-		for (Joueur joueur : joueursActifs)
-			System.out.println(joueur);
+		joueursActifs.removeIf(joueur -> joueur.getPileDeJetons() == 0);
 	}
 
 	public void distribuerCartes() {
@@ -215,8 +236,10 @@ public class TableDePoker implements Runnable {
 		}
 
 		Collections.sort(joueurs);
-		joueursGagnants.add(joueurs.get(joueurs.size() - 1));
+		if (!joueurs.isEmpty()) {
+			joueursGagnants.add(joueurs.get(joueurs.size() - 1));
 
+		}
 		for (Joueur joueur : joueurs) {
 			if (joueur.getCombinaison().equals(joueursGagnants.get(0).getCombinaison())
 					&& !joueur.getNom().equals(joueursGagnants.get(0).getNom())) {
@@ -286,7 +309,7 @@ public class TableDePoker implements Runnable {
 	}
 
 	public void setJoueursActifs(List<Joueur> joueurActifs) {
-		this.joueursActifs =  joueurActifs;
+		this.joueursActifs = joueurActifs;
 	}
 
 }

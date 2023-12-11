@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import fr.pantheonsorbonne.miage.game.classes.Logique.CombinaisonGagnante;
+import fr.pantheonsorbonne.miage.game.classes.Superpouvoir.GestionSuperpouvoir;
 import fr.pantheonsorbonne.miage.game.classes.Table.Card;
 import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
 
@@ -15,6 +16,7 @@ public class Joueur implements Comparable<Joueur> {
     protected int mise;
     protected CombinaisonGagnante combinaison;
     protected MainDuJoueur mainDuJoueur;
+    protected GestionSuperpouvoir superpouvoir;
 
     public boolean estTapis;
 
@@ -207,6 +209,19 @@ public class Joueur implements Comparable<Joueur> {
             return 30;
 
         return 10;
+    }
+
+    public int faireChoixSuperPouvoir() {
+        if (getPileDeJetons() > 300) {
+            return 4;
+
+        }
+        return 5;
+
+    }
+
+    public GestionSuperpouvoir getSuperpouvoir() {
+        return this.superpouvoir;
     }
 
 }

@@ -10,7 +10,7 @@ import java.util.HashSet;
 public abstract class Superpouvoir {
     private int prix;
     private HashSet<Joueur> joueursSansPouvoir;
-    private int nbUtilisation;
+    public int nbUtilisation;
 
     public Superpouvoir() {
         this.joueursSansPouvoir = new HashSet<>();
@@ -29,11 +29,12 @@ public abstract class Superpouvoir {
     }
 
     public void verification(Joueur joueur, int tarif) throws IllegalArgumentException {
-        if (this.peutSuperpouvoir(joueur)) {
+
+        if (this.peutSuperpouvoir(joueur) && joueur.getPileDeJetons() > tarif) {
             joueur.setPileDeJetons(joueur.getPileDeJetons() - tarif);
             this.joueursSansPouvoir.add(joueur);
         } else {
-            throw new IllegalArgumentException("Le joueur n'a pas assez de jetons pour utiliser ce superpouvoir");
+            nbUtilisation++;
         }
     }
 
