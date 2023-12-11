@@ -92,7 +92,7 @@ public class ConditionDeVictoire {
      * @param main           La main de cartes.
      * @return La liste des cartes après inversion.
      */
-    private static List<Card> inverserCartes(CardColor couleurInverse, List<Card> main) {
+    public static List<Card> inverserCartes(CardColor couleurInverse, List<Card> main) {
         List<Card> listeAtout = new ArrayList<>();
         for (Card card : main) {
             if (card.getCardColor() == couleurInverse) {
