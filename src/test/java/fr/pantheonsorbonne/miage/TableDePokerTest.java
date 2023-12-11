@@ -6,7 +6,6 @@ import fr.pantheonsorbonne.miage.game.classes.Cartes.*;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.MainDuJoueur;
 import fr.pantheonsorbonne.miage.game.classes.Table.Blind;
-import fr.pantheonsorbonne.miage.game.classes.Table.Card;
 import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
 import fr.pantheonsorbonne.miage.game.classes.Table.TableDePoker;
 
@@ -245,8 +244,8 @@ public class TableDePokerTest {
         TableDePoker table = new TableDePoker(joueur1, joueur2);
 
         MainDuJoueur mainJoueur = new MainDuJoueur(Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.AS, Card.cardColor.CARREAU)));
+                new Card(CardRank.AS,CardColor.PIQUE),
+                new Card(CardRank.AS,CardColor.CARREAU)));
         joueur1.setMainDuJoueur(mainJoueur);
         joueur2.setMainDuJoueur(mainJoueur);
         assertFalse(joueur1.getMainDuJoueur().getMainDuJoueur().isEmpty());
@@ -291,7 +290,7 @@ public class TableDePokerTest {
         // Set initial blinds
         table.grosseBlind = new Blind(20, joueur1);
         table.petiteBlind = new Blind(10, joueur2);
-        table.petiteBlindParDefaut = 10;
+        table.grosseBlindParDefaut = 10;
 
         // Act
         table.augmenterBlinds();
@@ -310,8 +309,8 @@ public class TableDePokerTest {
         TableDePoker table = new TableDePoker(joueur1, joueur2);
 
         MainDuJoueur mainJoueur = new MainDuJoueur(Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.AS, Card.cardColor.CARREAU)));
+                new Card(CardRank.AS,CardColor.PIQUE),
+                new Card(CardRank.AS,CardColor.CARREAU)));
         joueur1.setMainDuJoueur(mainJoueur);
         joueur2.setMainDuJoueur(mainJoueur);
 

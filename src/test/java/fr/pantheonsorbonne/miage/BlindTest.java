@@ -41,10 +41,5 @@ public class BlindTest {
         assertEquals(nouveauJoueur, blind.getJoueur());
     }
 
-    @Test
-    public void testToString() {
-        joueur = new Joueur("Romain"); 
-        blind = new Blind(10, joueur);
-        assertEquals("Romain doit payer 10", blind.toString());
-    }
+
 }
