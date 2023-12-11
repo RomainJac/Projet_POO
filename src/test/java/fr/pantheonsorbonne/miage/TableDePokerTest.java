@@ -172,7 +172,7 @@ public class TableDePokerTest {
 
         String printedOutput = outputStream.toString().trim();
 
-        String expectedOutput = "Cartes de TestPlayer :AS de COEUR ROI de PIQUE";
+        String expectedOutput = "Cartes de TestPlayer : AS de COEUR ROI de PIQUE";
 
         assertEquals(expectedOutput, printedOutput);
     }
