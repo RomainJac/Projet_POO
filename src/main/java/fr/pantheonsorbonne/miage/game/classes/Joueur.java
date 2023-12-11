@@ -6,11 +6,11 @@ import java.util.Random;
 
 public class Joueur implements Comparable<Joueur> {
 
-    private String nom;
-    private int pileDeJetons;
+    protected String nom;
+    protected int pileDeJetons;
     protected int mise;
-    private CombinaisonGagnante combinaison;
-    private MainDuJoueur mainDuJoueur;
+    protected CombinaisonGagnante combinaison;
+    protected MainDuJoueur mainDuJoueur;
 
     protected boolean estTapis;
 

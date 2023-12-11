@@ -16,7 +16,7 @@ public class TableDePoker implements Runnable {
 	public Blind grosseBlind;
 	public Blind petiteBlind;
 	public Blind dealerBlind;
-	public int petiteBlindParDefaut = 2;
+	public int petiteBlindParDefaut = 10;
 
 	public TableDePoker(Joueur... joueurs) {
 		this.joueurs = new CopyOnWriteArrayList<>(joueurs);
@@ -36,7 +36,7 @@ public class TableDePoker implements Runnable {
 		while (joueursActifs.size() > 1) {
 			initialiserTour();
 			for (int i = 1; i < 4; i++) {
-				System.out.println(misesTotales);
+				System.out.println("Mise Totale : " + misesTotales);
 				croupier.tirerCarte(i);
 				System.out.println("Croupier :");
 				for (Card card : croupier.getMainDuCroupier()) {
@@ -135,7 +135,7 @@ public class TableDePoker implements Runnable {
 
 		List<String> cardNames = joueur.getCardNames();
 
-		System.out.print("Cartes de " + joueur.getNom() + " :");
+		System.out.print("Cartes de " + joueur.getNom() + " : ");
 		for (String cardName : cardNames) {
 			System.out.print(cardName + " ");
 		}
@@ -178,7 +178,11 @@ public class TableDePoker implements Runnable {
 	}
 
 	public void enleverJoueurSansJeton() {
+		for (Joueur joueur : joueursActifs)
+			System.out.println(joueur);
 		this.joueursActifs.removeIf(joueur -> joueur.getPileDeJetons() == 0);
+		for (Joueur joueur : joueursActifs)
+			System.out.println(joueur);
 	}
 
 	public void distribuerCartes() {
