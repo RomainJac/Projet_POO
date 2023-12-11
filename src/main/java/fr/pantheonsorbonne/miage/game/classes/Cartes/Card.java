@@ -5,8 +5,8 @@ public class Card {
     private CardColor cardColor;
     private boolean faceVisible;
 
-    public Card(CardRank valeur, CardColor couleur) {
-        this.cardRank = valeur;
+    public Card(CardRank rank, CardColor couleur) {
+        this.cardRank = rank;
         this.cardColor = couleur;
         this.faceVisible = false;
     }
@@ -36,7 +36,7 @@ public class Card {
         this.faceVisible = true;
     }
 
-    public String CardEnChaine(Card Card) {
+    public String CardToString(Card Card) {
         return Card.getCardRank().getStringRepresentation() + " de " + this.cardColor;
     }
 }

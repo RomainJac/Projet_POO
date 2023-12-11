@@ -2,6 +2,10 @@ package fr.pantheonsorbonne.miage.game.classes.Table;
 
 import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
 
+/**
+ * La classe Blind représente les mises obligatoires (blinds) dans une partie de
+ * poker.
+ */
 public class Blind {
 
     private int valeur;

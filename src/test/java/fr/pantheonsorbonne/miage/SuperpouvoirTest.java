@@ -12,14 +12,6 @@ public class SuperpouvoirTest {
     private static class TestSuperpouvoir extends Superpouvoir {
 
         @Override
-        protected void Utiliser(Joueur joueur, Deck deck) {
-        }
-
-        @Override
-        protected void Utiliser(Joueur joueur, Joueur adversaire) {
-        }
-
-        @Override
         public void tirerCarteVisible(Joueur joueur, Deck deck) {
         }
 
@@ -34,7 +26,7 @@ public class SuperpouvoirTest {
         @Override
         public void enleverCarte(Joueur joueur, Joueur ennemis) {
         }
-    }    
+    }
 
     @Test
     public void testPeutSuperpouvoir() {
@@ -82,7 +74,6 @@ public class SuperpouvoirTest {
         assertFalse(result);
     }
 
-
     @Test
     public void testVerificationWithEnoughJetons() {
         Joueur joueur = new Joueur("Charlie");
@@ -99,7 +90,4 @@ public class SuperpouvoirTest {
         assertEquals(2, joueur.getPileDeJetons());
     }
 
-    
 }
-
-

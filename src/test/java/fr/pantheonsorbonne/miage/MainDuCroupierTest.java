@@ -55,7 +55,7 @@ public class MainDuCroupierTest {
 
         assertFalse(mainDuCroupier.getMainDuCroupier().isEmpty());
 
-        mainDuCroupier.vider();
+        mainDuCroupier.viderMainCroupier();
 
         assertTrue(mainDuCroupier.getMainDuCroupier().isEmpty());
     }

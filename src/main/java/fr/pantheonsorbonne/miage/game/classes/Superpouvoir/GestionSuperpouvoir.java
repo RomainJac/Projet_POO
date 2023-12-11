@@ -9,6 +9,12 @@ public class GestionSuperpouvoir extends Superpouvoir {
         super();
     }
 
+    /**
+     * Permet au joueur de tirer une carte visible des autres joueurs du deck.
+     * 
+     * @param joueur Le joueur effectuant l'action.
+     * @param deck   Le deck depuis lequel la carte est tirée.
+     */
     @Override
     public void tirerCarteVisible(Joueur joueur, Deck deck) {
         verification(joueur, 50);
@@ -18,6 +24,12 @@ public class GestionSuperpouvoir extends Superpouvoir {
         card.montre();
     }
 
+    /**
+     * Permet au joueur de tirer une carte invisible de autres joueurs du deck.
+     * 
+     * @param joueur Le joueur effectuant l'action.
+     * @param deck   Le deck depuis lequel la carte est tirée.
+     */
     @Override
     public void tirerCarteInvisible(Joueur joueur, Deck deck) {
         verification(joueur, 100);
@@ -26,6 +38,12 @@ public class GestionSuperpouvoir extends Superpouvoir {
         joueur.ajouterCarte(card);
     }
 
+    /**
+     * Permet au joueur de dévoiler une carte d'un ennemi.
+     * 
+     * @param joueur  Le joueur effectuant l'action.
+     * @param ennemis Le joueur ennemi dont la carte doit être dévoilée.
+     */
     @Override
     public void devoilerCarte(Joueur joueur, Joueur ennemis) {
         verification(joueur, 50);
@@ -33,19 +51,16 @@ public class GestionSuperpouvoir extends Superpouvoir {
         ennemis.rendreCarteVisible();
     }
 
+    /**
+     * Permet au joueur de retirer une carte d'un ennemi.
+     * 
+     * @param joueur  Le joueur effectuant l'action.
+     * @param ennemis Le joueur ennemi dont la carte doit être retirée.
+     */
     @Override
     public void enleverCarte(Joueur joueur, Joueur ennemis) {
         verification(joueur, 100);
         enleverSuperpouvoir();
         ennemis.enleverCarte();
     }
-
-    @Override
-    protected void Utiliser(Joueur joueur, Deck deck) {
-    }
-
-    @Override
-    protected void Utiliser(Joueur joueur, Joueur adversaire) {
-    }
-
 }

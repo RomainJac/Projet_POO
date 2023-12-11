@@ -26,7 +26,6 @@ public class TableDePoker implements Runnable {
 	public int grosseBlindParDefaut = 10;
 	protected CardColor couleurAtout;
 
-
 	public TableDePoker(Joueur... joueurs) {
 		this.joueurs = new CopyOnWriteArrayList<>(joueurs);
 		this.deck = new Deck();
@@ -36,21 +35,31 @@ public class TableDePoker implements Runnable {
 		this.miseMaximale = 0;
 	}
 
+	/**
+	 * Utilisation d'un runnable afin de rendre l'appel du jeu plus propre.
+	 */
 	@Override
 	public void run() {
 		jouer();
 	}
 
+	/**
+	 * Méthode principale pour gérer le déroulement d'une partie de poker.
+	 */
 	public void jouer() {
 		while (joueursActifs.size() > 1) {
 			initialiserTour();
+
+			// Trois phases de tirage de cartes
 			for (int i = 1; i < 4; i++) {
-				System.out.println("Mise Totale : " + misesTotales);
 				croupier.tirerCarte(i);
 				System.out.println("Croupier :");
 				for (Card card : croupier.getMainDuCroupier()) {
-					System.out.println(card.CardEnChaine(card));
+					System.out.println(card.CardToString(card));
 				}
+
+				// Phase où chaque joueur prend des décisions et utilise éventuellement un
+				// superpouvoir
 				for (Joueur joueur : joueursActifs) {
 					int choixJoueur = joueur.faireChoix(croupier, miseMaximale, i);
 					afficherInfosJoueur(joueur);
@@ -59,19 +68,30 @@ public class TableDePoker implements Runnable {
 					gererSuperpouvoir(joueur, choixSuperpouvoir, deck, joueur);
 				}
 			}
+
+			// Affichage des mains, détermination des gagnants, enlèvement des joueurs sans
+			// jetons
 			afficherToutesLesMains();
 			determinerGagnant(joueurs);
 			enleverJoueurSansJeton();
-			for (Joueur joueur : joueursActifs) {
-				System.out.println(joueur.getNom() + " a désormais : " + joueur.getPileDeJetons() + " jetons");
-				System.out.println(joueur.getNom() + " a Gagné");
 
+			// Affichage des gagnants et réinitialisation de la table
+			for (Joueur joueur : joueursActifs) {
+				System.out.println(joueur.getNom() + " a Gagné");
 			}
 			System.out.println("Fin de la partie");
 			réinitialiserTable();
 		}
 	}
 
+	/**
+	 * Méthode pour gérer les choix des joueurs pendant le tour.
+	 *
+	 * @param joueur       Le joueur effectuant le choix.
+	 * @param choix        Le choix effectué par le joueur.
+	 * @param miseMaximale La mise maximale du joueur ayant le plus misé.
+	 * @return Les mises totales après le choix du joueur.
+	 */
 	public int gererChoix(Joueur joueur, int choix, int miseMaximale) {
 		switch (choix) {
 			case 1 -> {
@@ -91,9 +111,15 @@ public class TableDePoker implements Runnable {
 		}
 
 		return misesTotales;
-
 	}
 
+	/**
+	 * Méthode pour effectuer une relance pendant le tour.
+	 *
+	 * @param joueur  Le joueur effectuant la relance.
+	 * @param montant Le montant de la relance.
+	 * @return La nouvelle mise après la relance.
+	 */
 	public int faireRelance(Joueur joueur, int montant) {
 		int nouvelleMise = miseMaximale + montant;
 
@@ -107,6 +133,11 @@ public class TableDePoker implements Runnable {
 		return nouvelleMise;
 	}
 
+	/**
+	 * Méthode pour distribuer les gains aux joueurs gagnants.
+	 *
+	 * @param joueursGagnants Liste des joueurs gagnants.
+	 */
 	public void distribuerGains(List<Joueur> joueursGagnants) {
 		if (joueursGagnants != null) {
 			for (Joueur joueur : joueursGagnants) {
@@ -126,31 +157,31 @@ public class TableDePoker implements Runnable {
 
 			for (Joueur joueur : joueurs) {
 				if (!joueursGagnants.contains(joueur)) {
-					System.out.println(joueur.getNom() + " a perdu : " + joueur.getMise());
 				}
 			}
 		}
-
 	}
 
 	public void réinitialiserTable() {
 		réinitialiserJoueurs();
 		if (!joueursActifs.isEmpty()) {
 			Deck.reinitialiserDeck();
-			croupier.vider();
+			croupier.viderMainCroupier();
 			nombreDeTours++;
 			if (nombreDeTours % 5 == 0) {
 				augmenterBlinds();
 			}
-
 		}
 		misesTotales = 0;
 		miseMaximale = 0;
-
 	}
 
+	/**
+	 * Méthode pour afficher les cartes dans la main d'un joueur.
+	 *
+	 * @param joueur Le joueur dont on affiche les cartes.
+	 */
 	public void afficherInfosJoueur(Joueur joueur) {
-
 		List<String> cardNames = joueur.getCardNames();
 
 		System.out.print("Cartes de " + joueur.getNom() + " : ");
@@ -158,9 +189,11 @@ public class TableDePoker implements Runnable {
 			System.out.print(cardName + " ");
 		}
 		System.out.println();
-
 	}
 
+	/**
+	 * Méthode pour initialiser un nouveau tour de jeu.
+	 */
 	public void initialiserTour() {
 		deck.initialiserDeck();
 		distribuerCartes();
@@ -169,6 +202,14 @@ public class TableDePoker implements Runnable {
 		changerAtout();
 	}
 
+	/**
+	 * Méthode pour gérer l'utilisation d'un superpouvoir par un joueur.
+	 *
+	 * @param joueur  Le joueur utilisant le superpouvoir.
+	 * @param choix   Le choix du superpouvoir effectué par le joueur.
+	 * @param deck    Le paquet de cartes.
+	 * @param ennemis Le joueur cible du superpouvoir.
+	 */
 	public void gererSuperpouvoir(Joueur joueur, int choix, Deck deck, Joueur ennemis) {
 		GestionSuperpouvoir superpouvoir = new GestionSuperpouvoir();
 		switch (choix) {
@@ -186,12 +227,13 @@ public class TableDePoker implements Runnable {
 				break;
 			case 5:
 				break;
-			default:
-				System.out.println("Choix non valide.");
 		}
-
 	}
 
+	/**
+	 * Méthode pour changer les positions des blinds (grosse, petite et dealer
+	 * blinds).
+	 */
 	public void changerBlinds() {
 		int n = this.joueursActifs.size();
 		if (this.grosseBlind == null) {
@@ -218,10 +260,16 @@ public class TableDePoker implements Runnable {
 		this.dealerBlind.setJoueur(this.joueursActifs.get(indexcroupier));
 	}
 
+	/**
+	 * Méthode pour enlever les joueurs sans jetons de la liste des joueurs actifs.
+	 */
 	public void enleverJoueurSansJeton() {
 		joueursActifs.removeIf(joueur -> joueur.getPileDeJetons() == 0);
 	}
 
+	/**
+	 * Méthode pour distribuer deux cartes à chaque joueur actif.
+	 */
 	public void distribuerCartes() {
 		for (Joueur joueur : this.joueursActifs) {
 			joueur.setMain(new MainDuJoueur(this.deck.CarteAleatoires(2)));
@@ -253,6 +301,11 @@ public class TableDePoker implements Runnable {
 		return joueursGagnants;
 	}
 
+	/**
+	 * Méthode pour réinitialiser les joueurs à la fin d'une partie.
+	 *
+	 * @return Liste des joueurs actifs après réinitialisation.
+	 */
 	public List<Joueur> réinitialiserJoueurs() {
 		for (Joueur joueur : joueurs) {
 			joueur.setMise(0);
@@ -261,9 +314,13 @@ public class TableDePoker implements Runnable {
 			enleverJoueurSansJeton();
 		}
 		return joueursActifs;
-
 	}
 
+	/**
+	 * Méthode pour demander le paiement des blinds aux joueurs concernés.
+	 *
+	 * @return Total des mises des blinds.
+	 */
 	public int demanderPaiementBlinds() {
 		this.grosseBlind.getJoueur()
 				.setPileDeJetons(this.grosseBlind.getJoueur().getPileDeJetons() - this.grosseBlind.getValeur());
@@ -274,6 +331,9 @@ public class TableDePoker implements Runnable {
 		return misesTotales = misesTotales + grosseBlind.getValeur() + petiteBlind.getValeur();
 	}
 
+	/**
+	 * Méthode pour augmenter la valeur des blinds au bout de 5 tours.
+	 */
 	public void augmenterBlinds() {
 		this.grosseBlind.augmenter(grosseBlindParDefaut);
 		this.petiteBlind.augmenter(grosseBlindParDefaut / 2);
@@ -285,13 +345,21 @@ public class TableDePoker implements Runnable {
 		}
 	}
 
+	/**
+	 * Méthode choisir l'atout de la donne.
+	 */
 	protected void changerAtout() {
 		Joueur joueur = this.joueursActifs.get(0);
 		int answer = (joueur).demandeCouleurInverse();
-		this.setInvertedColor(answer);
+		this.setAtout(answer);
 	}
 
-	protected void setInvertedColor(int couleur) {
+	/**
+	 * Méthode pour définir la couleur inversée (atout) du jeu.
+	 *
+	 * @param couleur La couleur choisie pour inverser.
+	 */
+	protected void setAtout(int couleur) {
 		CardColor inverse = null;
 		switch (couleur) {
 			case 0:
@@ -347,12 +415,12 @@ public class TableDePoker implements Runnable {
 		return this.grosseBlind;
 	}
 
-    public Blind getPetiteBlind() {
-        return this.petiteBlind;
-    }
+	public Blind getPetiteBlind() {
+		return this.petiteBlind;
+	}
 
-    public Blind getDealerBlind() {
-        return this.dealerBlind;
-    }
+	public Blind getDealerBlind() {
+		return this.dealerBlind;
+	}
 
 }

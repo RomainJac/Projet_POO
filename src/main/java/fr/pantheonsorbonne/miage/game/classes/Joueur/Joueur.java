@@ -11,8 +11,6 @@ import fr.pantheonsorbonne.miage.game.classes.Superpouvoir.GestionSuperpouvoir;
 import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
 import fr.pantheonsorbonne.miage.game.classes.Cartes.CardRank;
 
-
-
 public class Joueur implements Comparable<Joueur> {
 
     protected String nom;
@@ -21,9 +19,7 @@ public class Joueur implements Comparable<Joueur> {
     protected CombinaisonGagnante combinaison;
     protected MainDuJoueur mainDuJoueur;
     protected GestionSuperpouvoir superpouvoir;
-    protected CardColor couleurInverse; 
-
-
+    protected CardColor couleurInverse;
     public boolean estTapis;
 
     public Joueur(String nom) {
@@ -82,6 +78,12 @@ public class Joueur implements Comparable<Joueur> {
         }
     }
 
+    /**
+     * Effectue une mise.
+     * 
+     * @param combien Le montant de la mise.
+     * @return Le montant effectivement misé.
+     */
     public int miser(int combien) {
         if (this.pileDeJetons <= combien) {
             this.mise += this.pileDeJetons;
@@ -92,7 +94,6 @@ public class Joueur implements Comparable<Joueur> {
             this.pileDeJetons -= combien;
         }
         return combien;
-
     }
 
     public int aGagné(int gain) {
@@ -111,6 +112,9 @@ public class Joueur implements Comparable<Joueur> {
         this.mainDuJoueur.supprimerCarte();
     }
 
+    /**
+     * Rend une carte aléatoire de la main du joueur visible.
+     */
     public void rendreCarteVisible() {
         if (this.mainDuJoueur != null && !this.mainDuJoueur.getMainDuJoueur().isEmpty()) {
             Random random = new Random();
@@ -140,28 +144,69 @@ public class Joueur implements Comparable<Joueur> {
         return this.mainDuJoueur;
     }
 
+    /**
+     * Inverse la couleur du joueur.
+     * 
+     * @param inverse La nouvelle couleur inversée.
+     */
     public void InverserCouleur(CardColor inverse) {
-		this.couleurInverse=inverse;
-	}
+        this.couleurInverse = inverse;
+    }
 
+    /**
+     * Demande la couleur inversée au joueur.
+     * 
+     * @return La couleur inversée demandée.
+     *         Le Robot retounera toujours la même valeur
+     */
     public int demandeCouleurInverse() {
-		return 2;
-	}
-
-    public int faireChoix(MainDuCroupier croupier, int miseMaximale, int tour) {
-        int probabiliteDeGagner = probabiliteDeGagner(croupier);
-        if (probabiliteDeGagner > 20 && probabiliteDeGagner <= 50 && tour > 1)
-            return 1;
-        else if (probabiliteDeGagner > 50 && getPileDeJetons() > miseMaximale
-                || probabiliteDeGagner > 20 && probabiliteDeGagner <= 50 && tour == 1)
-            return 3;
         return 2;
     }
 
+    /**
+     * Prend une décision sur la mise pendant un tour de jeu.
+     * 
+     * @param croupier     La main du croupier.
+     * @param miseMaximale La mise maximale autorisée.
+     * @param tour         Le numéro du tour actuel.
+     * @return Le choix du joueur en matière de mise.
+     */
+    public int faireChoix(MainDuCroupier croupier, int miseMaximale, int tour) {
+        int probabiliteDeGagner = probabiliteDeGagner(croupier);
+        if (probabiliteDeGagner > 20 && probabiliteDeGagner <= 50 && tour > 1)
+            return 1; // Choisir de miser
+        else if (probabiliteDeGagner > 50 && getPileDeJetons() > miseMaximale
+                || probabiliteDeGagner > 20 && probabiliteDeGagner <= 50 && tour == 1)
+            return 3; // Choisir de relancer
+        return 2; // Choisir de suivre
+    }
+
+    /**
+     * Prend une décision sur l'utilisation du superpouvoir.
+     * 
+     * @return Le choix du joueur en matière de superpouvoir.
+     */
+    public int faireChoixSuperPouvoir() {
+        if (getPileDeJetons() > 300) {
+            return 4; // Utiliser un superpouvoir pour voir une carte de l'adversaire
+        }
+        return 5; // Ne pas utiliser le superpouvoir
+    }
+
+    /**
+     * Calcule la probabilité de gagner du joueur en fonction de sa main et de celle
+     * du croupier.
+     * 
+     * @param croupier La main du croupier.
+     * @return La probabilité de gagner en pourcentage.
+     */
     public int probabiliteDeGagner(MainDuCroupier croupier) {
         CardRank firstCardRank = mainDuJoueur.getMainDuJoueur().get(0).getCardRank();
         CardRank secondCardRank = mainDuJoueur.getMainDuJoueur().get(1).getCardRank();
+
+        // Cas où les deux cartes du joueur ont la même valeur
         if (firstCardRank.equals(secondCardRank)) {
+            // Assignation de probabilités en fonction de la valeur des cartes
             if (firstCardRank == CardRank.AS)
                 return 85;
             else if (firstCardRank == CardRank.ROI)
@@ -189,7 +234,7 @@ public class Joueur implements Comparable<Joueur> {
             else if (firstCardRank == CardRank.DEUX)
                 return 20;
         }
-
+        // Cas où les deux cartes du joueur ont des valeurs différentes
         else if (firstCardRank == CardRank.AS && secondCardRank == CardRank.ROI
                 || firstCardRank == CardRank.ROI && secondCardRank == CardRank.AS)
             return 60;
@@ -203,6 +248,7 @@ public class Joueur implements Comparable<Joueur> {
                 || firstCardRank == CardRank.ROI && secondCardRank == CardRank.DAME)
             return 50;
 
+        // Comparaison des couleurs des cartes du croupier
         if (croupier.getMainDuCroupier().get(0).getCardColor() != croupier.getMainDuCroupier().get(1).getCardColor()
                 && croupier.getMainDuCroupier().get(1).getCardColor() != croupier.getMainDuCroupier().get(2)
                         .getCardColor()
@@ -222,19 +268,8 @@ public class Joueur implements Comparable<Joueur> {
                         .getCardColor())
             return 30;
 
+        // Probabilité par défaut
         return 10;
-    }
-
-    public int faireChoixSuperPouvoir() {
-        if (getPileDeJetons() > 300) {
-            return 4;
-        }
-        return 5;
-
-    }
-
-    public GestionSuperpouvoir getSuperpouvoir() {
-        return this.superpouvoir;
     }
 
 }

@@ -24,20 +24,7 @@ public class CombinaisonGagnante implements Comparable<CombinaisonGagnante> {
         return 0;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CombinaisonGagnante that = (CombinaisonGagnante) o;
-        return victoire == that.victoire && cardRank == that.cardRank;
-    }
-
-    @Override
-    public String toString() {
-        return cardRank + " " + victoire;
-    }
-
     public enum Victoire {
         CARTE_HAUTE, PAIRE, DOUBLE_PAIRE, BRELAN, QUINTE, FLUSH, FULL, CARRE, QUINTE_FLUSH, QUINTE_FLUSH_ROYALE;
-        }
+    }
 }

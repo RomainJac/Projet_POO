@@ -11,6 +11,14 @@ import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
 
 public class ConditionDeVictoire {
 
+    /**
+     * Trouve la meilleure combinaison de cartes parmi la main du croupier et celle
+     * du joueur.
+     * 
+     * @param mainDuCroupier La main du croupier.
+     * @param mainDuJoueur   La main du joueur.
+     * @return La meilleure combinaison de cartes.
+     */
     public static CombinaisonGagnante trouverMeilleureCombinaison(MainDuCroupier mainDuCroupier,
             MainDuJoueur mainDuJoueur) {
         List<Card> mainGlobale = new ArrayList<>();
@@ -27,27 +35,39 @@ public class ConditionDeVictoire {
 
         if (quinte != null)
             return quinte;
-
-        else if (combinaisonMultiple != null) {
+        else if (combinaisonMultiple != null)
             return combinaisonMultiple;
-        }
 
         return new CombinaisonGagnante(CombinaisonGagnante.Victoire.CARTE_HAUTE, trouverCarteLaPlusHaute(mainGlobale));
     }
 
+    /**
+     * Trouve la meilleure combinaison de cartes parmi une liste de cartes.
+     * 
+     * @param main La liste de cartes.
+     * @return La meilleure combinaison de cartes.
+     */
     public static CombinaisonGagnante trouverMeilleureCombinaison(List<Card> main) {
         CombinaisonGagnante combinaisonMultiple = trouverCombinaisonsMultiples(main);
         CombinaisonGagnante quinteFlush = trouverQuinte(main);
 
-        if (quinteFlush != null) {
+        if (quinteFlush != null)
             return quinteFlush;
-        } else if (combinaisonMultiple != null) {
+        else if (combinaisonMultiple != null)
             return combinaisonMultiple;
-        }
 
         return new CombinaisonGagnante(CombinaisonGagnante.Victoire.CARTE_HAUTE, trouverCarteLaPlusHaute(main));
     }
 
+    /**
+     * Trouve la meilleure combinaison de cartes parmi la main du croupier et celle
+     * du joueur, avec une couleur inversée.
+     * 
+     * @param carteInverse   La couleur inversée.
+     * @param mainDuCroupier La main du croupier.
+     * @param mainDuJoueur   La main du joueur.
+     * @return La meilleure combinaison de cartes.
+     */
     public static CombinaisonGagnante trouverMeilleureCombinaison(CardColor carteInverse, MainDuCroupier mainDuCroupier,
             MainDuJoueur mainDuJoueur) {
         List<Card> mainGlobale = new ArrayList<>();
@@ -63,12 +83,18 @@ public class ConditionDeVictoire {
 
         mainGlobale = inverserCartes(carteInverse, mainGlobale);
         return trouverMeilleureCombinaison(mainGlobale);
-
     }
 
-    private static List<Card> inverserCartes(CardColor couleurInverse, List<Card> hand) {
+    /**
+     * Inverse les cartes de la main ayant une couleur spécifiée.
+     * 
+     * @param couleurInverse La couleur à inverser.
+     * @param main           La main de cartes.
+     * @return La liste des cartes après inversion.
+     */
+    private static List<Card> inverserCartes(CardColor couleurInverse, List<Card> main) {
         List<Card> listeAtout = new ArrayList<>();
-        for (Card card : hand) {
+        for (Card card : main) {
             if (card.getCardColor() == couleurInverse) {
                 Card invertedCard = new CardInverse(card.getCardRank().InverserOrdre(), card.getCardColor());
                 listeAtout.add(invertedCard);
@@ -79,6 +105,13 @@ public class ConditionDeVictoire {
         return listeAtout;
     }
 
+    /**
+     * Trouve une quinte dans une liste de cartes.
+     * 
+     * @param cartes La liste de cartes.
+     * @return La combinaison gagnante de quinte ou quinte flush, ou null si aucune
+     *         n'est trouvée.
+     */
     public static CombinaisonGagnante trouverQuinte(List<Card> cartes) {
         Collections.sort(cartes, Comparator.comparing(Card::getCardRank));
         Map<CardColor, List<Card>> cartesParCouleur = new HashMap<>();
@@ -102,6 +135,12 @@ public class ConditionDeVictoire {
         return null;
     }
 
+    /**
+     * Vérifie si les cartes sont consécutives en termes de rank.
+     * 
+     * @param cartes La liste de cartes.
+     * @return true si les cartes sont consécutives, false sinon.
+     */
     public static boolean sontConsecutives(List<Card> cartes) {
         for (int i = 0; i < cartes.size() - 1; i++) {
             if (Math.abs(cartes.get(i).getCardRank().ordinal() - cartes.get(i + 1).getCardRank().ordinal()) != 1) {
@@ -111,6 +150,13 @@ public class ConditionDeVictoire {
         return true;
     }
 
+    /**
+     * Trouve les combinaisons multiples dans une liste de cartes.
+     * 
+     * @param main La liste de cartes.
+     * @return La combinaison gagnante de cartes multiples, ou null si aucune n'est
+     *         trouvée.
+     */
     public static CombinaisonGagnante trouverCombinaisonsMultiples(List<Card> main) {
         Map<CardRank, Integer> compteParRang = new HashMap<>();
         for (Card carte : main) {
@@ -144,6 +190,12 @@ public class ConditionDeVictoire {
         return null;
     }
 
+    /**
+     * Trouve la carte la plus haute dans une liste de cartes.
+     * 
+     * @param main La liste de cartes.
+     * @return Le rang de la carte la plus haute.
+     */
     public static CardRank trouverCarteLaPlusHaute(List<Card> main) {
         CardRank carteLaPlusHaute = CardRank.DEUX;
         for (Card carte : main) {
@@ -153,5 +205,4 @@ public class ConditionDeVictoire {
         }
         return carteLaPlusHaute;
     }
-
 }

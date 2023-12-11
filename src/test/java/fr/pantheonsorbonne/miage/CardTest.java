@@ -24,7 +24,7 @@ public class CardTest {
     @Test
     public void testCardGetCardName() {
         Card card = new Card(CardRank.AS, CardColor.CARREAU);
-        assertEquals("AS de CARREAU", card.CardEnChaine(card));
+        assertEquals("AS de CARREAU", card.CardToString(card));
     }
 
 }
