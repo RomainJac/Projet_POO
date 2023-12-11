@@ -63,7 +63,7 @@ public class Deck {
      * @param nbCartes Le nombre de cartes à tirer.
      * @return Une liste de cartes tirées.
      */
-    public List<Card> CarteAleatoires(int nbCartes) {
+    public ArrayList<Card> CarteAleatoires(int nbCartes) {
         ArrayList<Card> CardsTirees = new ArrayList<>(nbCartes);
         for (int i = 0; i < nbCartes; i++) {
             CardsTirees.add(tirer());
