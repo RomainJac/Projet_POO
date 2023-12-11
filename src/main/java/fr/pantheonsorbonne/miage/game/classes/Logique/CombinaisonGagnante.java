@@ -1,13 +1,13 @@
 package fr.pantheonsorbonne.miage.game.classes.Logique;
 
-import fr.pantheonsorbonne.miage.game.classes.Table.Card;
+import fr.pantheonsorbonne.miage.game.classes.Cartes.CardRank;
 
 public class CombinaisonGagnante implements Comparable<CombinaisonGagnante> {
     private Victoire victoire;
 
-    private Card.cardRank cardRank;
+    private CardRank cardRank;
 
-    public CombinaisonGagnante(Victoire victoire, Card.cardRank cardRank) {
+    public CombinaisonGagnante(Victoire victoire, CardRank cardRank) {
         this.victoire = victoire;
         this.cardRank = cardRank;
     }

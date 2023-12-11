@@ -3,6 +3,8 @@ package fr.pantheonsorbonne.miage.game.classes.Table;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.pantheonsorbonne.miage.game.classes.Cartes.Card;
+
 public class MainDuCroupier {
     private List<Card> mainDuCroupier;
     private Deck deck;

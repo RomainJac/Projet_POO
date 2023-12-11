@@ -1,9 +1,9 @@
 package fr.pantheonsorbonne.miage;
 
+import fr.pantheonsorbonne.miage.game.classes.Cartes.*;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.MainDuJoueur;
 import fr.pantheonsorbonne.miage.game.classes.Superpouvoir.GestionSuperpouvoir;
-import fr.pantheonsorbonne.miage.game.classes.Table.Card;
 import fr.pantheonsorbonne.miage.game.classes.Table.Deck;
 
 import org.junit.jupiter.api.Test;
@@ -18,8 +18,8 @@ public class GestionSuperpouvoirTest {
     public void testTirerCarteVisible() {
         Joueur joueur = new Joueur("aymeric", 100);
         MainDuJoueur mainJoueur = new MainDuJoueur(Arrays.asList(
-                new Card(Card.cardRank.DEUX, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.TROIS, Card.cardColor.CARREAU)
+                new Card(CardRank.DEUX, CardColor.PIQUE),
+                new Card(CardRank.TROIS, CardColor.CARREAU)
         ));
         joueur.setMainDuJoueur(mainJoueur);
         Deck deck = new Deck();
@@ -36,8 +36,8 @@ public class GestionSuperpouvoirTest {
     public void testTirerCarteInvisible() {
         Joueur joueur = new Joueur("aymeric", 100);
         MainDuJoueur mainJoueur = new MainDuJoueur(Arrays.asList(
-                new Card(Card.cardRank.DEUX, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.TROIS, Card.cardColor.CARREAU)
+                new Card(CardRank.DEUX, CardColor.PIQUE),
+                new Card(CardRank.TROIS, CardColor.CARREAU)
         ));
         joueur.setMainDuJoueur(mainJoueur);
         Deck deck = new Deck();
@@ -58,8 +58,8 @@ public class GestionSuperpouvoirTest {
 
         
         ennemi.setMainDuJoueur(new MainDuJoueur(Arrays.asList(
-            new Card(Card.cardRank.QUATRE, Card.cardColor.PIQUE),
-            new Card(Card.cardRank.CINQ, Card.cardColor.CARREAU)
+            new Card(CardRank.QUATRE, CardColor.PIQUE),
+            new Card(CardRank.CINQ, CardColor.CARREAU)
         )));
 
         

@@ -1,7 +1,7 @@
 package fr.pantheonsorbonne.miage.game.classes.Superpouvoir;
 
+import fr.pantheonsorbonne.miage.game.classes.Cartes.Card;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
-import fr.pantheonsorbonne.miage.game.classes.Table.Card;
 import fr.pantheonsorbonne.miage.game.classes.Table.Deck;
 
 public class GestionSuperpouvoir extends Superpouvoir {

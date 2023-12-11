@@ -2,7 +2,7 @@ package fr.pantheonsorbonne.miage;
 
 import org.junit.jupiter.api.Test;
 
-import fr.pantheonsorbonne.miage.game.classes.Table.Card;
+import fr.pantheonsorbonne.miage.game.classes.Cartes.*;
 import fr.pantheonsorbonne.miage.game.classes.Table.Deck;
 import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
 
@@ -16,12 +16,12 @@ public class MainDuCroupierTest {
     @Test 
     void testAjouterALaMainDuCroupierCarte() {
         MainDuCroupier mainDuCroupier = new MainDuCroupier(null);
-        Card carte1 = new Card(Card.cardRank.AS, Card.cardColor.PIQUE);
-        Card carte2 = new Card(Card.cardRank.ROI, Card.cardColor.COEUR);
-        Card carte3 = new Card(Card.cardRank.DAME, Card.cardColor.TREFLE);
-        Card carte4 = new Card(Card.cardRank.DIX, Card.cardColor.CARREAU);
-        Card carte5 = new Card(Card.cardRank.NEUF, Card.cardColor.PIQUE);
-        Card carte6 = new Card(Card.cardRank.HUIT, Card.cardColor.COEUR);
+        Card carte1 = new Card(CardRank.AS, CardColor.PIQUE);
+        Card carte2 = new Card(CardRank.ROI, CardColor.COEUR);
+        Card carte3 = new Card(CardRank.DAME, CardColor.TREFLE);
+        Card carte4 = new Card(CardRank.DIX, CardColor.CARREAU);
+        Card carte5 = new Card(CardRank.NEUF, CardColor.PIQUE);
+        Card carte6 = new Card(CardRank.HUIT, CardColor.COEUR);
 
         // Ajouter 5 cartes à la main du croupier
         mainDuCroupier.ajouterALaMainDuCroupierCarte(carte1);
@@ -68,8 +68,8 @@ public class MainDuCroupierTest {
 
         // Créer une main du croupier avec deux cartes
         MainDuCroupier mainDuCroupier = new MainDuCroupier(null);
-        Card carte1 = new Card(Card.cardRank.AS, Card.cardColor.PIQUE);
-        Card carte2 = new Card(Card.cardRank.ROI, Card.cardColor.COEUR);
+        Card carte1 = new Card(CardRank.AS, CardColor.PIQUE);
+        Card carte2 = new Card(CardRank.ROI, CardColor.COEUR);
         mainDuCroupier.ajouterALaMainDuCroupierCarte(carte1);
         mainDuCroupier.ajouterALaMainDuCroupierCarte(carte2);
 
@@ -83,7 +83,7 @@ public class MainDuCroupierTest {
         String consoleOutput = outputStream.toString().trim();
 
         // Vérifier si la méthode toString() des cartes a été appelée et si la sortie est correcte
-        assert consoleOutput.contains("AS de PIQUE");
-        assert consoleOutput.contains("ROI de COEUR");
+        assert consoleOutput.contains("AS de P");
+        assert consoleOutput.contains("ROI de C");
     }
 }

@@ -19,14 +19,14 @@ public class BlindTest {
 
     @Test
     public void testGetJoueur() {
-        joueur = new Joueur("Romain"); 
+        joueur = new Joueur("Romain");
         blind = new Blind(10, joueur);
         assertEquals(joueur, blind.getJoueur());
     }
 
     @Test
     public void testAugmenter() {
-        joueur = new Joueur("Romain"); 
+        joueur = new Joueur("Romain");
         blind = new Blind(10, joueur);
         blind.augmenter(5);
         assertEquals(15, blind.getValeur());
@@ -34,10 +34,17 @@ public class BlindTest {
 
     @Test
     public void testSetJoueur() {
-        joueur = new Joueur("Romain"); 
+        joueur = new Joueur("Romain");
         blind = new Blind(10, joueur);
         Joueur nouveauJoueur = new Joueur("Bob");
         blind.setJoueur(nouveauJoueur);
         assertEquals(nouveauJoueur, blind.getJoueur());
+    }
+
+    @Test
+    public void testToString() {
+        joueur = new Joueur("Romain"); 
+        blind = new Blind(10, joueur);
+        assertEquals("Romain doit payer 10", blind.toString());
     }
 }

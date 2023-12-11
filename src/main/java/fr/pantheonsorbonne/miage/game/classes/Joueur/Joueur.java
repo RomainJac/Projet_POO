@@ -4,10 +4,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import fr.pantheonsorbonne.miage.game.classes.Cartes.Card;
 import fr.pantheonsorbonne.miage.game.classes.Logique.CombinaisonGagnante;
 import fr.pantheonsorbonne.miage.game.classes.Superpouvoir.GestionSuperpouvoir;
-import fr.pantheonsorbonne.miage.game.classes.Table.Card;
 import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
+import fr.pantheonsorbonne.miage.game.classes.Cartes.CardRank;
+
+
 
 public class Joueur implements Comparable<Joueur> {
 
@@ -145,48 +148,48 @@ public class Joueur implements Comparable<Joueur> {
     }
 
     public int probabiliteDeGagner(MainDuCroupier croupier) {
-        Card.cardRank firstCardRank = mainDuJoueur.getMainDuJoueur().get(0).getCardRank();
-        Card.cardRank secondCardRank = mainDuJoueur.getMainDuJoueur().get(1).getCardRank();
+        CardRank firstCardRank = mainDuJoueur.getMainDuJoueur().get(0).getCardRank();
+        CardRank secondCardRank = mainDuJoueur.getMainDuJoueur().get(1).getCardRank();
         if (firstCardRank.equals(secondCardRank)) {
-            if (firstCardRank == Card.cardRank.AS)
+            if (firstCardRank == CardRank.AS)
                 return 85;
-            else if (firstCardRank == Card.cardRank.ROI)
+            else if (firstCardRank == CardRank.ROI)
                 return 80;
-            else if (firstCardRank == Card.cardRank.DAME)
+            else if (firstCardRank == CardRank.DAME)
                 return 75;
-            else if (firstCardRank == Card.cardRank.VALET)
+            else if (firstCardRank == CardRank.VALET)
                 return 70;
-            else if (firstCardRank == Card.cardRank.DIX)
+            else if (firstCardRank == CardRank.DIX)
                 return 65;
-            else if (firstCardRank == Card.cardRank.NEUF)
+            else if (firstCardRank == CardRank.NEUF)
                 return 60;
-            else if (firstCardRank == Card.cardRank.HUIT)
+            else if (firstCardRank == CardRank.HUIT)
                 return 55;
-            else if (firstCardRank == Card.cardRank.SEPT)
+            else if (firstCardRank == CardRank.SEPT)
                 return 50;
-            else if (firstCardRank == Card.cardRank.SIX)
+            else if (firstCardRank == CardRank.SIX)
                 return 45;
-            else if (firstCardRank == Card.cardRank.CINQ)
+            else if (firstCardRank == CardRank.CINQ)
                 return 40;
-            else if (firstCardRank == Card.cardRank.QUATRE)
+            else if (firstCardRank == CardRank.QUATRE)
                 return 35;
-            else if (firstCardRank == Card.cardRank.TROIS)
+            else if (firstCardRank == CardRank.TROIS)
                 return 30;
-            else if (firstCardRank == Card.cardRank.DEUX)
+            else if (firstCardRank == CardRank.DEUX)
                 return 20;
         }
 
-        else if (firstCardRank == Card.cardRank.AS && secondCardRank == Card.cardRank.ROI
-                || firstCardRank == Card.cardRank.ROI && secondCardRank == Card.cardRank.AS)
+        else if (firstCardRank == CardRank.AS && secondCardRank == CardRank.ROI
+                || firstCardRank == CardRank.ROI && secondCardRank == CardRank.AS)
             return 60;
-        else if (firstCardRank == Card.cardRank.AS && secondCardRank == Card.cardRank.DAME
-                || firstCardRank == Card.cardRank.DAME && secondCardRank == Card.cardRank.AS)
+        else if (firstCardRank == CardRank.AS && secondCardRank == CardRank.DAME
+                || firstCardRank == CardRank.DAME && secondCardRank == CardRank.AS)
             return 55;
-        else if (firstCardRank == Card.cardRank.AS && secondCardRank == Card.cardRank.VALET
-                || firstCardRank == Card.cardRank.VALET && secondCardRank == Card.cardRank.AS)
+        else if (firstCardRank == CardRank.AS && secondCardRank == CardRank.VALET
+                || firstCardRank == CardRank.VALET && secondCardRank == CardRank.AS)
             return 50;
-        else if (firstCardRank == Card.cardRank.DAME && secondCardRank == Card.cardRank.ROI
-                || firstCardRank == Card.cardRank.ROI && secondCardRank == Card.cardRank.DAME)
+        else if (firstCardRank == CardRank.DAME && secondCardRank == CardRank.ROI
+                || firstCardRank == CardRank.ROI && secondCardRank == CardRank.DAME)
             return 50;
 
         if (croupier.getMainDuCroupier().get(0).getCardColor() != croupier.getMainDuCroupier().get(1).getCardColor()
