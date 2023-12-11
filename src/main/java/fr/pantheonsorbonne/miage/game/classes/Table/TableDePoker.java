@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import fr.pantheonsorbonne.miage.game.classes.Cartes.Card;
+import fr.pantheonsorbonne.miage.game.classes.Cartes.CardColor;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.MainDuJoueur;
 import fr.pantheonsorbonne.miage.game.classes.Logique.ConditionDeVictoire;
@@ -23,6 +24,8 @@ public class TableDePoker implements Runnable {
 	public Blind petiteBlind;
 	public Blind dealerBlind;
 	public int grosseBlindParDefaut = 10;
+	protected CardColor couleurAtout;
+
 
 	public TableDePoker(Joueur... joueurs) {
 		this.joueurs = new CopyOnWriteArrayList<>(joueurs);
@@ -163,6 +166,7 @@ public class TableDePoker implements Runnable {
 		distribuerCartes();
 		changerBlinds();
 		demanderPaiementBlinds();
+		changerAtout();
 		if (joueurs.get(0).getPileDeJetons() == 0) {
 			System.out.println(joueurs.get(0).getNom() + " a perdu la partie");
 		}
@@ -285,6 +289,36 @@ public class TableDePoker implements Runnable {
 	public void afficherToutesLesMains() {
 		for (Joueur joueur : joueurs) {
 			joueur.afficherMain();
+		}
+	}
+
+	protected void changerAtout() {
+		Joueur joueur = this.joueursActifs.get(0);
+		int answer = (joueur).demandeCouleurInverse();
+		this.setInvertedColor(answer);
+	}
+
+	protected void setInvertedColor(int couleur) {
+		CardColor inverse = null;
+		switch (couleur) {
+			case 0:
+				inverse = CardColor.PIQUE;
+				break;
+			case 1:
+				inverse = CardColor.COEUR;
+				break;
+			case 2:
+				inverse = CardColor.CARREAU;
+				break;
+			case 3:
+				inverse = CardColor.TREFLE;
+				break;
+			default:
+				break;
+		}
+		this.couleurAtout = inverse;
+		for (Joueur joueur : joueursActifs) {
+			joueur.InverserCouleur(inverse);
 		}
 	}
 
