@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import fr.pantheonsorbonne.miage.game.classes.Cartes.Card;
+import fr.pantheonsorbonne.miage.game.classes.Cartes.CardColor;
 import fr.pantheonsorbonne.miage.game.classes.Logique.CombinaisonGagnante;
 import fr.pantheonsorbonne.miage.game.classes.Superpouvoir.GestionSuperpouvoir;
 import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
@@ -20,6 +21,8 @@ public class Joueur implements Comparable<Joueur> {
     protected CombinaisonGagnante combinaison;
     protected MainDuJoueur mainDuJoueur;
     protected GestionSuperpouvoir superpouvoir;
+    protected CardColor couleurInverse; 
+
 
     public boolean estTapis;
 
@@ -136,6 +139,14 @@ public class Joueur implements Comparable<Joueur> {
     public MainDuJoueur getMainDuJoueur() {
         return this.mainDuJoueur;
     }
+
+    public void InverserCouleur(CardColor inverse) {
+		this.couleurInverse=inverse;
+	}
+
+    public int demandeCouleurInverse() {
+		return 2;
+	}
 
     public int faireChoix(MainDuCroupier croupier, int miseMaximale, int tour) {
         int probabiliteDeGagner = probabiliteDeGagner(croupier);

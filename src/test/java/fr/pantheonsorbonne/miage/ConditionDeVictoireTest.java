@@ -22,8 +22,8 @@ class ConditionDeVictoireTest {
         // Créer une main avec une quinte flush
         MainDuCroupier mainCroupier = new MainDuCroupier(null);
         MainDuJoueur mainJoueur = new MainDuJoueur(Arrays.asList(
-            new Card(CardRank.DEUX, CardColor.PIQUE),
-            new Card(CardRank.TROIS, CardColor.CARREAU)
+            new Card(CardRank.HUIT, CardColor.COEUR),
+            new Card(CardRank.NEUF, CardColor.COEUR)
         ));
 
         mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.DIX, CardColor.COEUR));
