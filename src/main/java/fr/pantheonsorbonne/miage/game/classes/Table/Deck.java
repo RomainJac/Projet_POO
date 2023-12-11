@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import fr.pantheonsorbonne.miage.game.classes.Cartes.*;
+
 public class Deck {
     private List<Card> Cards;
     
@@ -25,22 +27,22 @@ public class Deck {
         Cards = new ArrayList<>(52);
         int k = 0;
         for (int i = 0; i < 13; i++) {
-            Cards.add(i, new Card(Card.cardRank.values()[k], Card.cardColor.TREFLE));
+            Cards.add(i, new Card(CardRank.values()[k], CardColor.TREFLE));
             k++;
         }
         k = 0;
         for (int i = 13; i < 26; i++) {
-            Cards.add(i, new Card(Card.cardRank.values()[k], Card.cardColor.CARREAU));
+            Cards.add(i, new Card(CardRank.values()[k], CardColor.CARREAU));
             k++;
         }
         k = 0;
         for (int i = 26; i < 39; i++) {
-            Cards.add(i, new Card(Card.cardRank.values()[k], Card.cardColor.PIQUE));
+            Cards.add(i, new Card(CardRank.values()[k], CardColor.PIQUE));
             k++;
         }
         k = 0;
         for (int i = 39; i < 52; i++) {
-            Cards.add(i, new Card(Card.cardRank.values()[k], Card.cardColor.COEUR));
+            Cards.add(i, new Card(CardRank.values()[k], CardColor.COEUR));
             k++;
         }
     }

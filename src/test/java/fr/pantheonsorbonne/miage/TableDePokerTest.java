@@ -2,9 +2,9 @@ package fr.pantheonsorbonne.miage;
 
 import org.junit.jupiter.api.Test;
 
+import fr.pantheonsorbonne.miage.game.classes.Cartes.*;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.MainDuJoueur;
-import fr.pantheonsorbonne.miage.game.classes.Table.Card;
 import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
 import fr.pantheonsorbonne.miage.game.classes.Table.TableDePoker;
 
@@ -157,8 +157,8 @@ public class TableDePokerTest {
         cardNames.add("Card1");
         cardNames.add("Card2");
         joueur.setMain(new MainDuJoueur(new ArrayList<>()));
-        joueur.getMainDuJoueur().tirerCarte(new Card(Card.cardRank.AS, Card.cardColor.COEUR));
-        joueur.getMainDuJoueur().tirerCarte(new Card(Card.cardRank.ROI, Card.cardColor.PIQUE));
+        joueur.getMainDuJoueur().tirerCarte(new Card(CardRank.AS, CardColor.COEUR));
+        joueur.getMainDuJoueur().tirerCarte(new Card(CardRank.ROI, CardColor.PIQUE));
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
@@ -217,17 +217,17 @@ public class TableDePokerTest {
         table.setMisesTotales(300);
 
         MainDuJoueur mainJoueur = new MainDuJoueur(Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.AS, Card.cardColor.CARREAU)));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.AS, CardColor.CARREAU)));
         MainDuJoueur mainJoueur2 = new MainDuJoueur(Arrays.asList(
-                new Card(Card.cardRank.DEUX, Card.cardColor.CARREAU),
-                new Card(Card.cardRank.TROIS, Card.cardColor.TREFLE)));
+                new Card(CardRank.DEUX, CardColor.CARREAU),
+                new Card(CardRank.TROIS, CardColor.TREFLE)));
 
         joueur1.setMainDuJoueur(mainJoueur);
         joueur2.setMainDuJoueur(mainJoueur2);
         MainDuCroupier mainCroupier = new MainDuCroupier(null);
-        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.AS, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.AS, Card.cardColor.TREFLE));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.AS, CardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.AS, CardColor.TREFLE));
 
         table.determinerGagnant(table.getJoueursActifs());
 

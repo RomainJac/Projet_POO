@@ -2,9 +2,9 @@ package fr.pantheonsorbonne.miage;
 
 import org.junit.jupiter.api.Test;
 
+import fr.pantheonsorbonne.miage.game.classes.Cartes.*;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.MainDuJoueur;
-import fr.pantheonsorbonne.miage.game.classes.Table.Card;
 import fr.pantheonsorbonne.miage.game.classes.Table.Deck;
 import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
 
@@ -59,8 +59,8 @@ public class JoueurTest {
     void testSetMainDuJoueur() {
         Joueur joueur = new Joueur("Frank");
         List<Card> main = Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.ROI, CardColor.COEUR));
         MainDuJoueur mainDuJoueur = new MainDuJoueur(main);
         joueur.setMainDuJoueur(mainDuJoueur);
         assertEquals(mainDuJoueur, joueur.getMainDuJoueur());
@@ -85,8 +85,8 @@ public class JoueurTest {
         Deck deck = new Deck();
 
         List<Card> mainDuJoueur = Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.ROI, CardColor.COEUR));
         MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
         joueur.setMain(main);
         MainDuCroupier croupier = new MainDuCroupier(deck);
@@ -99,7 +99,7 @@ public class JoueurTest {
     void testAjouterCarte() {
         Joueur joueur = new Joueur("Test", 100);
         List<Card> cards = Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE));
+                new Card(CardRank.AS, CardColor.PIQUE));
         MainDuJoueur main = new MainDuJoueur(cards);
         joueur.setMain(main);
         assertEquals(1, joueur.getMainDuJoueur().getMainDuJoueur().size());
@@ -110,8 +110,8 @@ public class JoueurTest {
     void testEnleverCarte() {
         Joueur joueur = new Joueur("Test", 100);
         List<Card> cards = Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.ROI, CardColor.COEUR));
         MainDuJoueur main = new MainDuJoueur(cards);
         joueur.setMain(main);
 
@@ -125,8 +125,8 @@ public class JoueurTest {
         // Créer un joueur avec une main spécifique
         Joueur joueur = new Joueur("aymeric", 100);
         joueur.setMainDuJoueur(new MainDuJoueur(Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.ROI, Card.cardColor.COEUR))));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.ROI, CardColor.COEUR))));
 
         // Capturer la sortie standard dans un ByteArrayOutputStream
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -154,8 +154,8 @@ public class JoueurTest {
         Deck deck = new Deck();
         MainDuCroupier croupier = new MainDuCroupier(deck);
         List<Card> cards = Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.ROI, CardColor.COEUR));
         MainDuJoueur main = new MainDuJoueur(cards);
         joueur.setMain(main);
 
@@ -173,8 +173,8 @@ public class JoueurTest {
     void testGetCardNames() {
         Joueur joueur = new Joueur("Test", 100);
         List<Card> cards = Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.ROI, CardColor.COEUR));
         MainDuJoueur main = new MainDuJoueur(cards);
         joueur.setMain(main);
 
@@ -190,8 +190,8 @@ public class JoueurTest {
         Deck deck = new Deck();
 
         List<Card> mainDuJoueur = Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.DAME, Card.cardColor.COEUR));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.DAME, CardColor.COEUR));
         MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
         joueur.setMain(main);
         MainDuCroupier croupier = new MainDuCroupier(deck);
@@ -205,8 +205,8 @@ public class JoueurTest {
         Joueur joueur = new Joueur("Test", 100);
         Deck deck = new Deck();
         List<Card> mainDuJoueur = Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.DAME, Card.cardColor.COEUR));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.DAME, CardColor.COEUR));
         MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
         joueur.setMain(main);
         MainDuCroupier croupier = new MainDuCroupier(deck);
@@ -221,8 +221,8 @@ public class JoueurTest {
         Deck deck = new Deck();
 
         List<Card> mainDuJoueur = Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.AS, Card.cardColor.COEUR));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.AS, CardColor.COEUR));
         MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
         joueur.setMain(main);
         MainDuCroupier croupier = new MainDuCroupier(deck);
@@ -237,8 +237,8 @@ public class JoueurTest {
         Deck deck = new Deck();
 
         List<Card> mainDuJoueur = Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.ROI, CardColor.COEUR));
         MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
         joueur.setMain(main);
         MainDuCroupier croupier = new MainDuCroupier(deck);
@@ -253,8 +253,8 @@ public class JoueurTest {
         Deck deck = new Deck();
 
         List<Card> mainDuJoueur = Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.DAME, Card.cardColor.COEUR));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.DAME, CardColor.COEUR));
         MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
         joueur.setMain(main);
         MainDuCroupier croupier = new MainDuCroupier(deck);
@@ -269,8 +269,8 @@ public class JoueurTest {
         Deck deck = new Deck();
 
         List<Card> mainDuJoueur = Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.ROI, Card.cardColor.PIQUE));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.ROI, CardColor.PIQUE));
         MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
         joueur.setMain(main);
         MainDuCroupier croupier = new MainDuCroupier(deck);
@@ -283,8 +283,8 @@ public class JoueurTest {
     void testGetMainDuJoueur() {
         Joueur joueur = new Joueur("Test", 100);
         List<Card> mainDuJoueur = Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.ROI, CardColor.COEUR));
         MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
         joueur.setMain(main);
 
@@ -295,12 +295,12 @@ public class JoueurTest {
     void testProbabiliteDeGagnerAvecDeuxCartesIdentiques() {
         Joueur joueur = new Joueur("Test", 100);
         MainDuCroupier mainCroupier = new MainDuCroupier(null);
-        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
-        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.ROI, Card.cardColor.PIQUE));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.ROI, CardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.ROI, CardColor.PIQUE));
 
         List<Card> mainDuJoueur = Arrays.asList(
-                new Card(Card.cardRank.ROI, Card.cardColor.COEUR),
-                new Card(Card.cardRank.ROI, Card.cardColor.PIQUE));
+                new Card(CardRank.ROI, CardColor.COEUR),
+                new Card(CardRank.ROI, CardColor.PIQUE));
         MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
         joueur.setMain(main);
 
@@ -312,13 +312,13 @@ public class JoueurTest {
     void testProbabiliteDeGagnerAvecTroisCartesIdentiques() {
         Joueur joueur = new Joueur("Test", 100);
         MainDuCroupier mainCroupier = new MainDuCroupier(null);
-        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DAME, Card.cardColor.CARREAU));
-        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DAME, Card.cardColor.CARREAU));
-        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DAME, Card.cardColor.CARREAU));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.DAME, CardColor.CARREAU));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.DAME, CardColor.CARREAU));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.DAME, CardColor.CARREAU));
 
         List<Card> mainDuJoueur = Arrays.asList(
-                new Card(Card.cardRank.ROI, Card.cardColor.COEUR),
-                new Card(Card.cardRank.DIX, Card.cardColor.COEUR));
+                new Card(CardRank.ROI, CardColor.COEUR),
+                new Card(CardRank.DIX, CardColor.COEUR));
         MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
         joueur.setMain(main);
 
@@ -330,13 +330,13 @@ public class JoueurTest {
     void testProbabiliteDeGagnerAvecCouleursDifferentesDansCroupier() {
         Joueur joueur = new Joueur("Test", 100);
         MainDuCroupier mainCroupier = new MainDuCroupier(null);
-        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.SEPT, Card.cardColor.CARREAU));
-        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.NEUF, Card.cardColor.TREFLE));
-        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.CINQ, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.SEPT, CardColor.CARREAU));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.NEUF, CardColor.TREFLE));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.CINQ, CardColor.COEUR));
 
         List<Card> mainDuJoueur = Arrays.asList(
-                new Card(Card.cardRank.ROI, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.DAME, Card.cardColor.PIQUE));
+                new Card(CardRank.ROI, CardColor.PIQUE),
+                new Card(CardRank.DAME, CardColor.PIQUE));
         MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
         joueur.setMain(main);
 
@@ -348,13 +348,13 @@ public class JoueurTest {
     void testProbabiliteDeGagnerAvecMemeCouleurEtTroisCartesIdentiquesDansCroupier() {
         Joueur joueur = new Joueur("Test", 100);
         MainDuCroupier mainCroupier = new MainDuCroupier(null);
-        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DAME, Card.cardColor.CARREAU));
-        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DAME, Card.cardColor.CARREAU));
-        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DAME, Card.cardColor.CARREAU));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.DAME, CardColor.CARREAU));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.DAME, CardColor.CARREAU));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(CardRank.DAME, CardColor.CARREAU));
 
         List<Card> mainDuJoueur = Arrays.asList(
-                new Card(Card.cardRank.ROI, Card.cardColor.COEUR),
-                new Card(Card.cardRank.DIX, Card.cardColor.COEUR));
+                new Card(CardRank.ROI, CardColor.COEUR),
+                new Card(CardRank.DIX, CardColor.COEUR));
         MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
         joueur.setMain(main);
 
@@ -368,8 +368,8 @@ public class JoueurTest {
         Deck deck = new Deck();
 
         List<Card> mainDuJoueur = Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.ROI, CardColor.COEUR));
         MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
         joueur.setMain(main);
         MainDuCroupier croupier = new MainDuCroupier(deck);
@@ -384,8 +384,8 @@ public class JoueurTest {
         Deck deck = new Deck();
 
         List<Card> mainDuJoueur = Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.DAME, Card.cardColor.COEUR));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.DAME, CardColor.COEUR));
         MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
         joueur.setMain(main);
         MainDuCroupier croupier = new MainDuCroupier(deck);
@@ -400,8 +400,8 @@ public class JoueurTest {
         Deck deck = new Deck();
 
         List<Card> mainDuJoueur = Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.ROI, Card.cardColor.PIQUE));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.ROI, CardColor.PIQUE));
         MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
         joueur.setMain(main);
         MainDuCroupier croupier = new MainDuCroupier(deck);
@@ -473,8 +473,8 @@ public class JoueurTest {
     void testRendreCarteVisibleAvecMainNonVide() {
         Joueur joueur = new Joueur("Alice", 100);
         joueur.setMainDuJoueur(new MainDuJoueur(Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.ROI, Card.cardColor.COEUR))));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.ROI, CardColor.COEUR))));
 
         // Utiliser un ByteArrayOutputStream pour capturer la sortie standard
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -491,8 +491,8 @@ public class JoueurTest {
     void testSetMain() {
         Joueur joueur = new Joueur("John", 100);
         List<Card> cartes = Arrays.asList(
-                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
+                new Card(CardRank.AS, CardColor.PIQUE),
+                new Card(CardRank.ROI, CardColor.COEUR));
         MainDuJoueur main = new MainDuJoueur(cartes);
 
         joueur.setMain(main);
@@ -554,7 +554,7 @@ public class JoueurTest {
     void testReinitialiserMain() {
         Joueur joueur = new Joueur("Frank", 700);
         List<Card> cartes = Arrays.asList(
-                new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
+                new Card(CardRank.ROI, CardColor.COEUR));
         MainDuJoueur main = new MainDuJoueur(cartes);
         joueur.setMain(main);
         assertFalse(joueur.getMainDuJoueur().getMainDuJoueur().isEmpty());

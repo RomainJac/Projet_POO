@@ -2,11 +2,11 @@ package fr.pantheonsorbonne.miage.game.classes.Logique;
 
 import java.util.*;
 
+import fr.pantheonsorbonne.miage.game.classes.Cartes.Card;
+import fr.pantheonsorbonne.miage.game.classes.Cartes.CardColor;
+import fr.pantheonsorbonne.miage.game.classes.Cartes.CardRank;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.MainDuJoueur;
-import fr.pantheonsorbonne.miage.game.classes.Table.Card;
 import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
-import fr.pantheonsorbonne.miage.game.classes.Table.Card.cardColor;
-import fr.pantheonsorbonne.miage.game.classes.Table.Card.cardRank;
 
 public class ConditionDeVictoire {
 
@@ -29,7 +29,7 @@ public class ConditionDeVictoire {
     }
     public static CombinaisonGagnante trouverQuinte(List<Card> cartes) {
         Collections.sort(cartes, Comparator.comparing(Card::getCardRank));
-        Map<cardColor, List<Card>> cartesParCouleur = new HashMap<>();
+        Map<CardColor, List<Card>> cartesParCouleur = new HashMap<>();
         for (Card carte : cartes) {
             if (!cartesParCouleur.containsKey(carte.getCardColor())) {
                 cartesParCouleur.put(carte.getCardColor(), new ArrayList<>());
@@ -63,13 +63,13 @@ public class ConditionDeVictoire {
     }
 
     public static CombinaisonGagnante trouverCombinaisonsMultiples(List<Card> main) {
-        Map<cardRank, Integer> compteParRang = new HashMap<>();
+        Map<CardRank, Integer> compteParRang = new HashMap<>();
         for (Card carte : main) {
             compteParRang.put(carte.getCardRank(), compteParRang.getOrDefault(carte.getCardRank(), 0) + 1);
         }
     
-        cardRank rangCarre = null, rangBrelan = null, rangPaire = null;
-        for (Map.Entry<cardRank, Integer> entry : compteParRang.entrySet()) {
+        CardRank rangCarre = null, rangBrelan = null, rangPaire = null;
+        for (Map.Entry<CardRank, Integer> entry : compteParRang.entrySet()) {
             if (entry.getValue() == 4) {
                 rangCarre = entry.getKey();
             } else if (entry.getValue() == 3) {
@@ -96,8 +96,8 @@ public class ConditionDeVictoire {
     }
     
 
-    public static cardRank trouverCarteLaPlusHaute(List<Card> main) {
-        cardRank carteLaPlusHaute = cardRank.DEUX;
+    public static CardRank trouverCarteLaPlusHaute(List<Card> main) {
+        CardRank carteLaPlusHaute = CardRank.DEUX;
         for (Card carte : main) {
             if (carte.getCardRank().compareTo(carteLaPlusHaute) > 0) {
                 carteLaPlusHaute = carte.getCardRank();

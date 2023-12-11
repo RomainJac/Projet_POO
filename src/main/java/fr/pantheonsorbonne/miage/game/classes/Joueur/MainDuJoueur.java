@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import fr.pantheonsorbonne.miage.game.classes.Table.Card;
+import fr.pantheonsorbonne.miage.game.classes.Cartes.Card;
 
 public class MainDuJoueur {
     private List<Card> cartes;
@@ -16,7 +16,7 @@ public class MainDuJoueur {
     public List<String> getCardNames() {
         List<String> cardNames = new ArrayList<>();
         for (Card carte : this.cartes) {
-            cardNames.add(carte.getCardName());
+            cardNames.add(carte.CardEnChaine(carte));
         }
         return cardNames;
     }

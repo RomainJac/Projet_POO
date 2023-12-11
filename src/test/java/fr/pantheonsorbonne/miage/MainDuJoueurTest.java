@@ -1,7 +1,7 @@
 package fr.pantheonsorbonne.miage;
 
+import fr.pantheonsorbonne.miage.game.classes.Cartes.*;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.MainDuJoueur;
-import fr.pantheonsorbonne.miage.game.classes.Table.Card;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,9 +14,9 @@ public class MainDuJoueurTest {
     @Test
     void testGetCardNames() {
         List<Card> cartes = new ArrayList<>();
-        cartes.add(new Card(Card.cardRank.AS, Card.cardColor.PIQUE));
-        cartes.add(new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
-        cartes.add(new Card(Card.cardRank.DAME, Card.cardColor.CARREAU));
+        cartes.add(new Card(CardRank.AS, CardColor.PIQUE));
+        cartes.add(new Card(CardRank.ROI, CardColor.COEUR));
+        cartes.add(new Card(CardRank.DAME, CardColor.CARREAU));
 
         MainDuJoueur mainDuJoueur = new MainDuJoueur(cartes);
 
@@ -27,8 +27,8 @@ public class MainDuJoueurTest {
     @Test
     void testGetMainDuJoueur() {
         List<Card> cartes = new ArrayList<>();
-        cartes.add(new Card(Card.cardRank.DEUX, Card.cardColor.TREFLE));
-        cartes.add(new Card(Card.cardRank.SEPT, Card.cardColor.CARREAU));
+        cartes.add(new Card(CardRank.DEUX, CardColor.TREFLE));
+        cartes.add(new Card(CardRank.SEPT, CardColor.CARREAU));
 
         MainDuJoueur mainDuJoueur = new MainDuJoueur(cartes);
 
@@ -38,8 +38,8 @@ public class MainDuJoueurTest {
     @Test
     void testSupprimerCarte() {
         List<Card> cartes = new ArrayList<>();
-        cartes.add(new Card(Card.cardRank.AS, Card.cardColor.PIQUE));
-        cartes.add(new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
+        cartes.add(new Card(CardRank.AS, CardColor.PIQUE));
+        cartes.add(new Card(CardRank.ROI, CardColor.COEUR));
 
         MainDuJoueur mainDuJoueur = new MainDuJoueur(cartes);
         int tailleInitiale = mainDuJoueur.getMainDuJoueur().size();
@@ -51,7 +51,7 @@ public class MainDuJoueurTest {
     void testTirerCarte() {
         List<Card> cartes = new ArrayList<>();
         MainDuJoueur mainDuJoueur = new MainDuJoueur(cartes);
-        Card carte1 = new Card(Card.cardRank.AS, Card.cardColor.PIQUE);
+        Card carte1 = new Card(CardRank.AS, CardColor.PIQUE);
 
         mainDuJoueur.tirerCarte(carte1);
 
@@ -69,7 +69,7 @@ public class MainDuJoueurTest {
     @Test
     void testDevoilerCarte() {
         List<Card> cartes = new ArrayList<>();
-        Card carte1 = new Card(Card.cardRank.AS, Card.cardColor.PIQUE);
+        Card carte1 = new Card(CardRank.AS, CardColor.PIQUE);
         MainDuJoueur mainDuJoueur = new MainDuJoueur(cartes);
 
         mainDuJoueur.tirerCarte(carte1);
