@@ -104,38 +104,8 @@ public class TableDePokerTest {
         assertEquals(200, joueur3.getPileDeJetons());
     }
 
-    // @Test
-    // public void testDistribuerGainsTapisInférieur() {
-    //     Joueur joueur1 = new Joueur("Joueur1", 100);
-    //     joueur1.setMise(100);
-    //     joueur1.isTapis();
-
-    //     List<Joueur> joueursGagnants = new ArrayList<>();
-    //     joueursGagnants.add(joueur1);
-    //     table.setMisesTotales(100);
-
-    //     table.distribuerGains(joueursGagnants);
-
-    //     assertEquals(200, joueur1.getPileDeJetons());
-    //     // assertEquals(0, joueursGagnants.size());
-    // }
-
-    // @Test
-    // public void testDistribuerGainsWithTapisSupérieur() {
-    //     Joueur joueur1 = new Joueur("Joueur1", 100);
-    //     joueur1.setMise(100);
-    //     joueur1.isTapis();
-
-    //     List<Joueur> joueursGagnants = new ArrayList<>();
-    //     joueursGagnants.add(joueur1);
-    //     table.setMisesTotales(300);
-
-    //     table.distribuerGains(joueursGagnants);
-
-    //     assertEquals(400, joueur1.getPileDeJetons());
-    // }
     @Test
-    public void testDistribuerGainsWithTapisMiseSup() {
+    public void testDistribuerGainsTapisMiseSup() {
         // Arrange
         Joueur joueur1 = new Joueur("Joueur1", 100);
         Joueur joueur2 = new Joueur("Joueur2", 100);
@@ -156,7 +126,7 @@ public class TableDePokerTest {
     }
 
     @Test
-    public void testDistribuerGainsWithTapisMiseInf() {
+    public void testDistribuerGainsTapisMiseInf() {
         // Arrange
         Joueur joueur1 = new Joueur("Joueur1", 100);
         Joueur joueur2 = new Joueur("Joueur2", 100);
@@ -475,55 +445,6 @@ void testDemanderPaiementBlinds() {
     }
 
 
-    // @Test
-    // void testGererSuperpouvoir() {
-    //     // Create test objects
-    //     Joueur joueur = new Joueur("TestPlayer", 1000);
-    //     Deck deck = new Deck();
-    //     Joueur ennemis = new Joueur("EnemyPlayer", 1000);
-    //     GestionSuperpouvoir gestionSuperpouvoir = new GestionSuperpouvoir();
-
-    //     // Test case 1: Choosing option 1 should call tirerCarteVisible method
-    //     TableDePoker table = new TableDePoker(joueur);
-    //     table.gererSuperpouvoir(joueur, 1, deck, ennemis);
-
-    //     // Assert that the player's hand size has increased
-    //     assertEquals(1, joueur.getMainDuJoueur().getMainDuJoueur().size());
-
-    //     // Assert that the player's pile of chips has been reduced by 50
-    //     assertEquals(950, joueur.getPileDeJetons());
-
-    //     // Test case 2: Choosing option 2 should call tirerCarteInvisible method
-    //     table.gererSuperpouvoir(joueur, 2, deck, ennemis);
-
-    //     // Assert that the player's hand size has increased
-    //     assertEquals(2, joueur.getMainDuJoueur().getMainDuJoueur().size());
-
-    //     // Assert that the player's pile of chips has been reduced by 100
-    //     assertEquals(850, joueur.getPileDeJetons());
-
-    //     // Test case 3: Choosing option 3 should call devoilerCarte method
-    //     table.gererSuperpouvoir(joueur, 4, deck, ennemis);
-
-    //     // Assert that the enemy player's card is now visible
-    //     assertTrue(ennemis.getMainDuJoueur().getMainDuJoueur().get(0).estVisible());
-
-    //     // Assert that the player's pile of chips has been reduced by 50
-    //     assertEquals(800, joueur.getPileDeJetons());
-
-    //     // Test case 4: Choosing option 4 should call enleverCarte method
-    //     table.gererSuperpouvoir(joueur, 3, deck, ennemis);
-
-    //     // Assert that the enemy player's card has been removed
-    //     assertTrue(ennemis.getMainDuJoueur().getMainDuJoueur().isEmpty());
-
-    //     // Assert that the player's pile of chips has been reduced by 100
-    //     assertEquals(700, joueur.getPileDeJetons());
-
-    //     // Test case 5: Choosing option 5 should do nothing
-    //     table.gererSuperpouvoir(joueur, 5, deck, ennemis);
-    // }
-
     @Test
     void testGetNombreDeTours() {
         // Create a test object
@@ -560,5 +481,37 @@ void testDemanderPaiementBlinds() {
     //     System.setOut(System.out);
     //     assertEquals(/, outputStream.toString().trim());
     // }
+
+
+    @Test
+    void testGererSuperpouvoir() {
+        Joueur ennemis = new Joueur("EnemyPlayer", 1000);
+        GestionSuperpouvoir gestionSuperpouvoir = new GestionSuperpouvoir();
+        Joueur joueur = new Joueur("aymeric", 1000);
+        MainDuJoueur mainJoueur = new MainDuJoueur(Arrays.asList(
+                new Card(CardRank.DEUX, CardColor.PIQUE),
+                new Card(CardRank.TROIS, CardColor.CARREAU)
+        ));
+        joueur.setMainDuJoueur(mainJoueur);
+        Deck deck = new Deck();
+        deck.initialiserDeck();
+        TableDePoker table = new TableDePoker(joueur);
+
+        // Test case 1: Choosing option 1 should call tirerCarteVisible method
+        table.gererSuperpouvoir(joueur, 1, deck, ennemis);
+        assertEquals(3, joueur.getMainDuJoueur().getMainDuJoueur().size());
+        assertEquals(950, joueur.getPileDeJetons());
+        
+
+        // // Test case 2: Choosing option 2 should call tirerCarteInvisible method
+        table.gererSuperpouvoir(joueur, 1, deck, ennemis);
+        assertEquals(4, joueur.getMainDuJoueur().getMainDuJoueur().size()); //4 car 3 cartes avant
+        assertEquals(900, joueur.getPileDeJetons());
+
+        // // Test case 5: Choosing option 5 should do nothing
+        table.gererSuperpouvoir(joueur, 5, deck, ennemis);
+        assertEquals(4, joueur.getMainDuJoueur().getMainDuJoueur().size());
+        assertEquals(900, joueur.getPileDeJetons());
+    }
 
 }
