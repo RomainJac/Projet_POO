@@ -53,7 +53,7 @@ public class TableDePokerTest {
         table.joueursActifs.add(joueur);
 
         int initialMisesTotales = table.getMisesTotales();
-        int relanceAmount = 40;
+        int relanceAmount = 50;
 
         int result = table.gererChoix(joueur, 3, 0);
 
@@ -79,7 +79,7 @@ public class TableDePokerTest {
 
         int result = table.faireRelance(joueur, 40);
 
-        // assertEquals(initialMiseMaximale + 30, result);
+        assertEquals(initialMiseMaximale + 30, result);
         assertEquals(30, joueur.getMise());
     }
 

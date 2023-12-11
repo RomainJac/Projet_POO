@@ -60,9 +60,10 @@ public class TableDePoker implements Runnable {
 			enleverJoueurSansJeton();
 			for (Joueur joueur : joueursActifs) {
 				System.out.println(joueur.getNom() + " a désormais : " + joueur.getPileDeJetons() + " jetons");
+				System.out.println(joueur.getNom() + " a Gagné");
 
 			}
-			System.out.println("Fin du tour");
+			System.out.println("Fin de la partie");
 			réinitialiserTable();
 		}
 	}
@@ -81,8 +82,7 @@ public class TableDePoker implements Runnable {
 				joueursActifs.remove(joueur);
 			}
 			case 3 -> {
-				misesTotales += faireRelance(joueur, 40);
-				System.out.println(joueur.getNom() + " a relancé de 40");
+				misesTotales += faireRelance(joueur, 50);
 			}
 		}
 
@@ -91,12 +91,16 @@ public class TableDePoker implements Runnable {
 	}
 
 	public int faireRelance(Joueur joueur, int montant) {
-		joueur.miser(miseMaximale + montant);
-		if (joueur.getPileDeJetons() < miseMaximale + montant) {
-			return miseMaximale += joueur.getPileDeJetons();
-		}
-		return miseMaximale += montant;
+		int nouvelleMise = miseMaximale + montant;
 
+		if (joueur.getPileDeJetons() < nouvelleMise) {
+			nouvelleMise = joueur.getPileDeJetons();
+		}
+
+		miseMaximale = nouvelleMise;
+		joueur.miser(nouvelleMise);
+
+		return nouvelleMise;
 	}
 
 	public void distribuerGains(List<Joueur> joueursGagnants) {
