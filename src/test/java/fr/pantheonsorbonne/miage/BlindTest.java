@@ -1,7 +1,8 @@
 package fr.pantheonsorbonne.miage;
 
-import fr.pantheonsorbonne.miage.game.classes.Blind;
-import fr.pantheonsorbonne.miage.game.classes.Joueur;
+import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
+import fr.pantheonsorbonne.miage.game.classes.Table.Blind;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

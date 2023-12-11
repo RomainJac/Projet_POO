@@ -1,4 +1,6 @@
-package fr.pantheonsorbonne.miage.game.classes;
+package fr.pantheonsorbonne.miage.game.classes.Logique;
+
+import fr.pantheonsorbonne.miage.game.classes.Table.Card;
 
 public class CombinaisonGagnante implements Comparable<CombinaisonGagnante> {
     private Victoire victoire;

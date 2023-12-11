@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.miage.game.classes;
+package fr.pantheonsorbonne.miage.game.classes.Table;
 
 import java.util.ArrayList;
 import java.util.List;

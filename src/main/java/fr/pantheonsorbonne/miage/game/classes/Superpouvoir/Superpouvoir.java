@@ -1,6 +1,8 @@
 package fr.pantheonsorbonne.miage.game.classes.Superpouvoir;
 
-import fr.pantheonsorbonne.miage.game.classes.*;
+import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
+import fr.pantheonsorbonne.miage.game.classes.Table.Deck;
+
 import java.lang.IllegalArgumentException;
 
 import java.util.HashSet;

@@ -1,7 +1,9 @@
 package fr.pantheonsorbonne.miage;
 
-import fr.pantheonsorbonne.miage.game.classes.*;
+import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
 import fr.pantheonsorbonne.miage.game.classes.Superpouvoir.*;
+import fr.pantheonsorbonne.miage.game.classes.Table.Deck;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;

@@ -1,8 +1,10 @@
-package fr.pantheonsorbonne.miage.game.classes;
+package fr.pantheonsorbonne.miage.game.classes.Joueur;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import fr.pantheonsorbonne.miage.game.classes.Table.Card;
 
 public class MainDuJoueur {
     private List<Card> cartes;

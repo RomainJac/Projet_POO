@@ -1,9 +1,13 @@
-package fr.pantheonsorbonne.miage.game.classes;
+package fr.pantheonsorbonne.miage.game.classes.Table;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
+import fr.pantheonsorbonne.miage.game.classes.Joueur.MainDuJoueur;
+import fr.pantheonsorbonne.miage.game.classes.Logique.ConditionDeVictoire;
 
 public class TableDePoker implements Runnable {
 	public List<Joueur> joueurs;

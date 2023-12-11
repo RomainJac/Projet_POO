@@ -2,13 +2,11 @@ package fr.pantheonsorbonne.miage;
 
 import org.junit.jupiter.api.Test;
 
-import fr.pantheonsorbonne.miage.game.classes.Card;
-import fr.pantheonsorbonne.miage.game.classes.CombinaisonGagnante;
-import fr.pantheonsorbonne.miage.game.classes.ConditionDeVictoire;
-import fr.pantheonsorbonne.miage.game.classes.Deck;
-import fr.pantheonsorbonne.miage.game.classes.Joueur;
-import fr.pantheonsorbonne.miage.game.classes.MainDuCroupier;
-import fr.pantheonsorbonne.miage.game.classes.MainDuJoueur;
+import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
+import fr.pantheonsorbonne.miage.game.classes.Joueur.MainDuJoueur;
+import fr.pantheonsorbonne.miage.game.classes.Table.Card;
+import fr.pantheonsorbonne.miage.game.classes.Table.Deck;
+import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
 
 import static org.junit.jupiter.api.Assertions.*;
 

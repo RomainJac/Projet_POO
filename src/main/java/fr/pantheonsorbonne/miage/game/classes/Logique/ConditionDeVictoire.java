@@ -1,9 +1,12 @@
-package fr.pantheonsorbonne.miage.game.classes;
+package fr.pantheonsorbonne.miage.game.classes.Logique;
 
 import java.util.*;
 
-import fr.pantheonsorbonne.miage.game.classes.Card.cardColor;
-import fr.pantheonsorbonne.miage.game.classes.Card.cardRank;
+import fr.pantheonsorbonne.miage.game.classes.Joueur.MainDuJoueur;
+import fr.pantheonsorbonne.miage.game.classes.Table.Card;
+import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
+import fr.pantheonsorbonne.miage.game.classes.Table.Card.cardColor;
+import fr.pantheonsorbonne.miage.game.classes.Table.Card.cardRank;
 
 public class ConditionDeVictoire {
 

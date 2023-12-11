@@ -2,7 +2,7 @@ package fr.pantheonsorbonne.miage;
 
 import org.junit.jupiter.api.Test;
 
-import fr.pantheonsorbonne.miage.game.classes.Card;
+import fr.pantheonsorbonne.miage.game.classes.Table.Card;
 
 import static org.junit.jupiter.api.Assertions.*;
 

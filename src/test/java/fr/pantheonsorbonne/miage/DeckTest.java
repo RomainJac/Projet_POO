@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 
-import fr.pantheonsorbonne.miage.game.classes.Card;
-import fr.pantheonsorbonne.miage.game.classes.Deck;
+import fr.pantheonsorbonne.miage.game.classes.Table.Card;
+import fr.pantheonsorbonne.miage.game.classes.Table.Deck;
 
 public class DeckTest {
 

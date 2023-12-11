@@ -1,5 +1,8 @@
 
-package fr.pantheonsorbonne.miage.game.classes;
+package fr.pantheonsorbonne.miage.game.classes.Main;
+
+import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
+import fr.pantheonsorbonne.miage.game.classes.Table.TableDePoker;
 
 public class PokerLocal {
 

@@ -1,8 +1,12 @@
-package fr.pantheonsorbonne.miage.game.classes;
+package fr.pantheonsorbonne.miage.game.classes.Joueur;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
+import fr.pantheonsorbonne.miage.game.classes.Logique.CombinaisonGagnante;
+import fr.pantheonsorbonne.miage.game.classes.Table.Card;
+import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
 
 public class Joueur implements Comparable<Joueur> {
 
@@ -12,7 +16,7 @@ public class Joueur implements Comparable<Joueur> {
     protected CombinaisonGagnante combinaison;
     protected MainDuJoueur mainDuJoueur;
 
-    protected boolean estTapis;
+    public boolean estTapis;
 
     public Joueur(String nom) {
         this(nom, 0);

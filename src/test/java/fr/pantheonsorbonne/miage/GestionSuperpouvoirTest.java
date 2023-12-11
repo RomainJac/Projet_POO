@@ -1,9 +1,9 @@
 package fr.pantheonsorbonne.miage;
 
-import fr.pantheonsorbonne.miage.game.classes.Card;
+import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
+import fr.pantheonsorbonne.miage.game.classes.Joueur.MainDuJoueur;
 import fr.pantheonsorbonne.miage.game.classes.Superpouvoir.GestionSuperpouvoir;
-import fr.pantheonsorbonne.miage.game.classes.Joueur;
-import fr.pantheonsorbonne.miage.game.classes.MainDuJoueur;
+import fr.pantheonsorbonne.miage.game.classes.Table.Card;
 
 import org.junit.jupiter.api.Test;
 

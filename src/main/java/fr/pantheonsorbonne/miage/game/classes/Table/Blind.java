@@ -1,4 +1,6 @@
-package fr.pantheonsorbonne.miage.game.classes;
+package fr.pantheonsorbonne.miage.game.classes.Table;
+
+import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
 
 public class Blind {
 
@@ -30,8 +32,4 @@ public class Blind {
         this.joueur = joueur;
     }
 
-    @Override
-    public String toString() {
-        return this.joueur.getNom() + " doit payer " + this.valeur;
-    }
 }
