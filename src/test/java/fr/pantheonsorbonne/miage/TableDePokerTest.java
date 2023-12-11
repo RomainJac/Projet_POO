@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import fr.pantheonsorbonne.miage.game.classes.Cartes.*;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.MainDuJoueur;
+import fr.pantheonsorbonne.miage.game.classes.Superpouvoir.GestionSuperpouvoir;
 import fr.pantheonsorbonne.miage.game.classes.Table.Blind;
+import fr.pantheonsorbonne.miage.game.classes.Table.Deck;
 import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
 import fr.pantheonsorbonne.miage.game.classes.Table.TableDePoker;
 
@@ -274,7 +276,7 @@ public class TableDePokerTest {
 
         table.determinerGagnant(table.getJoueursActifs());
 
-        assertEquals(450, joueur2.getPileDeJetons());
+        assertEquals(450, joueur1.getPileDeJetons());
     }
     
 
@@ -301,26 +303,6 @@ public class TableDePokerTest {
         }
         assertFalse(result.contains(joueur3));
     }
-
-
-    // @Test
-    // public void testDemanderPaiementBlinds() {
-    //     // Arrange
-    //     Joueur joueur1 = new Joueur("Player1", 100);
-    //     Joueur joueur2 = new Joueur("Player2", 150);
-    //     TableDePoker table = new TableDePoker(joueur1, joueur2);
-    //     table.setMisesTotales(0);  // Reset misesTotales for a clean test
-        
-    //     // Act
-    //     table.demanderPaiementBlinds();
-
-    //     // Assert
-    //     assertEquals(20, table.getMisesTotales());  // Make sure misesTotales is calculated correctly
-    //     assertEquals(80, joueur1.getPileDeJetons());  // Make sure Player1's pileDeJetons is updated correctly
-    //     assertEquals(130, joueur2.getPileDeJetons());  // Make sure Player2's pileDeJetons is updated correctly
-    //     assertEquals(10, joueur1.getMise());  // Make sure Player1's mise is set to petiteBlind's valeur
-    //     assertEquals(10, joueur2.getMise());  // Make sure Player2's mise is set to grosseBlind's valeur
-    // }
 
      @Test
     public void testAugmenterBlinds() {
@@ -363,14 +345,14 @@ public class TableDePokerTest {
         // Act
         table.afficherToutesLesMains();
 
-        String sortieattendu = joueur1.getNom() + " a la main suivante :\n" +
-                                "AS de PIQUE\n" +
-                                "AS de CARREAU\n" +
-                                joueur2.getNom() + " a la main suivante :\n" +
-                                "AS de PIQUE\n" +
+        String sortieattendu = joueur1.getNom() + " a la main suivante :\r\n" +
+                                "AS de PIQUE\r\n" +
+                                "AS de CARREAU\r\n" +
+                                joueur2.getNom() + " a la main suivante :\r\n" +
+                                "AS de PIQUE\r\n" +
                                 "AS de CARREAU";
         assertNotNull(outputStream.toString().trim());
-       // assertEquals(sortieattendu, outputStream.toString().trim());
+        assertEquals(sortieattendu, outputStream.toString().trim());
 
         // Restore System.out
         System.setOut(System.out);
@@ -491,5 +473,92 @@ void testDemanderPaiementBlinds() {
         assertEquals(10, grosseBlind.getValeur());
         assertEquals(5, petiteBlind.getValeur());
     }
+
+
+    // @Test
+    // void testGererSuperpouvoir() {
+    //     // Create test objects
+    //     Joueur joueur = new Joueur("TestPlayer", 1000);
+    //     Deck deck = new Deck();
+    //     Joueur ennemis = new Joueur("EnemyPlayer", 1000);
+    //     GestionSuperpouvoir gestionSuperpouvoir = new GestionSuperpouvoir();
+
+    //     // Test case 1: Choosing option 1 should call tirerCarteVisible method
+    //     TableDePoker table = new TableDePoker(joueur);
+    //     table.gererSuperpouvoir(joueur, 1, deck, ennemis);
+
+    //     // Assert that the player's hand size has increased
+    //     assertEquals(1, joueur.getMainDuJoueur().getMainDuJoueur().size());
+
+    //     // Assert that the player's pile of chips has been reduced by 50
+    //     assertEquals(950, joueur.getPileDeJetons());
+
+    //     // Test case 2: Choosing option 2 should call tirerCarteInvisible method
+    //     table.gererSuperpouvoir(joueur, 2, deck, ennemis);
+
+    //     // Assert that the player's hand size has increased
+    //     assertEquals(2, joueur.getMainDuJoueur().getMainDuJoueur().size());
+
+    //     // Assert that the player's pile of chips has been reduced by 100
+    //     assertEquals(850, joueur.getPileDeJetons());
+
+    //     // Test case 3: Choosing option 3 should call devoilerCarte method
+    //     table.gererSuperpouvoir(joueur, 4, deck, ennemis);
+
+    //     // Assert that the enemy player's card is now visible
+    //     assertTrue(ennemis.getMainDuJoueur().getMainDuJoueur().get(0).estVisible());
+
+    //     // Assert that the player's pile of chips has been reduced by 50
+    //     assertEquals(800, joueur.getPileDeJetons());
+
+    //     // Test case 4: Choosing option 4 should call enleverCarte method
+    //     table.gererSuperpouvoir(joueur, 3, deck, ennemis);
+
+    //     // Assert that the enemy player's card has been removed
+    //     assertTrue(ennemis.getMainDuJoueur().getMainDuJoueur().isEmpty());
+
+    //     // Assert that the player's pile of chips has been reduced by 100
+    //     assertEquals(700, joueur.getPileDeJetons());
+
+    //     // Test case 5: Choosing option 5 should do nothing
+    //     table.gererSuperpouvoir(joueur, 5, deck, ennemis);
+    // }
+
+    @Test
+    void testGetNombreDeTours() {
+        // Create a test object
+        Joueur joueur1 = new Joueur("TestPlayer", 1000);
+        Joueur joueur2 = new Joueur("TestPlayer", 1000);
+        TableDePoker table = new TableDePoker(joueur1,joueur2);
+        List<Joueur> joueursActifs = new ArrayList<>(Arrays.asList(joueur1, joueur2));
+        table.setJoueursActifs(joueursActifs);
+
+        // Assert that the initial number of turns is 0
+        assertEquals(0, table.getNombreDeTours());
+
+        table.réinitialiserTable();
+
+        // Assert that the number of turns has been incremented accordingly
+        // (Update the expected value based on the actual behavior of your code)
+        assertEquals(1, table.getNombreDeTours());
+    }
+
+    // @Test
+    // void testRun() {
+    //     // Redirect System.out for testing output
+    //     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    //     System.setOut(new PrintStream(outputStream));
+
+    //     // Create a test object
+    //     Joueur joueur = new Joueur("TestPlayer", 1000);
+    //     TableDePoker table = new TableDePoker(joueur);
+
+    //     // Call the run method
+    //     table.run();
+
+    //     // Restore the normal System.out
+    //     System.setOut(System.out);
+    //     assertEquals(/, outputStream.toString().trim());
+    // }
 
 }

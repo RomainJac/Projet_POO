@@ -7,8 +7,6 @@ import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.MainDuJoueur;
 import fr.pantheonsorbonne.miage.game.classes.Table.Deck;
 import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
-import fr.pantheonsorbonne.miage.game.classes.Table.TableDePoker;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayOutputStream;
@@ -773,8 +771,7 @@ public class JoueurTest {
     public void testFaireChoixSuperPouvoirWithHighJetons() {
         // Arrange
         Joueur joueur = new Joueur("Player1", 400);  // Jetons > 300
-        TableDePoker table = new TableDePoker(joueur);
-
+        
         // Act
         int choix = joueur.faireChoixSuperPouvoir();
 
@@ -786,7 +783,7 @@ public class JoueurTest {
     public void testFaireChoixSuperPouvoirWithLowJetons() {
         // Arrange
         Joueur joueur = new Joueur("Player1", 200);  // Jetons <= 300
-        TableDePoker table = new TableDePoker(joueur);
+        
 
         // Act
         int choix = joueur.faireChoixSuperPouvoir();

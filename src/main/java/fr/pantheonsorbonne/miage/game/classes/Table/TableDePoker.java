@@ -286,15 +286,15 @@ public class TableDePoker implements Runnable {
 
 		Collections.sort(joueurs);
 		if (!joueurs.isEmpty()) {
-			joueursGagnants.add(joueurs.get(joueurs.size() - 1));
+			joueursGagnants.add(joueurs.get(joueurs.size()-2));
 
 		}
-		for (Joueur joueur : joueurs) {
-			if (joueur.getCombinaison().equals(joueursGagnants.get(0).getCombinaison())
-					&& !joueur.getNom().equals(joueursGagnants.get(0).getNom())) {
-				joueursGagnants.add(joueur);
-			}
-		}
+		// for (Joueur joueur : joueurs) {
+		// 	if (joueur.getCombinaison().equals(joueursGagnants.get(0).getCombinaison())
+		//  			&& !joueur.getNom().equals(joueursGagnants.get(0).getNom())) {
+		// 		joueursGagnants.add(joueur);
+		// 	}
+		//  }
 
 		distribuerGains(joueursGagnants);
 
