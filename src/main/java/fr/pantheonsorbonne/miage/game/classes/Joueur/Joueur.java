@@ -214,7 +214,6 @@ public class Joueur implements Comparable<Joueur> {
     public int faireChoixSuperPouvoir() {
         if (getPileDeJetons() > 300) {
             return 4;
-
         }
         return 5;
 

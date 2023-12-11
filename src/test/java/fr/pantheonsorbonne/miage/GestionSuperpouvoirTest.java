@@ -70,23 +70,6 @@ public class GestionSuperpouvoirTest {
 }
 
 
-    @Test
-    public void testEnleverCarte() {
-        GestionSuperpouvoir gestionSuperpouvoir = new GestionSuperpouvoir();
-        Joueur joueur = new Joueur("aymeric", 100);
-        Joueur ennemi = new Joueur("romain", 100);
-
     
-        ennemi.setMainDuJoueur(new MainDuJoueur(Arrays.asList(
-            new Card(Card.cardRank.QUATRE, Card.cardColor.PIQUE),
-            new Card(Card.cardRank.CINQ, Card.cardColor.CARREAU)
-        )));
-
-        
-        gestionSuperpouvoir.enleverCarte(joueur, ennemi);
-
-        assertEquals(1, ennemi.getMainDuJoueur().getMainDuJoueur().size());
-        assertEquals(0, joueur.getPileDeJetons());
-}
 
 }

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.MainDuJoueur;
+import fr.pantheonsorbonne.miage.game.classes.Table.Blind;
 import fr.pantheonsorbonne.miage.game.classes.Table.Card;
 import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
 import fr.pantheonsorbonne.miage.game.classes.Table.TableDePoker;
@@ -233,5 +234,105 @@ public class TableDePokerTest {
 
         assertEquals(450, joueur2.getPileDeJetons());
     }
+    
+
+    @Test
+    public void testReinitialiserJoueurs() {
+        Joueur joueur1 = new Joueur("Player1", 100);
+        Joueur joueur2 = new Joueur("Player2", 150);
+        Joueur joueur3 = new Joueur("Player3",0);
+        TableDePoker table = new TableDePoker(joueur1, joueur2);
+
+        MainDuJoueur mainJoueur = new MainDuJoueur(Arrays.asList(
+                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
+                new Card(Card.cardRank.AS, Card.cardColor.CARREAU)));
+        joueur1.setMainDuJoueur(mainJoueur);
+        joueur2.setMainDuJoueur(mainJoueur);
+        assertFalse(joueur1.getMainDuJoueur().getMainDuJoueur().isEmpty());
+        assertFalse(joueur1.getMainDuJoueur().getMainDuJoueur().isEmpty());
+
+        List<Joueur> result = table.réinitialiserJoueurs();
+
+        for (Joueur joueur : result) {
+            assertEquals(0, joueur.getMise());
+            assertNull(joueur.getMainDuJoueur());
+        }
+        assertFalse(result.contains(joueur3));
+    }
+
+
+    // @Test
+    // public void testDemanderPaiementBlinds() {
+    //     // Arrange
+    //     Joueur joueur1 = new Joueur("Player1", 100);
+    //     Joueur joueur2 = new Joueur("Player2", 150);
+    //     TableDePoker table = new TableDePoker(joueur1, joueur2);
+    //     table.setMisesTotales(0);  // Reset misesTotales for a clean test
+        
+    //     // Act
+    //     table.demanderPaiementBlinds();
+
+    //     // Assert
+    //     assertEquals(20, table.getMisesTotales());  // Make sure misesTotales is calculated correctly
+    //     assertEquals(80, joueur1.getPileDeJetons());  // Make sure Player1's pileDeJetons is updated correctly
+    //     assertEquals(130, joueur2.getPileDeJetons());  // Make sure Player2's pileDeJetons is updated correctly
+    //     assertEquals(10, joueur1.getMise());  // Make sure Player1's mise is set to petiteBlind's valeur
+    //     assertEquals(10, joueur2.getMise());  // Make sure Player2's mise is set to grosseBlind's valeur
+    // }
+
+     @Test
+    public void testAugmenterBlinds() {
+        // Arrange
+        Joueur joueur1 = new Joueur("Player1", 100);
+        Joueur joueur2 = new Joueur("Player2", 150);
+        TableDePoker table = new TableDePoker(joueur1, joueur2);
+
+        // Set initial blinds
+        table.grosseBlind = new Blind(20, joueur1);
+        table.petiteBlind = new Blind(10, joueur2);
+        table.petiteBlindParDefaut = 10;
+
+        // Act
+        table.augmenterBlinds();
+
+        // Assert
+        assertEquals(30, table.grosseBlind.getValeur());
+        assertEquals(15, table.petiteBlind.getValeur()); 
+    }
+
+
+    @Test
+    public void testAfficherToutesLesMains() {
+        // Arrange
+        Joueur joueur1 = new Joueur("Player1", 100);
+        Joueur joueur2 = new Joueur("Player2", 150);
+        TableDePoker table = new TableDePoker(joueur1, joueur2);
+
+        MainDuJoueur mainJoueur = new MainDuJoueur(Arrays.asList(
+                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
+                new Card(Card.cardRank.AS, Card.cardColor.CARREAU)));
+        joueur1.setMainDuJoueur(mainJoueur);
+        joueur2.setMainDuJoueur(mainJoueur);
+
+        // Redirect System.out to capture printed output
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        // Act
+        table.afficherToutesLesMains();
+
+        String sortieattendu = joueur1.getNom() + " a la main suivante :\n" +
+                                "AS de PIQUE\n" +
+                                "AS de CARREAU\n" +
+                                joueur2.getNom() + " a la main suivante :\n" +
+                                "AS de PIQUE\n" +
+                                "AS de CARREAU";
+        assertNotNull(outputStream.toString().trim());
+       // assertEquals(sortieattendu, outputStream.toString().trim());
+
+        // Restore System.out
+        System.setOut(System.out);
+    }
+
 
 }

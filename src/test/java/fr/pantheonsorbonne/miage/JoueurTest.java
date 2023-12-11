@@ -4,9 +4,11 @@ import org.junit.jupiter.api.Test;
 
 import fr.pantheonsorbonne.miage.game.classes.Joueur.Joueur;
 import fr.pantheonsorbonne.miage.game.classes.Joueur.MainDuJoueur;
+import fr.pantheonsorbonne.miage.game.classes.Superpouvoir.GestionSuperpouvoir;
 import fr.pantheonsorbonne.miage.game.classes.Table.Card;
 import fr.pantheonsorbonne.miage.game.classes.Table.Deck;
 import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
+import fr.pantheonsorbonne.miage.game.classes.Table.TableDePoker;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -74,6 +76,7 @@ public class JoueurTest {
         int jetonsRestants = joueur.miser(50);
         assertEquals(50, joueur.getMise());
         assertEquals(50, jetonsRestants);
+        assertFalse(joueur.isTapis());
 
         jetonsRestants = joueur.miser(60);
         assertEquals(100, joueur.getMise());
@@ -153,7 +156,27 @@ public class JoueurTest {
     
 
     @Test
-    void testFaireChoix() {
+    void testFaireChoixWithProbabiliteEntre20et50() {
+        // Arrange
+        Joueur joueur = new Joueur("Test", 100);
+        Deck deck = new Deck();
+        MainDuCroupier croupier = new MainDuCroupier(deck);
+        List<Card> cards = Arrays.asList(
+                new Card(Card.cardRank.TROIS, Card.cardColor.PIQUE),
+                new Card(Card.cardRank.TROIS, Card.cardColor.COEUR));
+        MainDuJoueur main = new MainDuJoueur(cards);
+        joueur.setMain(main);
+
+        // Act
+        int choix = joueur.faireChoix(croupier, 50, 2);
+
+        // Assert
+        assertEquals(1, choix);
+    }
+
+    @Test
+    void testFaireChoixAutre() {
+        // Arrange
         Joueur joueur = new Joueur("Test", 100);
         Deck deck = new Deck();
         MainDuCroupier croupier = new MainDuCroupier(deck);
@@ -163,8 +186,11 @@ public class JoueurTest {
         MainDuJoueur main = new MainDuJoueur(cards);
         joueur.setMain(main);
 
-        int choix = joueur.faireChoix(croupier, 50, 2);
-        assertTrue(choix >= 1 && choix <= 3);
+        // Act
+        int choix = joueur.faireChoix(croupier, 50, 1);
+
+        // Assert
+        assertTrue(choix >= 2 && choix <= 3);
     }
 
     @Test
@@ -186,6 +212,14 @@ public class JoueurTest {
         assertEquals(2, cardNames.size());
         assertTrue(cardNames.contains("AS de PIQUE"));
         assertTrue(cardNames.contains("ROI de COEUR"));
+    }
+    @Test
+    void testGetCardNamesWithMainVide() {
+        Joueur joueur = new Joueur("Test", 100);
+
+        List<String> cardNames = joueur.getCardNames();
+
+        assertTrue(cardNames.isEmpty());
     }
 
     @Test
@@ -296,7 +330,7 @@ public class JoueurTest {
     }
 
     @Test
-    void testProbabiliteDeGagnerAvecDeuxCartesIdentiques() {
+    void testProbabiliteDeGagnerAvecDeuxRoi() {
         Joueur joueur = new Joueur("Test", 100);
         MainDuCroupier mainCroupier = new MainDuCroupier(null);
         mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.ROI, Card.cardColor.COEUR));
@@ -311,6 +345,183 @@ public class JoueurTest {
         int probabilite = joueur.probabiliteDeGagner(mainCroupier);
         assertEquals(80, probabilite);
     }
+    @Test
+    void testProbabiliteDeGagnerAvecDeuxDames() {
+        Joueur joueur = new Joueur("Test", 100);
+        MainDuCroupier mainCroupier = new MainDuCroupier(null);
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DAME, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DAME, Card.cardColor.PIQUE));
+
+        List<Card> mainDuJoueur = Arrays.asList(
+                new Card(Card.cardRank.DAME, Card.cardColor.COEUR),
+                new Card(Card.cardRank.DAME, Card.cardColor.PIQUE));
+        MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
+        joueur.setMain(main);
+
+        int probabilite = joueur.probabiliteDeGagner(mainCroupier);
+        assertEquals(75, probabilite);
+    }
+    @Test
+    void testProbabiliteDeGagnerAvecDeuxVALET() {
+        Joueur joueur = new Joueur("Test", 100);
+        MainDuCroupier mainCroupier = new MainDuCroupier(null);
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.VALET, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.VALET, Card.cardColor.PIQUE));
+
+        List<Card> mainDuJoueur = Arrays.asList(
+                new Card(Card.cardRank.VALET, Card.cardColor.COEUR),
+                new Card(Card.cardRank.VALET, Card.cardColor.PIQUE));
+        MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
+        joueur.setMain(main);
+
+        int probabilite = joueur.probabiliteDeGagner(mainCroupier);
+        assertEquals(70, probabilite);
+    }
+    @Test
+    void testProbabiliteDeGagnerAvecDeuxDix() {
+        Joueur joueur = new Joueur("Test", 100);
+        MainDuCroupier mainCroupier = new MainDuCroupier(null);
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DIX, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DIX, Card.cardColor.PIQUE));
+
+        List<Card> mainDuJoueur = Arrays.asList(
+                new Card(Card.cardRank.DIX, Card.cardColor.COEUR),
+                new Card(Card.cardRank.DIX, Card.cardColor.PIQUE));
+        MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
+        joueur.setMain(main);
+
+        int probabilite = joueur.probabiliteDeGagner(mainCroupier);
+        assertEquals(65, probabilite);
+    }
+    @Test
+    void testProbabiliteDeGagnerAvecDeuxNEUF() {
+        Joueur joueur = new Joueur("Test", 100);
+        MainDuCroupier mainCroupier = new MainDuCroupier(null);
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.NEUF, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.NEUF, Card.cardColor.PIQUE));
+
+        List<Card> mainDuJoueur = Arrays.asList(
+                new Card(Card.cardRank.NEUF, Card.cardColor.COEUR),
+                new Card(Card.cardRank.NEUF, Card.cardColor.PIQUE));
+        MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
+        joueur.setMain(main);
+
+        int probabilite = joueur.probabiliteDeGagner(mainCroupier);
+        assertEquals(60, probabilite);
+    }
+    @Test
+    void testProbabiliteDeGagnerAvecDeuxHUIT() {
+        Joueur joueur = new Joueur("Test", 100);
+        MainDuCroupier mainCroupier = new MainDuCroupier(null);
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.HUIT, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.HUIT, Card.cardColor.PIQUE));
+
+        List<Card> mainDuJoueur = Arrays.asList(
+                new Card(Card.cardRank.HUIT, Card.cardColor.COEUR),
+                new Card(Card.cardRank.HUIT, Card.cardColor.PIQUE));
+        MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
+        joueur.setMain(main);
+
+        int probabilite = joueur.probabiliteDeGagner(mainCroupier);
+        assertEquals(55, probabilite);
+    }
+    @Test
+    void testProbabiliteDeGagnerAvecDeuxSEPT() {
+        Joueur joueur = new Joueur("Test", 100);
+        MainDuCroupier mainCroupier = new MainDuCroupier(null);
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.SEPT, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.SEPT, Card.cardColor.PIQUE));
+
+        List<Card> mainDuJoueur = Arrays.asList(
+                new Card(Card.cardRank.SEPT, Card.cardColor.COEUR),
+                new Card(Card.cardRank.SEPT, Card.cardColor.PIQUE));
+        MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
+        joueur.setMain(main);
+
+        int probabilite = joueur.probabiliteDeGagner(mainCroupier);
+        assertEquals(50, probabilite);
+    }
+    @Test
+    void testProbabiliteDeGagnerAvecDeuxSIX() {
+        Joueur joueur = new Joueur("Test", 100);
+        MainDuCroupier mainCroupier = new MainDuCroupier(null);
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.SIX, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.SIX, Card.cardColor.PIQUE));
+
+        List<Card> mainDuJoueur = Arrays.asList(
+                new Card(Card.cardRank.SIX, Card.cardColor.COEUR),
+                new Card(Card.cardRank.SIX, Card.cardColor.PIQUE));
+        MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
+        joueur.setMain(main);
+
+        int probabilite = joueur.probabiliteDeGagner(mainCroupier);
+        assertEquals(45, probabilite);
+    }
+    @Test
+    void testProbabiliteDeGagnerAvecDeuxCINQ() {
+        Joueur joueur = new Joueur("Test", 100);
+        MainDuCroupier mainCroupier = new MainDuCroupier(null);
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.CINQ, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.CINQ, Card.cardColor.PIQUE));
+
+        List<Card> mainDuJoueur = Arrays.asList(
+                new Card(Card.cardRank.CINQ, Card.cardColor.COEUR),
+                new Card(Card.cardRank.CINQ, Card.cardColor.PIQUE));
+        MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
+        joueur.setMain(main);
+
+        int probabilite = joueur.probabiliteDeGagner(mainCroupier);
+        assertEquals(40, probabilite);
+    }
+    @Test
+    void testProbabiliteDeGagnerAvecDeuxQUATRE() {
+        Joueur joueur = new Joueur("Test", 100);
+        MainDuCroupier mainCroupier = new MainDuCroupier(null);
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.QUATRE, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.QUATRE, Card.cardColor.PIQUE));
+
+        List<Card> mainDuJoueur = Arrays.asList(
+                new Card(Card.cardRank.QUATRE, Card.cardColor.COEUR),
+                new Card(Card.cardRank.QUATRE, Card.cardColor.PIQUE));
+        MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
+        joueur.setMain(main);
+
+        int probabilite = joueur.probabiliteDeGagner(mainCroupier);
+        assertEquals(35, probabilite);
+    }
+    @Test
+    void testProbabiliteDeGagnerAvecDeuxTROIS() {
+        Joueur joueur = new Joueur("Test", 100);
+        MainDuCroupier mainCroupier = new MainDuCroupier(null);
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.TROIS, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.TROIS, Card.cardColor.PIQUE));
+
+        List<Card> mainDuJoueur = Arrays.asList(
+                new Card(Card.cardRank.TROIS, Card.cardColor.COEUR),
+                new Card(Card.cardRank.TROIS, Card.cardColor.PIQUE));
+        MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
+        joueur.setMain(main);
+
+        int probabilite = joueur.probabiliteDeGagner(mainCroupier);
+        assertEquals(30, probabilite);
+    }
+    @Test
+    void testProbabiliteDeGagnerAvecDeuxDEUX() {
+        Joueur joueur = new Joueur("Test", 100);
+        MainDuCroupier mainCroupier = new MainDuCroupier(null);
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DEUX, Card.cardColor.COEUR));
+        mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.DEUX, Card.cardColor.PIQUE));
+
+        List<Card> mainDuJoueur = Arrays.asList(
+                new Card(Card.cardRank.DEUX, Card.cardColor.COEUR),
+                new Card(Card.cardRank.DEUX, Card.cardColor.PIQUE));
+        MainDuJoueur main = new MainDuJoueur(mainDuJoueur);
+        joueur.setMain(main);
+
+        int probabilite = joueur.probabiliteDeGagner(mainCroupier);
+        assertEquals(20, probabilite);
+    }
+    
 
     @Test
     void testProbabiliteDeGagnerAvecTroisCartesIdentiques() {
@@ -419,6 +630,8 @@ public class JoueurTest {
         Joueur joueur = new Joueur("Test", 100);
         joueur.miser(20);
         assertEquals(20, joueur.getMise());
+        assertEquals(80, joueur.getPileDeJetons());
+        assertFalse(joueur.isTapis());
     }
 
     @Test
@@ -426,6 +639,7 @@ public class JoueurTest {
         Joueur joueur = new Joueur("Test", 100);
         joueur.miser(-20);
         assertEquals(0, joueur.getMise());
+        assertEquals(100, joueur.getPileDeJetons());
     }
 
     @Test
@@ -434,17 +648,7 @@ public class JoueurTest {
         joueur.miser(150);
         assertEquals(100, joueur.getMise());
         assertTrue(joueur.isTapis());
-    }
-
-    @Test
-    void testMiserAvecMontantInferieurAJetonsRestants() {
-        Joueur joueur = new Joueur("Test", 100);
-
-        int jetonsRestants = joueur.miser(50);
-
-        assertEquals(50, joueur.getMise());
-        assertEquals(50, jetonsRestants);
-        assertFalse(joueur.isTapis());
+        assertEquals(0, joueur.getPileDeJetons());
     }
 
    @Test
@@ -571,4 +775,31 @@ public class JoueurTest {
         assertTrue(joueur.getMainDuJoueur().getMainDuJoueur().isEmpty());
     }
 
+
+
+    @Test
+    public void testFaireChoixSuperPouvoirWithHighJetons() {
+        // Arrange
+        Joueur joueur = new Joueur("Player1", 400);  // Jetons > 300
+        TableDePoker table = new TableDePoker(joueur);
+
+        // Act
+        int choix = joueur.faireChoixSuperPouvoir();
+
+        // Assert
+        assertEquals(4, choix);  // Should choose superpouvoir option 4
+    }
+
+    @Test
+    public void testFaireChoixSuperPouvoirWithLowJetons() {
+        // Arrange
+        Joueur joueur = new Joueur("Player1", 200);  // Jetons <= 300
+        TableDePoker table = new TableDePoker(joueur);
+
+        // Act
+        int choix = joueur.faireChoixSuperPouvoir();
+
+        // Assert
+        assertEquals(5, choix);  // Should choose superpouvoir option 5
+    }
 }
