@@ -11,30 +11,41 @@ import fr.pantheonsorbonne.miage.game.classes.Table.MainDuCroupier;
 
 public class ConditionDeVictoire {
 
-    public static List<Card> trouverMainGlobale(MainDuCroupier mainDuCroupier,
-            MainDuJoueur mainDuJoueur) {
-        List<Card> mainGlobale = new ArrayList<>();
-        mainGlobale.addAll(mainDuCroupier.getMainDuCroupier());
-        mainGlobale.addAll(mainDuJoueur.getMainDuJoueur());
-        return mainGlobale;
-    }
-
     public static CombinaisonGagnante trouverMeilleureCombinaison(MainDuCroupier mainDuCroupier,
             MainDuJoueur mainDuJoueur) {
         List<Card> mainGlobale = new ArrayList<>();
+        for (Card card : mainDuCroupier.getMainDuCroupier()) {
+            mainGlobale.add(card);
+        }
+        for (Card card : mainDuJoueur.getMainDuJoueur()) {
+            mainGlobale.add(card);
+        }
+
+        CombinaisonGagnante quinte = trouverQuinte(mainGlobale);
 
         CombinaisonGagnante combinaisonMultiple = trouverCombinaisonsMultiples(mainGlobale);
-        CombinaisonGagnante quinteFlush = trouverQuinte(mainGlobale);
 
-        if (quinteFlush != null) {
-            return quinteFlush;
-        }
+        if (quinte != null)
+            return quinte;
 
         else if (combinaisonMultiple != null) {
             return combinaisonMultiple;
         }
 
         return new CombinaisonGagnante(CombinaisonGagnante.Victoire.CARTE_HAUTE, trouverCarteLaPlusHaute(mainGlobale));
+    }
+
+    public static CombinaisonGagnante trouverMeilleureCombinaison(List<Card> main) {
+        CombinaisonGagnante combinaisonMultiple = trouverCombinaisonsMultiples(main);
+        CombinaisonGagnante quinteFlush = trouverQuinte(main);
+
+        if (quinteFlush != null) {
+            return quinteFlush;
+        } else if (combinaisonMultiple != null) {
+            return combinaisonMultiple;
+        }
+
+        return new CombinaisonGagnante(CombinaisonGagnante.Victoire.CARTE_HAUTE, trouverCarteLaPlusHaute(main));
     }
 
     public static CombinaisonGagnante trouverMeilleureCombinaison(CardColor carteInverse, MainDuCroupier mainDuCroupier,
@@ -51,21 +62,21 @@ public class ConditionDeVictoire {
         }
 
         mainGlobale = inverserCartes(carteInverse, mainGlobale);
-        return trouverMeilleureCombinaison(mainDuCroupier, mainDuJoueur);
+        return trouverMeilleureCombinaison(mainGlobale);
 
     }
 
     private static List<Card> inverserCartes(CardColor couleurInverse, List<Card> hand) {
-        List<Card> toReturn = new ArrayList<>();
+        List<Card> listeAtout = new ArrayList<>();
         for (Card card : hand) {
             if (card.getCardColor() == couleurInverse) {
                 Card invertedCard = new CardInverse(card.getCardRank().InverserOrdre(), card.getCardColor());
-                toReturn.add(invertedCard);
+                listeAtout.add(invertedCard);
             } else {
-                toReturn.add(card);
+                listeAtout.add(card);
             }
         }
-        return toReturn;
+        return listeAtout;
     }
 
     public static CombinaisonGagnante trouverQuinte(List<Card> cartes) {
@@ -88,8 +99,6 @@ public class ConditionDeVictoire {
             return new CombinaisonGagnante(CombinaisonGagnante.Victoire.QUINTE);
         }
 
-        // Si aucune quinte flush n'est trouvée, renvoyer une quinte simple
-        // change pas le code stp
         return null;
     }
 
