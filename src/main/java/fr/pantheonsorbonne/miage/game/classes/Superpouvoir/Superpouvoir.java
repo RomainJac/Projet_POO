@@ -30,7 +30,7 @@ public abstract class Superpouvoir {
 
     public void verification(Joueur joueur, int tarif) throws IllegalArgumentException {
 
-        if (this.peutSuperpouvoir(joueur) && joueur.getPileDeJetons() > tarif) {
+        if (this.peutSuperpouvoir(joueur) && joueur.getPileDeJetons() >= tarif) {
             joueur.setPileDeJetons(joueur.getPileDeJetons() - tarif);
             this.joueursSansPouvoir.add(joueur);
         } else {

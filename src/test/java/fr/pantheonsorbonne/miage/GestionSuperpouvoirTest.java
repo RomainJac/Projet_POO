@@ -89,4 +89,6 @@ public class GestionSuperpouvoirTest {
         assertEquals(0, joueur.getPileDeJetons());
 }
 
+
+
 }

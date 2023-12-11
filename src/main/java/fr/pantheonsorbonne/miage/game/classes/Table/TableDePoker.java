@@ -53,10 +53,8 @@ public class TableDePoker implements Runnable {
 					gererChoix(joueur, choixJoueur, miseMaximale);
 					int choixSuperpouvoir = joueur.faireChoixSuperPouvoir();
 					gererSuperpouvoir(joueur, choixSuperpouvoir, deck, joueur);
-					System.out.println("Contenu du pot : " + misesTotales);
 				}
 			}
-			System.out.println("Fin du tour");
 			afficherToutesLesMains();
 			determinerGagnant(joueurs);
 			enleverJoueurSansJeton();
@@ -64,6 +62,7 @@ public class TableDePoker implements Runnable {
 				System.out.println(joueur.getNom() + " a désormais : " + joueur.getPileDeJetons() + " jetons");
 
 			}
+			System.out.println("Fin du tour");
 			réinitialiserTable();
 		}
 	}

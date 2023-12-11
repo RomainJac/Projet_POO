@@ -18,14 +18,14 @@ import java.util.List;
 public class JoueurTest {
 
     @Test
-    void testgetNom(){
+    void testgetNom() {
         Joueur joueur = new Joueur("aymeric");
         assertEquals("aymeric", joueur.getNom());
     }
 
     @Test
     void testGetNom() {
-        Joueur joueur = new Joueur("romain",20);
+        Joueur joueur = new Joueur("romain", 20);
         assertEquals("romain", joueur.getNom());
     }
 
@@ -65,7 +65,6 @@ public class JoueurTest {
         joueur.setMainDuJoueur(mainDuJoueur);
         assertEquals(mainDuJoueur, joueur.getMainDuJoueur());
     }
-
 
     @Test
     void testMiser() {
@@ -127,30 +126,27 @@ public class JoueurTest {
         Joueur joueur = new Joueur("aymeric", 100);
         joueur.setMainDuJoueur(new MainDuJoueur(Arrays.asList(
                 new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-                new Card(Card.cardRank.ROI, Card.cardColor.COEUR)
-        )));
-    
+                new Card(Card.cardRank.ROI, Card.cardColor.COEUR))));
+
         // Capturer la sortie standard dans un ByteArrayOutputStream
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-    
+
         // Appeler la méthode afficherMain()
         joueur.afficherMain();
-    
+
         // Récupérer le texte imprimé
         String[] outputLines = outputStream.toString().trim().split("\\r?\\n"); // Diviser en lignes
-    
+
         // Réinitialiser la sortie standard
         System.setOut(System.out);
-    
+
         // Vérifier que les lignes imprimées correspondent aux attentes
         assertAll(
                 () -> assertEquals("aymeric a la main suivante :", outputLines[0]),
                 () -> assertEquals("AS de PIQUE", outputLines[1]),
-                () -> assertEquals("ROI de COEUR", outputLines[2])
-        );
+                () -> assertEquals("ROI de COEUR", outputLines[2]));
     }
-    
 
     @Test
     void testFaireChoix() {
@@ -447,7 +443,7 @@ public class JoueurTest {
         assertFalse(joueur.isTapis());
     }
 
-   @Test
+    @Test
     void testMiserAvecMontantNul() {
         Joueur joueur = new Joueur("Test", 100);
         joueur.miser(0);
@@ -462,7 +458,7 @@ public class JoueurTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
 
-        joueur.rendreCarteVisible(); 
+        joueur.rendreCarteVisible();
 
         // Récupérer la sortie standard capturée
         String output = outputStream.toString().trim();
@@ -477,23 +473,19 @@ public class JoueurTest {
     void testRendreCarteVisibleAvecMainNonVide() {
         Joueur joueur = new Joueur("Alice", 100);
         joueur.setMainDuJoueur(new MainDuJoueur(Arrays.asList(
-            new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
-            new Card(Card.cardRank.ROI, Card.cardColor.COEUR)
-        )));
+                new Card(Card.cardRank.AS, Card.cardColor.PIQUE),
+                new Card(Card.cardRank.ROI, Card.cardColor.COEUR))));
 
-    // Utiliser un ByteArrayOutputStream pour capturer la sortie standard
+        // Utiliser un ByteArrayOutputStream pour capturer la sortie standard
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
 
-        joueur.rendreCarteVisible(); 
+        joueur.rendreCarteVisible();
 
         System.setOut(System.out);
 
         assertTrue(true);
-}
-
-
-    
+    }
 
     @Test
     void testSetMain() {
@@ -517,6 +509,7 @@ public class JoueurTest {
 
         assertTrue(joueur.isTapis());
     }
+
     @Test
     void testIsTapisSommeNulle() {
         Joueur joueur = new Joueur("Alice", 200);
@@ -526,6 +519,7 @@ public class JoueurTest {
 
         assertFalse(joueur.isTapis());
     }
+
     @Test
     void testIsTapisSommeNégative() {
         Joueur joueur = new Joueur("Alice", 200);
@@ -554,8 +548,7 @@ public class JoueurTest {
         joueur.aPerdu(montantPerte);
 
         assertEquals(500 - montantPerte, joueur.getPileDeJetons());
-    }    
-
+    }
 
     @Test
     void testReinitialiserMain() {
@@ -569,6 +562,17 @@ public class JoueurTest {
         joueur.enleverCarte();
 
         assertTrue(joueur.getMainDuJoueur().getMainDuJoueur().isEmpty());
+    }
+
+    @Test
+    public void testFaireChoixSuperPouvoir() {
+        Joueur joueurAvecSuperPouvoir = new Joueur("Testeur1", 400);
+
+        Joueur joueurSansSuperPouvoir = new Joueur("Testeur2", 300);
+
+        assertEquals(4, joueurAvecSuperPouvoir.faireChoixSuperPouvoir());
+
+        assertEquals(5, joueurSansSuperPouvoir.faireChoixSuperPouvoir());
     }
 
 }
