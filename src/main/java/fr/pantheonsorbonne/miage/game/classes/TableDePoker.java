@@ -51,10 +51,14 @@ public class TableDePoker implements Runnable {
 			}
 			System.out.println("Fin du tour");
 			afficherToutesLesMains();
-			determinerGagnant(joueurs);
+			determinerGagnant(joueurs);			
+			for (Joueur joueur : joueurs){
+				System.out.println(joueur.getNom() + " a désormais : " + joueur.getPileDeJetons() + " jetons");
+			}
 			réinitialiserTable();
+			}
 		}
-	}
+	
 
 	public int gererChoix(Joueur joueur, int choix, int miseMaximale) {
 		switch (choix) {
@@ -79,14 +83,14 @@ public class TableDePoker implements Runnable {
 
 	}
 
-	private int faireRelance(Joueur joueur, int montant) {
+	public int faireRelance(Joueur joueur, int montant) {
 		joueur.miser(miseMaximale + montant);
 		if (joueur.getPileDeJetons() < miseMaximale + montant) {
 			return miseMaximale += joueur.getPileDeJetons();
 		}
 		return miseMaximale += montant;
 
-	}
+	}	
 
 	public void distribuerGains(List<Joueur> joueursGagnants) {
 		if (joueursGagnants != null) {
@@ -125,13 +129,14 @@ public class TableDePoker implements Runnable {
 			if (nombreDeTours % 5 == 0) {
 				augmenterBlinds();
 			}
-			misesTotales = 0;
-			miseMaximale = 0;
+			
 		}
+		misesTotales = 0;
+		miseMaximale = 0;
 
 	}
 
-	private void afficherInfosJoueur(Joueur joueur) {
+	public void afficherInfosJoueur(Joueur joueur) {
 
 		List<String> cardNames = joueur.getCardNames();
 
@@ -143,11 +148,17 @@ public class TableDePoker implements Runnable {
 
 	}
 
-	private void initialiserTour() {
+	public void initialiserTour() {
 		deck.initialiserDeck();
 		distribuerCartes();
 		changerBlinds();
 		demanderPaiementBlinds();
+		if(joueurs.get(0).getPileDeJetons()==0){
+			System.out.println(joueurs.get(0).getNom() + " a perdu la partie");
+		}
+		if(joueurs.get(1).getPileDeJetons()==0){
+			System.out.println(joueurs.get(1).getNom() + " a perdu la partie");
+		}
 
 	}
 
@@ -252,6 +263,26 @@ public class TableDePoker implements Runnable {
 
 	public List<Joueur> getJoueursActifs() {
 		return joueursActifs;
+	}
+
+	public int getMiseMaximale() {
+		return this.miseMaximale;
+	}
+
+	public void setMisesTotales(int misesTotales) {
+		this.misesTotales = misesTotales;
+	}
+
+	public void setMiseMaximale(int miseMaximale) {
+		this.miseMaximale = miseMaximale;
+	}
+
+	public Integer getNombreDeTours() {
+		return nombreDeTours;
+	}
+
+	public void setJoueursActifs(List<Joueur> joueurActifs) {
+		this.joueursActifs =  joueurActifs;
 	}
 
 }

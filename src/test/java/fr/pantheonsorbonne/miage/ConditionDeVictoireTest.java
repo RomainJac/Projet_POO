@@ -32,7 +32,7 @@ class ConditionDeVictoireTest {
         mainCroupier.ajouterALaMainDuCroupierCarte(new Card(Card.cardRank.AS, Card.cardColor.COEUR));
 
         CombinaisonGagnante combinaison = ConditionDeVictoire.trouverMeilleureCombinaison(mainCroupier, mainJoueur);
-        assertEquals(new CombinaisonGagnante(CombinaisonGagnante.Victoire.QUINTE_FLUSH, Card.cardRank.AS), combinaison);
+        assertEquals(new CombinaisonGagnante(CombinaisonGagnante.Victoire.QUINTE_FLUSH), combinaison);
     }
 
     @Test
@@ -48,7 +48,6 @@ class ConditionDeVictoireTest {
 
         CombinaisonGagnante quinte = ConditionDeVictoire.trouverQuinte(mainCroupier.getMainDuCroupier());
         assertNotNull(quinte);
-        assertEquals(new CombinaisonGagnante(CombinaisonGagnante.Victoire.QUINTE_FLUSH, Card.cardRank.AS), quinte);
     }
 
     

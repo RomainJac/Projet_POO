@@ -71,11 +71,11 @@ public class Joueur implements Comparable<Joueur> {
     }
 
     public int miser(int combien) {
-        if (this.pileDeJetons < combien) {
+        if (this.pileDeJetons <= combien) {
             this.mise += this.pileDeJetons;
             this.pileDeJetons = 0;
             this.estTapis = true;
-        } else if (combien >= 0) {
+        } else if (combien > 0) {
             this.mise += combien;
             this.pileDeJetons -= combien;
         }
